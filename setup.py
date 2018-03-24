@@ -15,18 +15,18 @@ with open(os.path.join(os.path.dirname(__file__), 'requirements.in')) as require
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='videgrenier',
-    version='2.0.0',
-    packages=['videgrenier'],
+    name='djenealog',
+    version='0.1.0',
+    packages=['djenealog'],
     install_requires=REQUIREMENTS,
     include_package_data=True,
     license='BSD',
-    description='An app to organize vide greniers',
+    description='An app to show genealogy trees',
     long_description=README,
     long_description_content_type="text/markdown",
-    url='https://github.com/caracole-io/videgrenier',
+    url='https://github.com/nim65s/djenealog',
     author='Guilhem Saurel',
-    author_email='webmaster@caracole.io',
+    author_email='webmaster@saurel.me',
     python_requires='>=3.6',
     classifiers=[
         'Environment :: Web Environment',

@@ -3,9 +3,10 @@ from enum import IntEnum
 from django.db import models
 
 from ndh.utils import enum_to_choices
+from ndh.models import Links
 
 
-class Individu(models.Model):
+class Individu(models.Model, Links):
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
     masculin = models.NullBooleanField()
@@ -28,7 +29,7 @@ class Individu(models.Model):
         return '\n'.join(ret + ['}'])
 
 
-class Couple(models.Model):
+class Couple(models.Model, Links):
     mari = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='pere', null=True)
     femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mere', null=True)
 

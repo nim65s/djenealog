@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load django_tables2 bootstrap4 %}
+
+{% block content %}
+
+<h1>Couples</h1>
+
+{% if filter %}
+<form action="" method="get" class="form form-inline">
+  {% bootstrap_form filter.form layout='inline' %}
+  {% bootstrap_button 'filter' %}
+</form>
+{% endif %}
+
+{% render_table table %}
+
+{% endblock %}

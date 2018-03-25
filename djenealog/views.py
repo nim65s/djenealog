@@ -1,12 +1,27 @@
 from datetime import date
 from django.shortcuts import render
 
-from .models import Individu, Couple, Naissance
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+
+from . import models, tables, filters
 
 
 def gv(request):
     return render(request, 'djenealog/graph.html', {
-        'years': range(Naissance.objects.order_by('y').first().y, date.today().year + 1),
-        'individus': Individu.objects.all(),
-        'couples': Couple.objects.all(),
+        'years': range(models.Naissance.objects.order_by('y').first().y, date.today().year + 1),
+        'individus': models.Individu.objects.all(),
+        'couples': models.Couple.objects.all(),
     })
+
+
+class IndividusView(SingleTableMixin, FilterView):
+    model = models.Individu
+    table_class = tables.IndividuTable
+    filterset_class = filters.IndividuFilter
+
+
+class CouplesView(SingleTableMixin, FilterView):
+    model = models.Couple
+    table_class = tables.CoupleTable
+    filterset_class = filters.CoupleFilter

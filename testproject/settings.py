@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'ndh',
     'testproject',
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
@@ -114,3 +115,4 @@ if os.environ.get('MEMCACHED', 'False').lower() == 'true':
             'LOCATION': 'memcached:11211',
         }
     }
+DJANGO_TABLES2_TEMPLATE = f'{PROJECT}/tables.html'

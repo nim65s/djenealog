@@ -58,8 +58,8 @@ class Command(BaseCommand):
                 mapping[state][gramps] = inst.gramps
 
             elif state == STATES.couple:
-                mari, femme = (Individu.objects.get(gramps=mapping[STATES.individu][parse_gramps(read[i])])
-                               for i in (1, 2))
+                mari = Individu.objects.get(gramps=mapping[STATES.individu][parse_gramps(read[1])]) if read[1] else None
+                femme = Individu.objects.get(gramps=mapping[STATES.individu][parse_gramps(read[2])]) if read[2] else None
                 mariage_ymd, mariage = strpdate(read[3]), read[4]
 
                 defaults = {
@@ -69,7 +69,10 @@ class Command(BaseCommand):
                 if mariage:
                     defaults['mariage'] = Lieu.objects.get(gramps=mapping[STATES.lieu][parse_gramps(mariage)])
 
-                inst, _ = Couple.objects.get_or_create(mari=mari, femme=femme, defaults=defaults)
+                if mari is None and femme is None:
+                    inst, _ = Couple.objects.get_or_create(gramps=defaults['gramps'], defaults=defaults)
+                else:
+                    inst, _ = Couple.objects.get_or_create(mari=mari, femme=femme, defaults=defaults)
                 mapping[state][gramps] = inst.gramps
 
             else:

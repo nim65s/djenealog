@@ -23,18 +23,21 @@ class Individu(models.Model):
     deces_y = models.PositiveSmallIntegerField()
     deces_m = models.PositiveSmallIntegerField()
     deces_d = models.PositiveSmallIntegerField()
-    parents = models.ForeignKey('Couple', on_delete=models.PROTECT, null=True)
+    parents = models.ForeignKey('Couple', on_delete=models.PROTECT, null=True, related_name='enfants')
 
     def __str__(self):
-         naissance = space_time(self.naissance, self.naissance_y, self.naissance_m, self.naissance_d)
-         deces = space_time(self.deces, self.deces_y, self.deces_m, self.deces_d)
-         return f'{self.prenom}\n{naissance}\n{deces}'
+        return f'{self.prenom} {self.nom}'
+
+    def label(self):
+        naissance = space_time(self.naissance, self.naissance_y, self.naissance_m, self.naissance_d)
+        deces = space_time(self.deces, self.deces_y, self.deces_m, self.deces_d)
+        return f'{self}\n{naissance}\n{deces}'
 
 
 class Couple(models.Model):
     gramps = models.PositiveSmallIntegerField(unique=True)
-    mari = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='pere')
-    femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mere')
+    mari = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='pere', null=True)
+    femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mere', null=True)
     mariage = models.ForeignKey(Lieu, on_delete=models.PROTECT, null=True)
     mariage_y = models.PositiveSmallIntegerField()
     mariage_m = models.PositiveSmallIntegerField()

@@ -1,22 +1,23 @@
-digraph GRAMPS_graph
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div id="graph"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/viz-lite.js' %}"></script>
+
+<script type="txt/vnd.graphviz" id='graphe'>
+digraph
 {
     bgcolor=white;
     center="true";
-    charset="utf8";
-    concentrate="false";
-    dpi="72";
-    graph [fontsize=30];
-    margin="1.00,1.00";
+    margin="1.0,1.0";
     mclimit="99";
     nodesep="0.40";
-    outputorder="edgesfirst";
-#  page="16.54,23.39";
-    pagedir="BL";
-    rankdir="TB";
-    ranksep="0.01";
-    ratio="fill";
+    ranksep="0.01 equally";
     searchsize="100";
-    size="14.53,21.38";
     splines="true";
 
     {
@@ -52,3 +53,6 @@ digraph GRAMPS_graph
         {% endfor %}
     }
 }
+</script>
+<script>$('#graph').html(Viz($('#graphe').html(), 'svg'));</script>
+{% endblock %}

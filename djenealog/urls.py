@@ -4,5 +4,5 @@ from . import views
 
 app_name = 'djenealog'
 urlpatterns = [
-    path('', views.gv),
+    path('', views.gv, name='graph'),
 ]

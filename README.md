@@ -17,8 +17,3 @@ docker-compose up -d --build
 ```
 
 You may then want to create an admin: `docker-compose exec app ./manage.py createsuperuser`
-
-## Get a graph
-
-wget http://djenealog.local:8000/ -O /tmp/dj.gv; dot -Tsvg -o /tmp/dj.gv.svg /tmp/dj.gv;
-file:///tmp/dj.gv.svg

@@ -1,0 +1,19 @@
+{% extends 'ndh.html' %}
+{% load ndh %}
+
+{% block pagetitle %}Djenealog{% endblock %}
+{% block sitetitle %}Djenealog{% endblock %}
+
+{% block navbarleft %}
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" id="djenealogDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+    Djenealog
+  </a>
+  <div class="dropdown-menu" aria-labelledby="djenealogDropdown">
+      <a class="dropdown-item" href="{% url 'djenealog:graph' %}">Graphe</a>
+      <a class="dropdown-item" href="{% url 'djenealog:graph' %}">Individus</a>
+      <a class="dropdown-item" href="{% url 'djenealog:graph' %}">Couples</a>
+      <a class="dropdown-item" href="{% url 'djenealog:graph' %}">Lieux</a>
+  </div>
+</li>
+{% endblock %}

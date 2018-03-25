@@ -1,0 +1,54 @@
+digraph GRAMPS_graph
+{
+    bgcolor=white;
+    center="true";
+    charset="utf8";
+    concentrate="false";
+    dpi="72";
+    graph [fontsize=30];
+    margin="1.00,1.00";
+    mclimit="99";
+    nodesep="0.40";
+    outputorder="edgesfirst";
+#  page="16.54,23.39";
+    pagedir="BL";
+    rankdir="TB";
+    ranksep="0.01";
+    ratio="fill";
+    searchsize="100";
+    size="14.53,21.38";
+    splines="true";
+
+    {
+        node [shape=none, color=white, fillcolor=white, fontsize=20];
+        {% for year in years %}
+        {{ year }} -> {{ year|add:"1" }} [style=invis];
+        {% endfor %}
+    }
+
+    {
+        edge [len=0.5 style=solid fontsize=30];
+        node [style=filled fontsize=30];
+
+        {% for individu in individus %}
+        {
+            {% if individu.naissance_y != 0 %}rank=same; {{ individu.naissance_y }};{% endif %}
+            "I{{ individu.gramps }}" [ shape="box" fillcolor="#{% if individu.masculin %}e0e0ff{% else %}ffffe0{% endif %}" style="solid,filled"
+                label="{{ individu }}" ];
+        }
+        {% if individu.parents %}
+        "F{{ individu.parents.gramps }}" -> "I{{ individu.gramps }}" [ style=solid arrowhead=normal arrowtail=none dir=both ];
+        {% endif %}
+        {% endfor %}
+
+        {% for couple in couples %}
+        "F{{ couple.gramps }}" [ shape="ellipse" fillcolor="#ffffe0" style="filled" label="" ];
+        subgraph cluster_F{{ couple.gramps }}
+        {
+            style="invis";
+            "I{{ couple.mari.gramps }}" -> "F{{ couple.gramps }}" [ arrowhead=normal arrowtail=none dir=both ];
+            "I{{ couple.femme.gramps }}" -> "F{{ couple.gramps }}" [ arrowhead=normal arrowtail=none dir=both ];
+        }
+        {% endfor %}
+    }
+}

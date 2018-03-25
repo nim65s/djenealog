@@ -1,83 +1,93 @@
 import re
+from enum import IntEnum
 from django.db import models
 
-
-class Lieu(models.Model):
-    gramps = models.PositiveSmallIntegerField(unique=True)
-    nom = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.nom
+from ndh.utils import enum_to_choices
 
 
 class Individu(models.Model):
-    gramps = models.PositiveSmallIntegerField(unique=True)
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
     masculin = models.NullBooleanField()
-    naissance = models.ForeignKey(Lieu, on_delete=models.PROTECT, related_name='+', null=True)
-    naissance_y = models.PositiveSmallIntegerField()
-    naissance_m = models.PositiveSmallIntegerField()
-    naissance_d = models.PositiveSmallIntegerField()
-    deces = models.ForeignKey(Lieu, on_delete=models.PROTECT, related_name='+', null=True)
-    deces_y = models.PositiveSmallIntegerField()
-    deces_m = models.PositiveSmallIntegerField()
-    deces_d = models.PositiveSmallIntegerField()
     parents = models.ForeignKey('Couple', on_delete=models.PROTECT, null=True, related_name='enfants')
 
     def __str__(self):
         return f'{self.prenom} {self.nom}'
 
     def label(self):
-        naissance = space_time(self.naissance, self.naissance_y, self.naissance_m, self.naissance_d)
-        deces = space_time(self.deces, self.deces_y, self.deces_m, self.deces_d)
+        naissance = self.naissance if Naissance.objects.filter(individu=self).exists() else ''
+        deces = self.deces if Deces.objects.filter(individu=self).exists() else ''
         return f'{self}\n{naissance}\n{deces}'
+
+    def node(self):
+        ret = ['{']
+        if Naissance.objects.filter(individu=self).exists() and self.naissance.y:
+            ret.append(f'rank=same; {self.naissance.y};')
+        color = 'e0e0ff' if self.masculin else 'ffffe0'
+        ret.append(f'"I{self.pk}" [ shape="box" fillcolor="#{color}" style="solid,filled" label="{self.label()}" ];')
+        return '\n'.join(ret + ['}'])
 
 
 class Couple(models.Model):
-    gramps = models.PositiveSmallIntegerField(unique=True)
     mari = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='pere', null=True)
     femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mere', null=True)
-    mariage = models.ForeignKey(Lieu, on_delete=models.PROTECT, null=True)
-    mariage_y = models.PositiveSmallIntegerField()
-    mariage_m = models.PositiveSmallIntegerField()
-    mariage_d = models.PositiveSmallIntegerField()
-    pacs = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.femme} & {self.mari}'
 
+    def label(self):
+        return self.mariage if Mariage.objects.filter(couple=self).exists() else ''
 
-def new_gramps(cls, default=None):
-    if default is not None and not cls.objects.filter(gramps=default).exists():
-        return default
-    return cls.objects.order_by('-gramps').first().gramps + 1
-
-
-def strpdate(date):
-    """
-    '', 'YYYY', 'YYYY-MM, 'YYYY-MM-DD' -> (YYYY || 0, MM || 0, DD || 0)
-    """
-    return [int(i) for i in re.match(r'(\d+)?-?(\d+)?-?(\d+)?', date).groups(default=0)]
-
-
-def parse_gramps(gramps):
-    """
-    '[F0040]' -> 40
-    """
-    return int(gramps[2:-1])
+    def node(self):
+        ret = [f'"F{self.pk}" [ shape="ellipse" fillcolor="#ffffe0" style="filled" label="{self.label()}" ];']
+        ret.append(f'subgraph cluster_F{self.pk}')
+        ret.append('{ style="invis";')
+        if self.mari:
+            ret.append(f'"I{self.mari.pk}" -> "F{self.pk}" [arrowhead=normal arrowtail=none dir=both ];')
+        if self.femme:
+            ret.append(f'"I{self.femme.pk}" -> "F{self.pk}" [arrowhead=normal arrowtail=none dir=both ];')
+        return '\n'.join(ret + ['}'])
 
 
-def space_time(space, year, month, day):
-    ret = ''
-    if year:
-        ret += f'{year}'
-        if month:
-            ret += f'-{month}'
-            if day:
-                ret += f'-{day}'
-    if ret and space:
-        ret += ', '
-    if space:
-        ret += f'{space}'
-    return ret
+class Evenement(models.Model):
+    lieu = models.CharField(max_length=50, blank=True, null=True)
+    y = models.PositiveSmallIntegerField(blank=True, null=True)
+    m = models.PositiveSmallIntegerField(blank=True, null=True)
+    d = models.PositiveSmallIntegerField(blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        ret = ''
+        if self.y:
+            ret += f'{self.y}'
+            if self.m:
+                ret += f'-{self.m}'
+                if self.d:
+                    ret += f'-{self.d}'
+        if ret and self.lieu:
+            ret += ', '
+        if self.lieu:
+            ret += f'{self.lieu}'
+        return ret
+
+
+class Naissance(Evenement):
+    individu = models.OneToOneField(Individu, on_delete=models.PROTECT)
+
+
+class Bapteme(Evenement):
+    individu = models.OneToOneField(Individu, on_delete=models.PROTECT)
+
+
+class Deces(Evenement):
+    individu = models.OneToOneField(Individu, on_delete=models.PROTECT)
+
+
+class Pacs(Evenement):
+    couple = models.OneToOneField(Couple, on_delete=models.PROTECT)
+
+
+class Mariage(Evenement):
+    couple = models.OneToOneField(Couple, on_delete=models.PROTECT)

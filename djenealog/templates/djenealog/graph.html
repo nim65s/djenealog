@@ -32,24 +32,14 @@ digraph
         node [style=filled fontsize=30];
 
         {% for individu in individus %}
-        {
-            {% if individu.naissance_y != 0 %}rank=same; {{ individu.naissance_y }};{% endif %}
-            "I{{ individu.gramps }}" [ shape="box" fillcolor="#{% if individu.masculin %}e0e0ff{% else %}ffffe0{% endif %}" style="solid,filled"
-                label="{{ individu.label }}" ];
-        }
+        {{ individu.node|safe }}
         {% if individu.parents %}
-        "F{{ individu.parents.gramps }}" -> "I{{ individu.gramps }}" [ style=solid arrowhead=normal arrowtail=none dir=both ];
+        "F{{ individu.parents.pk }}" -> "I{{ individu.pk }}" [ style=solid arrowhead=normal arrowtail=none dir=both ];
         {% endif %}
         {% endfor %}
 
         {% for couple in couples %}
-        "F{{ couple.gramps }}" [ shape="ellipse" fillcolor="#ffffe0" style="filled" label="" ];
-        subgraph cluster_F{{ couple.gramps }}
-        {
-            style="invis";
-            {% if couple.mari %}"I{{ couple.mari.gramps }}" -> "F{{ couple.gramps }}" [ arrowhead=normal arrowtail=none dir=both ];{% endif %}
-            {% if couple.femme %}"I{{ couple.femme.gramps }}" -> "F{{ couple.gramps }}" [ arrowhead=normal arrowtail=none dir=both ];{% endif %}
-        }
+        {{ couple.node|safe }}
         {% endfor %}
     }
 }

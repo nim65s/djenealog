@@ -26,7 +26,9 @@ class Individu(models.Model):
     parents = models.ForeignKey('Couple', on_delete=models.PROTECT, null=True)
 
     def __str__(self):
-        return f'{self.prenom} {self.nom}'
+         naissance = space_time(self.naissance, self.naissance_y, self.naissance_m, self.naissance_d)
+         deces = space_time(self.deces, self.deces_y, self.deces_m, self.deces_d)
+         return f'{self.prenom}\n{naissance}\n{deces}'
 
 
 class Couple(models.Model):
@@ -61,3 +63,18 @@ def parse_gramps(gramps):
     '[F0040]' -> 40
     """
     return int(gramps[2:-1])
+
+
+def space_time(space, year, month, day):
+    ret = ''
+    if year:
+        ret += f'{year}'
+        if month:
+            ret += f'-{month}'
+            if day:
+                ret += f'-{day}'
+    if ret and space:
+        ret += ', '
+    if space:
+        ret += f'{space}'
+    return ret

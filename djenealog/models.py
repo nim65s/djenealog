@@ -25,7 +25,8 @@ class Individu(models.Model, Links):
         if Naissance.objects.filter(individu=self).exists() and self.naissance.y:
             ret.append(f'rank=same; {self.naissance.y};')
         color = 'e0e0ff' if self.masculin else 'ffffe0'
-        ret.append(f'"I{self.pk}" [ shape="box" fillcolor="#{color}" style="solid,filled" label="{self.label()}" ];')
+        ret.append(f'"I{self.pk}" [ fillcolor="#{color}" label="{self.label()}" URL="{self.get_absolute_url()}"')
+        ret.append('shape="box" style="solid,filled" ];')
         return '\n'.join(ret + ['}'])
 
 
@@ -40,7 +41,8 @@ class Couple(models.Model, Links):
         return self.mariage if Mariage.objects.filter(couple=self).exists() else ''
 
     def node(self):
-        ret = [f'"F{self.pk}" [ shape="ellipse" fillcolor="#ffffe0" style="filled" label="{self.label()}" ];']
+        ret = [f'"F{self.pk}" [ label="{self.label()}" URL="{self.get_absolute_url()}" ']
+        ret.append('shape="ellipse" fillcolor="#ffffe0" style="filled" ];')
         ret.append(f'subgraph cluster_F{self.pk}')
         ret.append('{ style="invis";')
         if self.mari:

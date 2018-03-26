@@ -1,14 +1,32 @@
 import argparse
+import logging
+import re
 import csv
 from enum import IntEnum
 
 from django.core.management.base import BaseCommand
 
-from djenealog.models import Lieu, Individu, Couple, new_gramps, strpdate, parse_gramps
+from djenealog import models
 
 
 STATES = IntEnum('States', 'lieu individu couple famille')
 mapping = {state: {} for state in STATES}
+logger = logging.getLogger('djenealog.import_csv')
+
+
+def get_or_create_event(cls, inst, ymd, lieu):
+    instance, created = cls.objects.get_or_create(inst=inst)
+    if lieu and not instance.lieu:
+        instance.lieu = mapping[STATES.lieu][lieu]
+    y, m, d = [int(i) for i in re.match(r'(\d+)?-?(\d+)?-?(\d+)?', ymd).groups(default=0)]
+    if y and not instance.y:
+        instance.y = y
+    if m and not instance.m:
+        instance.m = m
+    if d and not instance.d:
+        instance.d = d
+    instance.save()
+
 
 class Command(BaseCommand):
     help = 'import a csv file from gramps'
@@ -23,59 +41,42 @@ class Command(BaseCommand):
             line = line.strip()
             if jump:
                 jump = 0
-                print(f'-- {line}')
+                logger.debug(f'-- {line}')
                 continue
             if line == '':
                 jump = 1
                 state += 1
-                print(f'-- {line}')
+                logger.debug(f'-- {line}')
                 continue
 
             read = next(csv.reader([line]))
-            gramps = parse_gramps(read[0])
+            gramps = read[0]
 
             if state == STATES.lieu:
-                nom = read[2]
-
-                inst, _ = Lieu.objects.get_or_create(nom=nom, defaults={'gramps': new_gramps(Lieu, gramps)})
-                mapping[state][gramps] = inst.gramps
+                mapping[state][gramps] = read[2]
 
             elif state == STATES.individu:
                 nom, prenom, masculin = read[1], read[2], read[7] == 'masculin'
-                naissance_ymd, naissance, deces_ymd, deces = strpdate(read[8]), read[9], strpdate(read[14]), read[15]
 
-                defaults = {
-                    'gramps': new_gramps(Individu, gramps),
-                    'naissance_y': naissance_ymd[0], 'naissance_m': naissance_ymd[1], 'naissance_d': naissance_ymd[2],
-                    'deces_y': deces_ymd[0], 'deces_m': deces_ymd[1], 'deces_d': deces_ymd[2],
-                }
-                if naissance:
-                    defaults['naissance'] = Lieu.objects.get(gramps=mapping[STATES.lieu][parse_gramps(naissance)])
-                if deces:
-                    defaults['deces'] = Lieu.objects.get(gramps=mapping[STATES.lieu][parse_gramps(deces)])
+                inst, _ = models.Individu.objects.get_or_create(nom=nom, prenom=prenom, masculin=masculin)
+                mapping[state][gramps] = inst.pk
 
-                inst, _ = Individu.objects.get_or_create(nom=nom, prenom=prenom, masculin=masculin, defaults=defaults)
-                mapping[state][gramps] = inst.gramps
+                if read[8] or read[9]:
+                    get_or_create_event(models.Naissance, inst, read[8], read[9])
+                if read[14] or read[15]:
+                    get_or_create_event(models.Deces, inst, read[14], read[15])
 
             elif state == STATES.couple:
-                mari = Individu.objects.get(gramps=mapping[STATES.individu][parse_gramps(read[1])]) if read[1] else None
-                femme = Individu.objects.get(gramps=mapping[STATES.individu][parse_gramps(read[2])]) if read[2] else None
-                mariage_ymd, mariage = strpdate(read[3]), read[4]
+                mari = models.Individu.objects.get(pk=mapping[STATES.individu][read[1]]) if read[1] else None
+                femme = models.Individu.objects.get(pk=mapping[STATES.individu][read[2]]) if read[2] else None
 
-                defaults = {
-                    'gramps': new_gramps(Couple, gramps),
-                    'mariage_y': mariage_ymd[0], 'mariage_m': mariage_ymd[1], 'mariage_d': mariage_ymd[2],
-                }
-                if mariage:
-                    defaults['mariage'] = Lieu.objects.get(gramps=mapping[STATES.lieu][parse_gramps(mariage)])
+                inst, _ = models.Couple.objects.get_or_create(mari=mari, femme=femme)
+                mapping[state][gramps] = inst.pk
 
-                if mari is None and femme is None:
-                    inst, _ = Couple.objects.get_or_create(gramps=defaults['gramps'], defaults=defaults)
-                else:
-                    inst, _ = Couple.objects.get_or_create(mari=mari, femme=femme, defaults=defaults)
-                mapping[state][gramps] = inst.gramps
+                if read[3] or read[4]:
+                    get_or_create_event(models.Mariage, inst, read[3], read[4])
 
             else:
-                 enfant = Individu.objects.get(gramps=mapping[STATES.individu][parse_gramps(read[1])])
-                 enfant.parents = Couple.objects.get(gramps=mapping[STATES.couple][gramps])
+                 enfant = models.Individu.objects.get(pk=mapping[STATES.individu][read[1]])
+                 enfant.parents = models.Couple.objects.get(pk=mapping[STATES.couple][gramps])
                  enfant.save()

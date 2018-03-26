@@ -5,7 +5,7 @@ from django.views.generic import UpdateView, CreateView, DeleteView
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 
-from . import models, tables, filters
+from . import models, tables, filters, forms
 
 
 def gv(request):
@@ -30,12 +30,12 @@ class CouplesView(SingleTableMixin, FilterView):
 
 class IndividuView(UpdateView):
     model = models.Individu
-    fields = ('nom', 'prenom', 'masculin', 'parents')
+    form_class = forms.IndividuForm
 
 
 class CoupleView(UpdateView):
     model = models.Couple
-    fields = ('mari', 'femme')
+    form_class = forms.CoupleForm
 
 
 class EvenementMixin(object):

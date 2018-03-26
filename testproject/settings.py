@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'ndh',
     'testproject',
     'django_tables2',
+    'django_select2',
 ]
 
 MIDDLEWARE = [

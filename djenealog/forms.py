@@ -1,0 +1,24 @@
+from django.forms import ModelForm
+
+from django_select2.forms import Select2Widget
+
+from . import models
+
+
+class IndividuForm(ModelForm):
+    class Meta:
+        model = models.Individu
+        fields = ('nom', 'prenom', 'masculin', 'parents')
+        widgets = {
+            'parents': Select2Widget,
+        }
+
+
+class CoupleForm(ModelForm):
+    class Meta:
+        model = models.Couple
+        fields = ('mari', 'femme')
+        widgets = {
+            'mari': Select2Widget,
+            'femme': Select2Widget,
+        }

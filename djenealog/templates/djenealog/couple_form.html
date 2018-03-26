@@ -26,3 +26,11 @@ Mariage: {{ couple.mariage }}
 <a href="{% url 'djenealog:del-couple' pk=couple.pk %}">delete</a>
 
 {% endblock %}
+
+{% block style %}
+{{ form.media.css }}
+{% endblock %}
+
+{% block scripts %}
+{{ form.media.js }}
+{% endblock %}

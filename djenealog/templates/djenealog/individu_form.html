@@ -36,3 +36,11 @@ Décès: {{ individu.deces }}
 <a href="{% url 'djenealog:del-individu' pk=individu.pk %}">delete</a>
 
 {% endblock %}
+
+{% block style %}
+{{ form.media.css }}
+{% endblock %}
+
+{% block scripts %}
+{{ form.media.js }}
+{% endblock %}

@@ -10,7 +10,7 @@ from . import models, tables, filters, forms
 
 def gv(request):
     return render(request, 'djenealog/graph.html', {
-        'years': range(models.Naissance.objects.order_by('y').first().y, date.today().year + 1),
+        'years': range(models.Naissance.objects.exclude(y=None).order_by('y').first().y, date.today().year + 1),
         'individus': models.Individu.objects.all(),
         'couples': models.Couple.objects.all(),
     })

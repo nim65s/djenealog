@@ -1,5 +1,8 @@
 import re
+import calendar
 from enum import IntEnum
+
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
@@ -8,8 +11,8 @@ from ndh.models import Links
 
 
 class Individu(models.Model, Links):
-    nom = models.CharField(max_length=50)
-    prenom = models.CharField(max_length=50)
+    nom = models.CharField(max_length=50, blank=True)
+    prenom = models.CharField(max_length=50, blank=True)
     masculin = models.NullBooleanField()
     parents = models.ForeignKey('Couple', on_delete=models.PROTECT, blank=True, null=True, related_name='enfants')
 
@@ -36,7 +39,8 @@ class Couple(models.Model, Links):
     femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mere', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.femme} & {self.mari}'
+        mari, femme = self.mari or '', self.femme or ''
+        return f'{femme} & {mari}'
 
     def label(self):
         return self.mariage if Mariage.objects.filter(inst=self).exists() else ''
@@ -63,17 +67,10 @@ class Evenement(models.Model):
         abstract = True
 
     def __str__(self):
-        ret = ''
-        if self.y:
-            ret += f'{self.y}'
-            if self.m:
-                ret += f'-{self.m}'
-                if self.d:
-                    ret += f'-{self.d}'
-        if ret and self.lieu:
-            ret += ', '
+        d, m, y = self.d or '', calendar.month_name[self.m] if self.m else '', self.y or ''
+        ret = f'{d} {m} {y}'
         if self.lieu:
-            ret += f'{self.lieu}'
+            ret += f', {self.lieu}'
         return ret
 
     def get_absolute_url(self):

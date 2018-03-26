@@ -1,1 +1,34 @@
-form.html
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'ndh/form.html' %}
+
+{% if individu.naissance %}
+Naissance: {{ individu.naissance }}
+<a href="{% url 'djenealog:naissance' pk=individu.naissance.pk %}">edit</a>
+<a href="{% url 'djenealog:del-naissance' pk=individu.naissance.pk %}">delete</a>
+{% else %}
+<a href="{% url 'djenealog:add-naissance' pk=individu.pk %}">Ajouter une naissance</a>
+{% endif %}
+
+<br>
+
+{% if individu.bapteme %}
+Baptême: {{ individu.bapteme }}
+<a href="{% url 'djenealog:bapteme' pk=individu.bapteme.pk %}">edit</a>
+<a href="{% url 'djenealog:del-bapteme' pk=individu.bapteme.pk %}">delete</a>
+{% else %}
+<a href="{% url 'djenealog:add-bapteme' pk=individu.pk %}">Ajouter un baptême</a>
+{% endif %}
+
+<br>
+
+{% if individu.deces %}
+Décès: {{ individu.deces }}
+<a href="{% url 'djenealog:deces' pk=individu.deces.pk %}">edit</a>
+<a href="{% url 'djenealog:del-deces' pk=individu.deces.pk %}">delete</a>
+{% else %}
+<a href="{% url 'djenealog:add-deces' pk=individu.pk %}">Ajouter un décès</a>
+{% endif %}
+
+{% endblock %}

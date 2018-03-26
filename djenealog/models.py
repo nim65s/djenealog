@@ -1,6 +1,7 @@
 import re
 from enum import IntEnum
 from django.db import models
+from django.urls import reverse
 
 from ndh.utils import enum_to_choices
 from ndh.models import Links
@@ -10,19 +11,19 @@ class Individu(models.Model, Links):
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
     masculin = models.NullBooleanField()
-    parents = models.ForeignKey('Couple', on_delete=models.PROTECT, null=True, related_name='enfants')
+    parents = models.ForeignKey('Couple', on_delete=models.PROTECT, blank=True, null=True, related_name='enfants')
 
     def __str__(self):
         return f'{self.prenom} {self.nom}'
 
     def label(self):
-        naissance = self.naissance if Naissance.objects.filter(individu=self).exists() else ''
-        deces = self.deces if Deces.objects.filter(individu=self).exists() else ''
+        naissance = self.naissance if Naissance.objects.filter(inst=self).exists() else ''
+        deces = self.deces if Deces.objects.filter(inst=self).exists() else ''
         return f'{self}\n{naissance}\n{deces}'
 
     def node(self):
         ret = ['{']
-        if Naissance.objects.filter(individu=self).exists() and self.naissance.y:
+        if Naissance.objects.filter(inst=self).exists() and self.naissance.y:
             ret.append(f'rank=same; {self.naissance.y};')
         color = 'e0e0ff' if self.masculin else 'ffffe0'
         ret.append(f'"I{self.pk}" [ fillcolor="#{color}" label="{self.label()}" URL="{self.get_absolute_url()}"')
@@ -31,14 +32,14 @@ class Individu(models.Model, Links):
 
 
 class Couple(models.Model, Links):
-    mari = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='pere', null=True)
-    femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mere', null=True)
+    mari = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='pere', blank=True, null=True)
+    femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mere', blank=True, null=True)
 
     def __str__(self):
         return f'{self.femme} & {self.mari}'
 
     def label(self):
-        return self.mariage if Mariage.objects.filter(couple=self).exists() else ''
+        return self.mariage if Mariage.objects.filter(inst=self).exists() else ''
 
     def node(self):
         ret = [f'"F{self.pk}" [ label="{self.label()}" URL="{self.get_absolute_url()}" ']
@@ -54,9 +55,9 @@ class Couple(models.Model, Links):
 
 class Evenement(models.Model):
     lieu = models.CharField(max_length=50, blank=True, null=True)
-    y = models.PositiveSmallIntegerField(blank=True, null=True)
-    m = models.PositiveSmallIntegerField(blank=True, null=True)
-    d = models.PositiveSmallIntegerField(blank=True, null=True)
+    y = models.PositiveSmallIntegerField('année', blank=True, null=True)
+    m = models.PositiveSmallIntegerField('mois', blank=True, null=True)
+    d = models.PositiveSmallIntegerField('jour', blank=True, null=True)
 
     class Meta:
         abstract = True
@@ -75,22 +76,26 @@ class Evenement(models.Model):
             ret += f'{self.lieu}'
         return ret
 
+    def get_absolute_url(self):
+        app, model = self._meta.app_label, self._meta.model_name
+        return reverse(f'{app}:{model}', kwargs={'pk': self.inst.pk})
+
 
 class Naissance(Evenement):
-    individu = models.OneToOneField(Individu, on_delete=models.PROTECT)
+    inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
 
 
 class Bapteme(Evenement):
-    individu = models.OneToOneField(Individu, on_delete=models.PROTECT)
+    inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
 
 
 class Deces(Evenement):
-    individu = models.OneToOneField(Individu, on_delete=models.PROTECT)
+    inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
 
 
 class Pacs(Evenement):
-    couple = models.OneToOneField(Couple, on_delete=models.PROTECT)
+    inst = models.OneToOneField(Couple, on_delete=models.PROTECT)
 
 
 class Mariage(Evenement):
-    couple = models.OneToOneField(Couple, on_delete=models.PROTECT)
+    inst = models.OneToOneField(Couple, on_delete=models.PROTECT)

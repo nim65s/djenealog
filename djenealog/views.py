@@ -1,6 +1,6 @@
 from datetime import date
 from django.shortcuts import render
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, CreateView, DeleteView
 
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
@@ -36,3 +36,27 @@ class IndividuView(UpdateView):
 class CoupleView(UpdateView):
     model = models.Couple
     fields = ('mari', 'femme')
+
+
+class EvenementMixin(object):
+    fields = ('lieu', 'y', 'm', 'd')
+
+    def get_success_url(self):
+        return self.object.inst.get_absolute_url()
+
+
+class EvenementUpdateView(EvenementMixin, UpdateView):
+    pass
+
+
+class EvenementCreateView(EvenementMixin, CreateView):
+    def form_valid(self, form):
+        form.instance.inst_id = self.kwargs.get(self.pk_url_kwarg)
+        return super().form_valid(form)
+
+
+class EvenementDeleteView(DeleteView):
+    template_name = 'djenealog/confirm_delete.html'
+
+    def get_success_url(self):
+        return self.object.inst.get_absolute_url()

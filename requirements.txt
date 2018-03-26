@@ -9,5 +9,5 @@ django-bootstrap4==0.0.6  # via ndh
 django-filter==1.1.0
 django-tables2==1.21.1
 django==2.0.3             # via django-tables2, ndh
-ndh==3.2.1
+ndh==3.3.0
 pytz==2018.3              # via django

@@ -21,5 +21,8 @@ Mariage: {{ couple.mariage }}
 <a href="{% url 'djenealog:add-mariage' pk=couple.pk %}">Ajouter un Mariage</a>
 {% endif %}
 
+<br>
+
+<a href="{% url 'djenealog:del-couple' pk=couple.pk %}">delete</a>
 
 {% endblock %}

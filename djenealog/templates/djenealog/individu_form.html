@@ -31,4 +31,8 @@ Décès: {{ individu.deces }}
 <a href="{% url 'djenealog:add-deces' pk=individu.pk %}">Ajouter un décès</a>
 {% endif %}
 
+<br>
+
+<a href="{% url 'djenealog:del-individu' pk=individu.pk %}">delete</a>
+
 {% endblock %}

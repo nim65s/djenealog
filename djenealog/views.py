@@ -55,8 +55,11 @@ class EvenementCreateView(EvenementMixin, CreateView):
         return super().form_valid(form)
 
 
-class EvenementDeleteView(DeleteView):
+class ModelDeleteView(DeleteView):
     template_name = 'djenealog/confirm_delete.html'
+    success_url = '/'
 
+
+class EvenementDeleteView(ModelDeleteView):
     def get_success_url(self):
         return self.object.inst.get_absolute_url()

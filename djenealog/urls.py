@@ -6,9 +6,11 @@ app_name = 'djenealog'
 urlpatterns = [
     path('', views.gv, name='graph'),
     path('individus', views.IndividusView.as_view(), name='individus'),
+    path('individu/create', views.IndividuCreateView.as_view(), name='add-individu'),
     path('individu/<int:pk>', views.IndividuView.as_view(), name='individu'),
     path('individu/<int:pk>/delete', views.ModelDeleteView.as_view(model=models.Individu), name='del-individu'),
     path('couples', views.CouplesView.as_view(), name='couples'),
+    path('couple/create', views.CoupleCreateView.as_view(), name='add-couple'),
     path('couple/<int:pk>', views.CoupleView.as_view(), name='couple'),
     path('couple/<int:pk>/delete', views.ModelDeleteView.as_view(model=models.Couple), name='del-couple'),
     path('pacs/<int:pk>', views.EvenementUpdateView.as_view(model=models.Pacs), name='pacs'),

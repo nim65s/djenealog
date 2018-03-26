@@ -3,6 +3,8 @@
 {% block content %}
 {% include 'ndh/form.html' %}
 
+{% if individu.pk %}
+
 {% if individu.naissance %}
 Naissance: {{ individu.naissance }}
 <a href="{% url 'djenealog:naissance' pk=individu.naissance.pk %}">edit</a>
@@ -34,6 +36,7 @@ Décès: {{ individu.deces }}
 <br>
 
 <a href="{% url 'djenealog:del-individu' pk=individu.pk %}">delete</a>
+{% endif %}
 
 {% endblock %}
 

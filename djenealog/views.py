@@ -38,6 +38,16 @@ class CoupleView(UpdateView):
     form_class = forms.CoupleForm
 
 
+class IndividuCreateView(CreateView):
+    model = models.Individu
+    form_class = forms.IndividuForm
+
+
+class CoupleCreateView(CreateView):
+    model = models.Couple
+    form_class = forms.CoupleForm
+
+
 class EvenementMixin(object):
     fields = ('lieu', 'y', 'm', 'd')
 

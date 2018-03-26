@@ -3,6 +3,8 @@
 {% block content %}
 {% include 'ndh/form.html' %}
 
+{% if couple.pk %}
+
 {% if couple.pacs %}
 PACS: {{ couple.pacs }}
 <a href="{% url 'djenealog:pacs' pk=couple.pacs.pk %}">edit</a>
@@ -24,6 +26,8 @@ Mariage: {{ couple.mariage }}
 <br>
 
 <a href="{% url 'djenealog:del-couple' pk=couple.pk %}">delete</a>
+
+{% endif %}
 
 {% endblock %}
 

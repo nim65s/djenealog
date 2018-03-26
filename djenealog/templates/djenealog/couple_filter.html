@@ -5,6 +5,8 @@
 
 <h1>Couples</h1>
 
+<a href="{% url 'djenealog:add-couple' %}">Add</a>
+
 {% if filter %}
 <form action="" method="get" class="form form-inline">
   {% bootstrap_form filter.form layout='inline' %}

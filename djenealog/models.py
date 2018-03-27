@@ -124,6 +124,12 @@ class Bapteme(Evenement):
 class Deces(Evenement):
     inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
 
+    def __str__(self):
+        ret = super().__str__()
+        if ret.strip():
+            return ret
+        return '✝'
+
 
 class Pacs(Evenement):
     inst = models.OneToOneField(Couple, on_delete=models.PROTECT)

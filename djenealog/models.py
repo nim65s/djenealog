@@ -62,24 +62,27 @@ class Couple(models.Model, Links):
 
     def node(self):
         ret = ['{']
-        rank = self.rank()
-        if rank:
-            ret.append(f'rank=same; {rank};')
+        # rank = self.rank()
+        # if rank:
+            # ret.append(f'rank=same; {rank};')
         ret.append(f'"F{self.pk}" [ label="{self.label()}" URL="{self.get_absolute_url()}" ')
         ret.append('shape="ellipse" fillcolor="#ffffe0" style="filled" ];')
         ret.append('}')
+        ret.append(f'subgraph cluster_F{self.pk}')
+        ret.append('{ style="invis";')
         if self.mari:
             ret.append(f'"I{self.mari.pk}" -> "F{self.pk}" [arrowhead=normal arrowtail=none dir=both ];')
         if self.femme:
             ret.append(f'"I{self.femme.pk}" -> "F{self.pk}" [arrowhead=normal arrowtail=none dir=both ];')
+        ret.append('}')
         return '\n'.join(ret)
 
-    def rank(self):
+    # def rank(self):
         # if Mariage.objects.filter(y__isnull=False, inst=self).exists():
             # return self.mariage.y
-        naissances = Naissance.objects.filter(y__isnull=False, inst__in=[self.mari, self.femme])
-        if naissances.exists():
-            return naissances.order_by('y').last().y + 15
+        # naissances = Naissance.objects.filter(y__isnull=False, inst__in=[self.mari, self.femme])
+        # if naissances.exists():
+            # return naissances.order_by('y').last().y + 15
 
 
 class Evenement(models.Model):

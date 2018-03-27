@@ -22,9 +22,6 @@ digraph
 
         {% for individu in individus %}
         {{ individu.node|safe }}
-        {% if individu.parents %}
-        "F{{ individu.parents.pk }}" -> "I{{ individu.pk }}" [ style=solid arrowhead=normal arrowtail=none dir=both ];
-        {% endif %}
         {% endfor %}
 
         {% for couple in couples %}

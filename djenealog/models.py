@@ -4,6 +4,7 @@ from enum import IntEnum
 
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 
 from ndh.utils import enum_to_choices
@@ -26,17 +27,31 @@ class Individu(models.Model, Links):
 
     def node(self):
         ret = ['{']
-        if Naissance.objects.filter(inst=self).exists() and self.naissance.y:
-            ret.append(f'rank=same; {self.naissance.y};')
+        rank = self.rank()
+        if rank:
+            ret.append(f'rank=same; {rank};')
         color = 'e0e0ff' if self.masculin else 'ffffe0'
         ret.append(f'"I{self.pk}" [ fillcolor="#{color}" label="{self.label()}" URL="{self.get_absolute_url()}"')
         ret.append('shape="box" style="solid,filled" ];')
         return '\n'.join(ret + ['}'])
 
+    def conjoints(self):
+        return Individu.objects.filter((Q(femme__mari=self) | Q(mari__femme=self)))
+
+    def rank(self):
+        if Naissance.objects.filter(y__isnull=False, inst=self).exists():
+            return self.naissance.y
+        conjoints = Naissance.objects.filter(y__isnull=False, inst__in=self.conjoints())
+        if conjoints.exists():
+            return conjoints.order_by('y').last().y
+        enfants = Naissance.objects.filter(Q(inst__parents__femme=self) | Q(inst__parents__mari=self), y__isnull=False)
+        if enfants.exists():
+            return enfants.order_by('y').first().y - 15
+
 
 class Couple(models.Model, Links):
-    mari = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='pere', blank=True, null=True)
-    femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mere', blank=True, null=True)
+    mari = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mari', blank=True, null=True)
+    femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='femme', blank=True, null=True)
 
     def __str__(self):
         mari, femme = self.mari or '', self.femme or ''
@@ -46,15 +61,25 @@ class Couple(models.Model, Links):
         return self.mariage if Mariage.objects.filter(inst=self).exists() else ''
 
     def node(self):
-        ret = [f'"F{self.pk}" [ label="{self.label()}" URL="{self.get_absolute_url()}" ']
+        ret = ['{']
+        rank = self.rank()
+        if rank:
+            ret.append(f'rank=same; {rank};')
+        ret.append(f'"F{self.pk}" [ label="{self.label()}" URL="{self.get_absolute_url()}" ')
         ret.append('shape="ellipse" fillcolor="#ffffe0" style="filled" ];')
-        ret.append(f'subgraph cluster_F{self.pk}')
-        ret.append('{ style="invis";')
+        ret.append('}')
         if self.mari:
             ret.append(f'"I{self.mari.pk}" -> "F{self.pk}" [arrowhead=normal arrowtail=none dir=both ];')
         if self.femme:
             ret.append(f'"I{self.femme.pk}" -> "F{self.pk}" [arrowhead=normal arrowtail=none dir=both ];')
-        return '\n'.join(ret + ['}'])
+        return '\n'.join(ret)
+
+    def rank(self):
+        # if Mariage.objects.filter(y__isnull=False, inst=self).exists():
+            # return self.mariage.y
+        naissances = Naissance.objects.filter(y__isnull=False, inst__in=[self.mari, self.femme])
+        if naissances.exists():
+            return naissances.order_by('y').last().y + 15
 
 
 class Evenement(models.Model):

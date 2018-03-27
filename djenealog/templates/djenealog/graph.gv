@@ -1,0 +1,34 @@
+digraph
+{
+    bgcolor=white;
+    center="true";
+    margin="1.0,1.0";
+    mclimit="99";
+    nodesep="0.40";
+    ranksep="0.01 equally";
+    searchsize="100";
+    splines="true";
+
+    {
+        node [shape=none, color=white, fillcolor=white, fontsize=20];
+        {% for year in years %}
+        {{ year }} -> {{ year|add:"1" }} [style=invis];
+        {% endfor %}
+    }
+
+    {
+        edge [len=0.5 style=solid fontsize=30];
+        node [style=filled fontsize=30];
+
+        {% for individu in individus %}
+        {{ individu.node|safe }}
+        {% if individu.parents %}
+        "F{{ individu.parents.pk }}" -> "I{{ individu.pk }}" [ style=solid arrowhead=normal arrowtail=none dir=both ];
+        {% endif %}
+        {% endfor %}
+
+        {% for couple in couples %}
+        {{ couple.node|safe }}
+        {% endfor %}
+    }
+}

@@ -8,7 +8,7 @@ from . import models
 class IndividuForm(ModelForm):
     class Meta:
         model = models.Individu
-        fields = ('nom', 'prenom', 'masculin', 'parents')
+        fields = ('prenom', 'nom', 'epouse', 'masculin', 'parents')
         widgets = {
             'parents': Select2Widget,
         }

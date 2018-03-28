@@ -46,9 +46,16 @@ class Individu(models.Model, Links):
         conjoints = Naissance.objects.filter(y__isnull=False, inst__in=self.conjoints())
         if conjoints.exists():
             return conjoints.order_by('y').last().y
+        siblings = Naissance.objects.filter(y__isnull=False, inst__parents=self.parents).order_by('y')
+        if self.parents and siblings.exists():
+            return (siblings.first().y + siblings.last().y) // 2
         enfants = Naissance.objects.filter(Q(inst__parents__femme=self) | Q(inst__parents__mari=self), y__isnull=False)
         if enfants.exists():
-            return enfants.order_by('y').first().y - 15
+            return enfants.order_by('y').first().y - 20
+        parents = Naissance.objects.filter(Q(inst__femme__enfants=self) | Q(inst__mari__enfants=self), y__isnull=False)
+        if parents.exists():
+            parents = parents.order_by('y')
+            return (parents.first().y + parents.last().y) // 2 + 20
 
 
 class Couple(models.Model, Links):
@@ -70,18 +77,18 @@ class Couple(models.Model, Links):
         ret.append(f'"F{self.pk}" [ label="{self.label()}" URL="{self.get_absolute_url()}" ')
         ret.append('shape="ellipse" fillcolor="#ffffe0" style="filled" ];')
         ret.append('}')
-        # ret.append(f'subgraph cluster_parents_F{self.pk}')
-        # ret.append('{ style="invis";')
+        ret.append(f'subgraph cluster_parents_F{self.pk}')
+        ret.append('{ style="invis";')
         if self.mari:
             ret.append(f'"I{self.mari.pk}" -> "F{self.pk}" [arrowhead=normal arrowtail=none dir=both ];')
         if self.femme:
             ret.append(f'"I{self.femme.pk}" -> "F{self.pk}" [arrowhead=normal arrowtail=none dir=both ];')
-        # ret.append('}')
-        # ret.append(f'subgraph cluster_enfants_F{self.pk}')
-        # ret.append('{ style="invis";')
+        ret.append('}')
+        ret.append(f'subgraph cluster_enfants_f{self.pk}')
+        ret.append('{ style="invis";')
         for enfant in self.enfants.all():
             ret.append(f'"F{self.pk}" -> "I{enfant.pk}" [ arrowhead=normal arrowtail=none dir=both ];')
-        # ret.append('}')
+        ret.append('}')
         return '\n'.join(ret)
 
     def rank(self):

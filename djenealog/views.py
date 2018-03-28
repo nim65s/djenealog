@@ -1,6 +1,7 @@
 from datetime import date
 from django.shortcuts import render
 from django.views.generic import UpdateView, CreateView, DeleteView
+from django.db.models import Count
 
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
@@ -14,6 +15,19 @@ def gv(request):
         'years': range(models.Naissance.objects.exclude(y=None).order_by('y').first().y, date.today().year + 1),
         'individus': models.Individu.objects.all(),
         'couples': models.Couple.objects.all(),
+    })
+
+def stats(request):
+    return render(request, 'djenealog/stats.html', {
+        'individus': models.Individu.objects.count(),
+        'couples': models.Couple.objects.count(),
+        'naissances': models.Naissance.objects.count(),
+        'baptemes': models.Bapteme.objects.count(),
+        'deces': models.Deces.objects.count(),
+        'mariages': models.Mariage.objects.count(),
+        'pacs': models.Pacs.objects.count(),
+        'noms': models.Individu.objects.all().values('nom').annotate(total=Count('nom')).order_by('-total'),
+        'prenoms': models.Individu.objects.all().values('prenom').annotate(total=Count('prenom')).order_by('-total'),
     })
 
 

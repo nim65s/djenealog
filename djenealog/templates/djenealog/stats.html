@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<dl>
+  <dt>Individus</dt><dd>{{ individus }}</dd>
+  <dt>Couples</dt><dd>{{ couples }}</dd>
+  <dt>Naissance</dt><dd>{{ naissances }}</dd>
+  <dt>Bapteme</dt><dd>{{ baptemes }}</dd>
+  <dt>Deces</dt><dd>{{ deces }}</dd>
+  <dt>Mariage</dt><dd>{{ mariages }}</dd>
+  <dt>Pacs</dt><dd>{{ pacs }}</dd>
+</dl>
+
+<table>
+  <tr><th>Nom</th><th>Individus</th></tr>
+  {% for stat in noms %}
+  <tr><td>{{ stat.nom }}</td><td>{{ stat.total }}</td></tr>
+  {% endfor %}
+  <tr><th>Prénom</th><th>Individus</th></tr>
+  {% for stat in prenoms %}
+  <tr><td>{{ stat.prenom }}</td><td>{{ stat.total }}</td></tr>
+  {% endfor %}
+</table>
+
+
+{% endblock %}

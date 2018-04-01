@@ -4,6 +4,8 @@
 
 <dl>
   <dt>Individus</dt><dd>{{ individus }}</dd>
+  <dt>Hommes</dt><dd>{{ hommes }}</dd>
+  <dt>Femmes</dt><dd>{{ femmes }}</dd>
   <dt>Couples</dt><dd>{{ couples }}</dd>
   <dt>Naissance</dt><dd>{{ naissances }}</dd>
   <dt>Bapteme</dt><dd>{{ baptemes }}</dd>
@@ -13,13 +15,13 @@
 </dl>
 
 <table>
-  <tr><th>Nom</th><th>Individus</th></tr>
-  {% for stat in noms %}
-  <tr><td>{{ stat.nom }}</td><td>{{ stat.total }}</td></tr>
+  <tr><th>Nom</th><th>Naissance</th><th>Épouse</th><th>Total</th></tr>
+  {% for sum, noms, epouses, nom in noms %}
+  <tr><td>{{ nom }}</td><td>{{ noms }}</td><td>{{ epouses }}</td><td>{{ sum }}</td></tr>
   {% endfor %}
-  <tr><th>Prénom</th><th>Individus</th></tr>
-  {% for stat in prenoms %}
-  <tr><td>{{ stat.prenom }}</td><td>{{ stat.total }}</td></tr>
+  <tr><th>Prénom</th><th>Naissance</th><th>Usage</th><th>Total</th></tr>
+  {% for sum, prenoms, usages, prenom in prenoms %}
+  <tr><td>{{ prenom }}</td><td>{{ prenoms }}</td><td>{{ usages }}</td><td>{{ sum }}</td></tr>
   {% endfor %}
 </table>
 

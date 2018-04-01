@@ -18,6 +18,17 @@ def gv(request):
     })
 
 def stats(request):
+    prenom, usage, nom, epouse = [
+        {
+            row[field]: row['total']
+            for row in models.Individu.objects.all().values(field).annotate(total=Count(field)) if row[field] != ''
+        }
+        for field in ('prenom', 'usage', 'nom', 'epouse')
+    ]
+    noms, prenoms = set(list(nom.keys()) + list(epouse.keys())), set(list(prenom.keys()) + list(usage.keys()))
+    noms = [(nom.get(n, 0) + epouse.get(n, 0), nom.get(n, 0), epouse.get(n, 0), n) for n in noms if n != '']
+    prenoms = [(prenom.get(n, 0) + usage.get(n, 0), prenom.get(n, 0), usage.get(n, 0), n) for n in prenoms if n != '']
+
     return render(request, 'djenealog/stats.html', {
         'individus': models.Individu.objects.count(),
         'couples': models.Couple.objects.count(),
@@ -26,8 +37,10 @@ def stats(request):
         'deces': models.Deces.objects.count(),
         'mariages': models.Mariage.objects.count(),
         'pacs': models.Pacs.objects.count(),
-        'noms': models.Individu.objects.all().values('nom').annotate(total=Count('nom')).order_by('-total'),
-        'prenoms': models.Individu.objects.all().values('prenom').annotate(total=Count('prenom')).order_by('-total'),
+        'noms': sorted(noms, reverse=True),
+        'prenoms': sorted(prenoms, reverse=True),
+        'hommes': models.Individu.objects.filter(masculin=True).count(),
+        'femmes': models.Individu.objects.filter(masculin=False).count(),
     })
 
 

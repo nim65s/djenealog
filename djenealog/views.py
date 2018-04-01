@@ -1,12 +1,13 @@
 from datetime import date
-from django.shortcuts import render
-from django.views.generic import UpdateView, CreateView, DeleteView
+
 from django.db.models import Count
+from django.shortcuts import render
+from django.views.generic import CreateView, DeleteView, UpdateView
 
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 
-from . import models, tables, filters, forms
+from . import filters, forms, models, tables
 
 
 def gv(request):
@@ -16,6 +17,7 @@ def gv(request):
         'individus': models.Individu.objects.all(),
         'couples': models.Couple.objects.all(),
     })
+
 
 def stats(request):
     prenom, usage, nom, epouse = [

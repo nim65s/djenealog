@@ -1,5 +1,5 @@
-import os
 import locale
+import os
 
 PROJECT = 'djenealog'
 PROJECT_VERBOSE = PROJECT.capitalize()

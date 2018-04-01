@@ -1,13 +1,12 @@
 import argparse
+import csv
 import logging
 import re
-import csv
 from enum import IntEnum
 
 from django.core.management.base import BaseCommand
 
 from djenealog import models
-
 
 STATES = IntEnum('States', 'lieu individu couple famille')
 mapping = {state: {} for state in STATES}
@@ -77,6 +76,6 @@ class Command(BaseCommand):
                     get_or_create_event(models.Mariage, inst, read[3], read[4])
 
             else:
-                 enfant = models.Individu.objects.get(pk=mapping[STATES.individu][read[1]])
-                 enfant.parents = models.Couple.objects.get(pk=mapping[STATES.couple][gramps])
-                 enfant.save()
+                enfant = models.Individu.objects.get(pk=mapping[STATES.individu][read[1]])
+                enfant.parents = models.Couple.objects.get(pk=mapping[STATES.couple][gramps])
+                enfant.save()

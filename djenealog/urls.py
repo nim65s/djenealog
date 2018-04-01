@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views, models
+from . import models, views
 
 app_name = 'djenealog'
 urlpatterns = [

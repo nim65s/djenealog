@@ -14,6 +14,7 @@
   <dt>Pacs</dt><dd>{{ pacs }}</dd>
 </dl>
 
+{% if request.user.is_authenticated %}
 <table>
   <tr><th>Nom</th><th>Naissance</th><th>Épouse</th><th>Total</th></tr>
   {% for sum, noms, epouses, nom in noms %}
@@ -24,6 +25,6 @@
   <tr><td>{{ prenom }}</td><td>{{ prenoms }}</td><td>{{ usages }}</td><td>{{ sum }}</td></tr>
   {% endfor %}
 </table>
-
+{% endif %}
 
 {% endblock %}

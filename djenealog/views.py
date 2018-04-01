@@ -1,15 +1,19 @@
 from datetime import date
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, UpdateView
 
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
+from ndh.mixins import SuperUserRequiredMixin
 
 from . import filters, forms, models, tables
 
 
+@login_required
 def gv(request):
     fmt = request.GET.get('fmt', 'html')
     return render(request, f'djenealog/graph.{fmt}', {
@@ -46,39 +50,39 @@ def stats(request):
     })
 
 
-class IndividusView(SingleTableMixin, FilterView):
+class IndividusView(SuperUserRequiredMixin, SingleTableMixin, FilterView):
     model = models.Individu
     table_class = tables.IndividuTable
     filterset_class = filters.IndividuFilter
 
 
-class CouplesView(SingleTableMixin, FilterView):
+class CouplesView(SuperUserRequiredMixin, SingleTableMixin, FilterView):
     model = models.Couple
     table_class = tables.CoupleTable
     filterset_class = filters.CoupleFilter
 
 
-class IndividuView(UpdateView):
+class IndividuView(SuperUserRequiredMixin, UpdateView):
     model = models.Individu
     form_class = forms.IndividuForm
 
 
-class CoupleView(UpdateView):
+class CoupleView(SuperUserRequiredMixin, UpdateView):
     model = models.Couple
     form_class = forms.CoupleForm
 
 
-class IndividuCreateView(CreateView):
+class IndividuCreateView(SuperUserRequiredMixin, CreateView):
     model = models.Individu
     form_class = forms.IndividuForm
 
 
-class CoupleCreateView(CreateView):
+class CoupleCreateView(SuperUserRequiredMixin, CreateView):
     model = models.Couple
     form_class = forms.CoupleForm
 
 
-class EvenementMixin(object):
+class EvenementMixin(SuperUserRequiredMixin):
     fields = ('d', 'm', 'y', 'lieu')
 
     def get_success_url(self):
@@ -95,7 +99,7 @@ class EvenementCreateView(EvenementMixin, CreateView):
         return super().form_valid(form)
 
 
-class ModelDeleteView(DeleteView):
+class ModelDeleteView(SuperUserRequiredMixin, DeleteView):
     template_name = 'djenealog/confirm_delete.html'
     success_url = '/'
 

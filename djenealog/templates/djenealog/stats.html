@@ -2,20 +2,21 @@
 
 {% block content %}
 
-<dl>
-  <dt>Individus</dt><dd>{{ individus }}</dd>
-  <dt>Hommes</dt><dd>{{ hommes }}</dd>
-  <dt>Femmes</dt><dd>{{ femmes }}</dd>
-  <dt>Couples</dt><dd>{{ couples }}</dd>
-  <dt>Naissance</dt><dd>{{ naissances }}</dd>
-  <dt>Bapteme</dt><dd>{{ baptemes }}</dd>
-  <dt>Deces</dt><dd>{{ deces }}</dd>
-  <dt>Mariage</dt><dd>{{ mariages }}</dd>
-  <dt>Pacs</dt><dd>{{ pacs }}</dd>
+<dl class="row">
+  <dt class="col-sm-3">Individus</dt><dd class="col-sm-9">{{ individus }}</dd>
+  <dt class="col-sm-3">Hommes</dt><dd class="col-sm-9">{{ hommes }}</dd>
+  <dt class="col-sm-3">Femmes</dt><dd class="col-sm-9">{{ femmes }}</dd>
+  <dt class="col-sm-3">Couples</dt><dd class="col-sm-9">{{ couples }}</dd>
+  <dt class="col-sm-3">Naissance</dt><dd class="col-sm-9">{{ naissances }}</dd>
+  <dt class="col-sm-3">Baptême</dt><dd class="col-sm-9">{{ baptemes }}</dd>
+  <dt class="col-sm-3">Déces</dt><dd class="col-sm-9">{{ deces }}</dd>
+  <dt class="col-sm-3">Mariage</dt><dd class="col-sm-9">{{ mariages }}</dd>
+  <dt class="col-sm-3">Pacs</dt><dd class="col-sm-9">{{ pacs }}</dd>
+  <dt class="col-sm-3">Divorce</dt><dd class="col-sm-9">{{ divorces }}</dd>
 </dl>
 
 {% if request.user.is_authenticated %}
-<table>
+<table class="table">
   <tr><th>Nom</th><th>Naissance</th><th>Épouse</th><th>Total</th></tr>
   {% for sum, noms, epouses, nom in noms %}
   <tr><td>{{ nom }}</td><td>{{ noms }}</td><td>{{ epouses }}</td><td>{{ sum }}</td></tr>

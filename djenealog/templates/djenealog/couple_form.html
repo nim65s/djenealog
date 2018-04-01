@@ -25,6 +25,16 @@ Mariage: {{ couple.mariage }}
 
 <br>
 
+{% if couple.divorce %}
+Divorce: {{ couple.divorce }}
+<a href="{% url 'djenealog:divorce' pk=couple.divorce.pk %}">edit</a>
+<a href="{% url 'djenealog:del-divorce' pk=couple.divorce.pk %}">delete</a>
+{% else %}
+<a href="{% url 'djenealog:add-divorce' pk=couple.pk %}">Ajouter un Divorce</a>
+{% endif %}
+
+<br>
+
 <a href="{% url 'djenealog:del-couple' pk=couple.pk %}">delete</a>
 
 {% endif %}

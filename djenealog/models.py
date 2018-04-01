@@ -142,3 +142,7 @@ class Pacs(Evenement):
 
 class Mariage(Evenement):
     inst = models.OneToOneField(Couple, on_delete=models.PROTECT)
+
+
+class Divorce(Evenement):
+    inst = models.OneToOneField(Couple, on_delete=models.PROTECT)

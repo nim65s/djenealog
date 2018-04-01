@@ -1,7 +1,6 @@
 from datetime import date
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, UpdateView
@@ -42,6 +41,7 @@ def stats(request):
         'baptemes': models.Bapteme.objects.count(),
         'deces': models.Deces.objects.count(),
         'mariages': models.Mariage.objects.count(),
+        'divorces': models.Divorce.objects.count(),
         'pacs': models.Pacs.objects.count(),
         'noms': sorted(noms, reverse=True),
         'prenoms': sorted(prenoms, reverse=True),

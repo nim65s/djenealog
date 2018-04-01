@@ -64,7 +64,7 @@ class CoupleCreateView(CreateView):
 
 
 class EvenementMixin(object):
-    fields = ('lieu', 'y', 'm', 'd')
+    fields = ('d', 'm', 'y', 'lieu')
 
     def get_success_url(self):
         return self.object.inst.get_absolute_url()

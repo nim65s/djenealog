@@ -13,14 +13,16 @@ from ndh.models import Links
 
 class Individu(models.Model, Links):
     nom = models.CharField(max_length=50, blank=True)
-    prenom = models.CharField('prénom', max_length=50, blank=True)
-    epouse = models.CharField('épouse', max_length=50, blank=True)
+    prenom = models.CharField('Prénom', max_length=50, blank=True)
+    usage = models.CharField('Prénom d’usage', max_length=50, blank=True)
+    epouse = models.CharField('Nom d’épouse ou d’usage', max_length=50, blank=True)
     masculin = models.NullBooleanField()
     parents = models.ForeignKey('Couple', on_delete=models.PROTECT, blank=True, null=True, related_name='enfants')
 
     def __str__(self):
-        sep = ' / ' if self.nom and self.epouse else ' '
-        return f'{self.prenom} {self.nom}{sep}{self.epouse}'
+        psep = ' / ' if self.prenom and self.usage else ' '
+        nsep = ' / ' if self.nom and self.epouse else ' '
+        return f'{self.prenom}{psep}{self.usage} {self.nom}{nsep}{self.epouse}'.strip()
 
     def label(self):
         naissance = self.naissance if Naissance.objects.filter(inst=self).exists() else ''

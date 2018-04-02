@@ -14,6 +14,7 @@ class Individu(models.Model, Links):
     epouse = models.CharField('Nom d’épouse ou d’usage', max_length=50, blank=True)
     masculin = models.NullBooleanField()
     parents = models.ForeignKey('Couple', on_delete=models.PROTECT, blank=True, null=True, related_name='enfants')
+    wikidata = models.PositiveIntegerField(blank=True, null=True)
 
     def __str__(self):
         psep = ' / ' if self.prenom and self.usage else ' '
@@ -23,7 +24,7 @@ class Individu(models.Model, Links):
     def label(self):
         naissance = self.naissance if Naissance.objects.filter(inst=self).exists() else ''
         deces = self.deces if Deces.objects.filter(inst=self).exists() else ''
-        return f'{self}\n{naissance}\n{deces}\n'
+        return f'{self}\n{naissance}\n{deces}\n{self.wikidata}'
 
     def node(self):
         ret = ['{']

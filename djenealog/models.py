@@ -24,7 +24,7 @@ class Individu(models.Model, Links):
     def label(self):
         naissance = self.naissance if Naissance.objects.filter(inst=self).exists() else ''
         deces = self.deces if Deces.objects.filter(inst=self).exists() else ''
-        return f'{self}\n{naissance}\n{deces}\n{self.wikidata}'
+        return f'{self}\n{naissance}\n{deces}\n'.replace('  ', ' ')
 
     def node(self):
         ret = ['{']
@@ -132,9 +132,7 @@ class Deces(Evenement):
 
     def __str__(self):
         ret = super().__str__()
-        if ret.strip():
-            return ret
-        return '✝'
+        return f'✝ {ret}'.strip()
 
 
 class Pacs(Evenement):

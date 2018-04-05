@@ -34,6 +34,10 @@ def stats(request):
     noms = [(nom.get(n, 0) + epouse.get(n, 0), nom.get(n, 0), epouse.get(n, 0), n) for n in noms if n != '']
     prenoms = [(prenom.get(n, 0) + usage.get(n, 0), prenom.get(n, 0), usage.get(n, 0), n) for n in prenoms if n != '']
 
+    centenaires = models.Individu.objects.filter(deces__isnull=True, naissance__y__lt=date.today().year - 100)
+    maris_pas_masculins = models.Couple.objects.exclude(mari__masculin=True).exclude(mari__isnull=True)
+    femmes_pas_feminines = models.Couple.objects.exclude(femme__masculin=False).exclude(femme__isnull=True)
+
     return render(request, 'djenealog/stats.html', {
         'individus': models.Individu.objects.count(),
         'couples': models.Couple.objects.count(),
@@ -47,6 +51,9 @@ def stats(request):
         'prenoms': sorted(prenoms, reverse=True),
         'hommes': models.Individu.objects.filter(masculin=True).count(),
         'femmes': models.Individu.objects.filter(masculin=False).count(),
+        'centenaires': centenaires.count(),
+        'maris_pas_masculins': maris_pas_masculins.count(),
+        'femmes_pas_feminines': femmes_pas_feminines.count(),
     })
 
 

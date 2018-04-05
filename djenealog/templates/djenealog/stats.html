@@ -2,18 +2,31 @@
 
 {% block content %}
 
-<dl class="row">
-  <dt class="col-sm-3">Individus</dt><dd class="col-sm-9">{{ individus }}</dd>
-  <dt class="col-sm-3">Hommes</dt><dd class="col-sm-9">{{ hommes }}</dd>
-  <dt class="col-sm-3">Femmes</dt><dd class="col-sm-9">{{ femmes }}</dd>
-  <dt class="col-sm-3">Couples</dt><dd class="col-sm-9">{{ couples }}</dd>
-  <dt class="col-sm-3">Naissance</dt><dd class="col-sm-9">{{ naissances }}</dd>
-  <dt class="col-sm-3">Baptême</dt><dd class="col-sm-9">{{ baptemes }}</dd>
-  <dt class="col-sm-3">Déces</dt><dd class="col-sm-9">{{ deces }}</dd>
-  <dt class="col-sm-3">Mariage</dt><dd class="col-sm-9">{{ mariages }}</dd>
-  <dt class="col-sm-3">Pacs</dt><dd class="col-sm-9">{{ pacs }}</dd>
-  <dt class="col-sm-3">Divorce</dt><dd class="col-sm-9">{{ divorces }}</dd>
-</dl>
+<div class="row">
+  <div class="col-sm-6">
+    <h3>Statistiques</h3>
+    <dl class="row">
+      <dt class="col-sm-5">Individus</dt><dd class="col-sm-7">{{ individus }}</dd>
+      <dt class="col-sm-5">Hommes</dt><dd class="col-sm-7">{{ hommes }}</dd>
+      <dt class="col-sm-5">Femmes</dt><dd class="col-sm-7">{{ femmes }}</dd>
+      <dt class="col-sm-5">Couples</dt><dd class="col-sm-7">{{ couples }}</dd>
+      <dt class="col-sm-5">Naissance</dt><dd class="col-sm-7">{{ naissances }}</dd>
+      <dt class="col-sm-5">Baptême</dt><dd class="col-sm-7">{{ baptemes }}</dd>
+      <dt class="col-sm-5">Déces</dt><dd class="col-sm-7">{{ deces }}</dd>
+      <dt class="col-sm-5">Mariage</dt><dd class="col-sm-7">{{ mariages }}</dd>
+      <dt class="col-sm-5">Pacs</dt><dd class="col-sm-7">{{ pacs }}</dd>
+      <dt class="col-sm-5">Divorce</dt><dd class="col-sm-7">{{ divorces }}</dd>
+    </dl>
+  </div>
+  <div class="col-sm-6">
+    <h3>Détection d’erreurs potentielles</h3>
+    <dl class="row">
+      <dt class="col-sm-5">Centenaires</dt><dd class="col-sm-7">{{ centenaires }}</dd>
+      <dt class="col-sm-5">Maris pas masculins</dt><dd class="col-sm-7">{{ maris_pas_masculins }}</dd>
+      <dt class="col-sm-5">Femmes pas feminines</dt><dd class="col-sm-7">{{ femmes_pas_feminines }}</dd>
+    </dl>
+  </div>
+</div>
 
 {% if request.user.is_authenticated %}
 <table class="table">

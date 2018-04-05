@@ -101,6 +101,8 @@ class EvenementUpdateView(EvenementMixin, UpdateView):
 
 
 class EvenementCreateView(EvenementMixin, CreateView):
+    template_name = 'djenealog/evenement_form.html'
+
     def form_valid(self, form):
         form.instance.inst_id = self.kwargs.get(self.pk_url_kwarg)
         return super().form_valid(form)

@@ -37,6 +37,7 @@ def stats(request):
     centenaires = models.Individu.objects.filter(deces__isnull=True, naissance__y__lt=date.today().year - 100)
     maris_pas_masculins = models.Couple.objects.exclude(mari__masculin=True).exclude(mari__isnull=True)
     femmes_pas_feminines = models.Couple.objects.exclude(femme__masculin=False).exclude(femme__isnull=True)
+    divorces_sans_mariages = models.Couple.objects.filter(divorce__isnull=False, mariage__isnull=True)
 
     return render(request, 'djenealog/stats.html', {
         'individus': models.Individu.objects.count(),
@@ -54,6 +55,7 @@ def stats(request):
         'centenaires': centenaires.count(),
         'maris_pas_masculins': maris_pas_masculins.count(),
         'femmes_pas_feminines': femmes_pas_feminines.count(),
+        'divorces_sans_mariages': divorces_sans_mariages.count(),
     })
 
 

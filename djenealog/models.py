@@ -35,7 +35,7 @@ class Individu(models.Model, Links):
         if rank:
             ret.append(f'rank=same; {rank};')
         ret.append(f'"I{self.pk}" [fillcolor="#{self.color()}" label="{self.label()}" URL="{self.get_absolute_url()}"')
-        ret.append('shape="box" style="solid,filled"];')
+        ret.append('shape="box"];')
         return '\n'.join(ret + ['}'])
 
     def conjoints(self):
@@ -90,20 +90,20 @@ class Couple(models.Model, Links):
         rank = self.rank()
         if rank:
             ret.append(f'rank=same; {rank};')
-        ret.append(f'"F{self.pk}" [ label="{self.label()}" URL="{self.get_absolute_url()}" ')
-        ret.append(f'shape="ellipse" fillcolor="#{self.color()}" style="filled" ];')
+        ret.append(f'"F{self.pk}" [label="{self.label()}" URL="{self.get_absolute_url()}" ')
+        ret.append(f'shape="ellipse" fillcolor="#{self.color()}"];')
         ret.append('}')
         ret.append(f'subgraph cluster_parents_F{self.pk}')
         ret.append('{ style="invis";')
         if self.mari:
-            ret.append(f'"I{self.mari.pk}" -> "F{self.pk}" [arrowhead=normal arrowtail=none dir=both ];')
+            ret.append(f'"I{self.mari.pk}" -> "F{self.pk}" ;')
         if self.femme:
-            ret.append(f'"I{self.femme.pk}" -> "F{self.pk}" [arrowhead=normal arrowtail=none dir=both ];')
+            ret.append(f'"I{self.femme.pk}" -> "F{self.pk}" ;')
         ret.append('}')
         ret.append(f'subgraph cluster_enfants_f{self.pk}')
         ret.append('{ style="invis";')
         for enfant in self.enfants.all():
-            ret.append(f'"F{self.pk}" -> "I{enfant.pk}" [ arrowhead=normal arrowtail=none dir=both ];')
+            ret.append(f'"F{self.pk}" -> "I{enfant.pk}" ;')
         ret.append('}')
         return '\n'.join(ret)
 

@@ -6,7 +6,7 @@ digraph
     mclimit="99";
     nodesep="0.40";
     ranksep="0.01 equally";
-    searchsize="100";
+    searchsize="1000";
     splines="true";
 
     {
@@ -17,8 +17,8 @@ digraph
     }
 
     {
-        edge [len=0.5 style=solid fontsize=30];
-        node [style=filled fontsize=30];
+        edge [fontsize=30 style="solid" arrowhead=normal arrowtail=none dir=both];
+        node [fontsize=30 style="solid,filled"];
 
         {% for individu in individus %}
         {{ individu.node|safe }}

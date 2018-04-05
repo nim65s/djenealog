@@ -26,14 +26,16 @@ class Individu(models.Model, Links):
         deces = self.deces if Deces.objects.filter(inst=self).exists() else ''
         return f'{self}\n{naissance}\n{deces}\n'.replace('  ', ' ')
 
+    def color(self):
+        return 'e0e0ff' if self.masculin else 'ffffe0'
+
     def node(self):
         ret = ['{']
         rank = self.rank()
         if rank:
             ret.append(f'rank=same; {rank};')
-        color = 'e0e0ff' if self.masculin else 'ffffe0'
-        ret.append(f'"I{self.pk}" [ fillcolor="#{color}" label="{self.label()}" URL="{self.get_absolute_url()}"')
-        ret.append('shape="box" style="solid,filled" ];')
+        ret.append(f'"I{self.pk}" [fillcolor="#{self.color()}" label="{self.label()}" URL="{self.get_absolute_url()}"')
+        ret.append('shape="box" style="solid,filled"];')
         return '\n'.join(ret + ['}'])
 
     def conjoints(self):
@@ -66,7 +68,22 @@ class Couple(models.Model, Links):
         return f'{femme} & {mari}'
 
     def label(self):
-        return self.mariage if Mariage.objects.filter(inst=self).exists() else ''
+        if Divorce.objects.filter(inst=self).exists():
+            return str(self.divorce)
+        if Mariage.objects.filter(inst=self).exists():
+            return str(self.mariage)
+        if Pacs.objects.filter(inst=self).exists():
+            return str(self.pacs)
+        return ''
+
+    def color(self):
+        if Divorce.objects.filter(inst=self).exists():
+            return 'ffe0e0'
+        if Mariage.objects.filter(inst=self).exists():
+            return 'e0ffe0'
+        if Pacs.objects.filter(inst=self).exists():
+            return 'ffe0ff'
+        return 'e0ffff'
 
     def node(self):
         ret = ['{']
@@ -74,14 +91,7 @@ class Couple(models.Model, Links):
         if rank:
             ret.append(f'rank=same; {rank};')
         ret.append(f'"F{self.pk}" [ label="{self.label()}" URL="{self.get_absolute_url()}" ')
-        color = 'e0ffff'
-        if Divorce.objects.filter(inst=self).exists():
-            color = 'ffe0e0'
-        elif Mariage.objects.filter(inst=self).exists():
-            color = 'e0ffe0'
-        elif Pacs.objects.filter(inst=self).exists():
-            color = 'ffe0ff'
-        ret.append(f'shape="ellipse" fillcolor="#{color}" style="filled" ];')
+        ret.append(f'shape="ellipse" fillcolor="#{self.color()}" style="filled" ];')
         ret.append('}')
         ret.append(f'subgraph cluster_parents_F{self.pk}')
         ret.append('{ style="invis";')

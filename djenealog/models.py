@@ -74,7 +74,14 @@ class Couple(models.Model, Links):
         if rank:
             ret.append(f'rank=same; {rank};')
         ret.append(f'"F{self.pk}" [ label="{self.label()}" URL="{self.get_absolute_url()}" ')
-        ret.append('shape="ellipse" fillcolor="#ffffe0" style="filled" ];')
+        color = 'e0ffff'
+        if Divorce.objects.filter(inst=self).exists():
+            color = 'ffe0e0'
+        elif Mariage.objects.filter(inst=self).exists():
+            color = 'e0ffe0'
+        elif Pacs.objects.filter(inst=self).exists():
+            color = 'ffe0ff'
+        ret.append(f'shape="ellipse" fillcolor="#{color}" style="filled" ];')
         ret.append('}')
         ret.append(f'subgraph cluster_parents_F{self.pk}')
         ret.append('{ style="invis";')

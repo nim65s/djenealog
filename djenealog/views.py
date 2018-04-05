@@ -43,7 +43,6 @@ def stats(request):
         'individus': models.Individu.objects.count(),
         'couples': models.Couple.objects.count(),
         'naissances': models.Naissance.objects.count(),
-        'baptemes': models.Bapteme.objects.count(),
         'deces': models.Deces.objects.count(),
         'mariages': models.Mariage.objects.count(),
         'divorces': models.Divorce.objects.count(),

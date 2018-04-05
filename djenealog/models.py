@@ -123,13 +123,6 @@ class Naissance(Evenement):
     inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
 
 
-class Bapteme(Evenement):
-    inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
-
-    class Meta:
-        verbose_name = 'baptême'
-
-
 class Deces(Evenement):
     inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
 

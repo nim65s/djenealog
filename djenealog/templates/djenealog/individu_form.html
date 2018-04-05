@@ -15,16 +15,6 @@ Naissance: {{ individu.naissance }}
 
 <br>
 
-{% if individu.bapteme %}
-Baptême: {{ individu.bapteme }}
-<a href="{% url 'djenealog:bapteme' pk=individu.bapteme.pk %}">edit</a>
-<a href="{% url 'djenealog:del-bapteme' pk=individu.bapteme.pk %}">delete</a>
-{% else %}
-<a href="{% url 'djenealog:add-bapteme' pk=individu.pk %}">Ajouter un baptême</a>
-{% endif %}
-
-<br>
-
 {% if individu.deces %}
 Décès: {{ individu.deces }}
 <a href="{% url 'djenealog:deces' pk=individu.deces.pk %}">edit</a>

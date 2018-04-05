@@ -126,9 +126,16 @@ class Naissance(Evenement):
 class Bapteme(Evenement):
     inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
 
+    class Meta:
+        verbose_name = 'baptême'
+
 
 class Deces(Evenement):
     inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
+
+    class Meta:
+        verbose_name = 'décès'
+        verbose_name_plural = 'décès'
 
     def __str__(self):
         ret = super().__str__()
@@ -137,6 +144,9 @@ class Deces(Evenement):
 
 class Pacs(Evenement):
     inst = models.OneToOneField(Couple, on_delete=models.PROTECT)
+
+    class Meta:
+        verbose_name_plural = 'pacs'
 
 
 class Mariage(Evenement):

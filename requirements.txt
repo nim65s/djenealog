@@ -12,4 +12,4 @@ django-select2==6.0.2
 django-tables2==1.21.2
 django==2.0.4             # via django-tables2, ndh
 ndh==3.5.1
-pytz==2018.3              # via django
+pytz==2018.4              # via django

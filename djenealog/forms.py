@@ -17,7 +17,7 @@ class IndividuForm(ModelForm):
 class CoupleForm(ModelForm):
     class Meta:
         model = models.Couple
-        fields = ('mari', 'femme')
+        fields = ('mari', 'femme', 'debut', 'fin')
         widgets = {
             'mari': Select2Widget,
             'femme': Select2Widget,

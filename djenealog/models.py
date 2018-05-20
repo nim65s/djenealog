@@ -1,4 +1,5 @@
 import calendar
+from datetime import date
 
 from django.db import models
 from django.db.models import Q
@@ -58,10 +59,25 @@ class Individu(models.Model, Links):
             parents = parents.order_by('y')
             return (parents.first().y + parents.last().y) // 2 + 20
 
+    def start(self):
+        if Naissance.objects.filter(y__isnull=False, inst=self).exists():
+            return self.naissance.date()
+        if self.parents and self.parents.debut:
+            return self.parents.debut
+        if Mariage.objects.filter(y__isnull=False, inst__enfants=self).exists():
+            return self.parents.mariage.date()
+        siblings = Naissance.objects.filter(y__isnull=False, inst__parents=self.parents)
+        if siblings.exists():
+            return date.fromtimestamp(sum([time.mktime(q.date().timetuple()) for q in qs]) / qs.count())
+        # spouses = Naissance.objects.filter(y__isnull=False, inst__
+
+
 
 class Couple(models.Model, Links):
     mari = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mari', blank=True, null=True)
     femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='femme', blank=True, null=True)
+    debut = models.DateField(blank=True, null=True)
+    fin = models.DateField(blank=True, null=True)
 
     def __str__(self):
         mari, femme = self.mari or '', self.femme or ''
@@ -134,6 +150,10 @@ class Evenement(models.Model):
     def get_absolute_url(self):
         app, model = self._meta.app_label, self._meta.model_name
         return reverse(f'{app}:{model}', kwargs={'pk': self.inst.pk})
+
+    def date(self):
+        if self.y:
+            return date(self.y, self.m or 1, self.d or 1)
 
 
 class Naissance(Evenement):

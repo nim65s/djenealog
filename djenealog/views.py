@@ -12,7 +12,7 @@ from ndh.mixins import SuperUserRequiredMixin
 from . import filters, forms, models, tables
 
 
-@login_required
+# @login_required
 def gv(request):
     fmt = request.GET.get('fmt', 'html')
     return render(request, f'djenealog/graph.{fmt}', {
@@ -38,6 +38,7 @@ def stats(request):
     maris_pas_masculins = models.Couple.objects.exclude(mari__masculin=True).exclude(mari__isnull=True)
     femmes_pas_feminines = models.Couple.objects.exclude(femme__masculin=False).exclude(femme__isnull=True)
     divorces_sans_mariages = models.Couple.objects.filter(divorce__isnull=False, mariage__isnull=True)
+    assexues = models.Individu.objects.filter(masculin=None)
 
     return render(request, 'djenealog/stats.html', {
         'individus': models.Individu.objects.count(),
@@ -55,6 +56,7 @@ def stats(request):
         'maris_pas_masculins': maris_pas_masculins.count(),
         'femmes_pas_feminines': femmes_pas_feminines.count(),
         'divorces_sans_mariages': divorces_sans_mariages.count(),
+        'assexues': assexues.count(),
     })
 
 
@@ -92,6 +94,7 @@ class CoupleCreateView(SuperUserRequiredMixin, CreateView):
 
 class EvenementMixin(SuperUserRequiredMixin):
     fields = ('d', 'm', 'y', 'lieu')
+    template_name = 'djenealog/evenement_form.html'
 
     def get_success_url(self):
         return self.object.inst.get_absolute_url()
@@ -102,8 +105,6 @@ class EvenementUpdateView(EvenementMixin, UpdateView):
 
 
 class EvenementCreateView(EvenementMixin, CreateView):
-    template_name = 'djenealog/evenement_form.html'
-
     def form_valid(self, form):
         form.instance.inst_id = self.kwargs.get(self.pk_url_kwarg)
         return super().form_valid(form)

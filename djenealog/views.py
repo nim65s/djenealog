@@ -22,10 +22,22 @@ def timenets(request):
 # @login_required
 def gv(request):
     fmt = request.GET.get('fmt', 'html')
+    individus = models.Individu.objects.all()
+    couples = models.Couple.objects.all()
+    if 'famille' in request.GET:
+        nom = request.GET['famille'].lower()
+        individus = individus.filter(
+            Q(nom__icontains=nom) |
+            Q(femme__mari__nom__icontains=nom) |
+            Q(mari__femme__nom__icontains=nom) |
+            Q(parents__mari__nom__icontains=nom) |
+            Q(parents__femme__nom__icontains=nom))
+        couples = couples.filter(
+            Q(mari__nom__icontains=nom) |
+            Q(femme__nom__icontains=nom))
     return render(request, f'djenealog/graph.{fmt}', {
         'years': range(models.Naissance.objects.exclude(y=None).order_by('y').first().y, date.today().year + 1),
-        'individus': models.Individu.objects.all(),
-        'couples': models.Couple.objects.all(),
+        'individus': individus, 'couples': couples
     })
 
 

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<dl class="row">
+  <dt class="col-sm-6">Couple</dt><dd class="col-sm-6">{{ couple }}</dd>
+  <dt class="col-sm-6">Couple start </dt><dd class="col-sm-6">{{ couple.start }}</dd>
+  <dt class="col-sm-6">Couple end </dt><dd class="col-sm-6">{{ couple.end }}</dd>
+  {% for individu in individus %}
+  <dt class="col-sm-6">individu</dt><dd class="col-sm-6">{{ individu }}</dd>
+  <dt class="col-sm-6">individu start </dt><dd class="col-sm-6">{{ individu.start }}</dd>
+  <dt class="col-sm-6">individu end </dt><dd class="col-sm-6">{{ individu.end }}</dd>
+  {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

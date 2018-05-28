@@ -1,11 +1,14 @@
 import calendar
-from datetime import date
+from datetime import date, timedelta
 
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 
 from ndh.models import Links
+
+def mean_date(qs):
+    return date.fromtimestamp(sum([time.mktime(q.date().timetuple()) for q in qs]) / qs.count())
 
 
 class Individu(models.Model, Links):
@@ -68,9 +71,17 @@ class Individu(models.Model, Links):
             return self.parents.mariage.date()
         siblings = Naissance.objects.filter(y__isnull=False, inst__parents=self.parents)
         if siblings.exists():
-            return date.fromtimestamp(sum([time.mktime(q.date().timetuple()) for q in qs]) / qs.count())
-        # spouses = Naissance.objects.filter(y__isnull=False, inst__
+            return mean_date(siblings)
+        spouses = Naissance.objects.filter(Q(inst__mari__femme=self)|Q(inst__femme__mari=self), y__isnull=False)
+        if spouses.exists():
+            return mean_date(spouses)
+        print(f"can't find a proper start date for {self}")
 
+    def end(self):
+        if Deces.objects.filter(y__isnull=False, inst=self).exists():
+            return self.deces.date()
+        from_start = self.start() + timedelta(days=120 * 365)
+        return min(date.today(), from_start)
 
 
 class Couple(models.Model, Links):
@@ -129,6 +140,28 @@ class Couple(models.Model, Links):
         naissances = Naissance.objects.filter(y__isnull=False, inst__in=[self.mari, self.femme])
         if naissances.exists():
             return naissances.order_by('y').last().y + 15
+
+    def start(self):
+        if self.debut:
+            return self.debut
+        ret = []
+        for mariage in Mariage.objects.filter(y__isnull=False, inst=self):
+            ret.append(mariage.date())
+        for enfant in Naissance.objects.filter(y__isnull=False, inst__parents=self):
+            ret.append(enfant.date())
+        if ret:
+            return min(ret)
+        print(f"can't find a proper start date for {self}")
+
+    def end(self):
+        if self.fin:
+            return self.fin
+        for divorce in Divorce.objects.filter(y__isnull=False, inst=self):
+            return divorce.date()
+        ret = [date.today()]
+        for deces in Deces.objects.filter(Q(inst__mari=self)|Q(inst__femme=self), y__isnull=False):
+            ret.append(deces.date())
+        return min(ret)
 
 
 class Evenement(models.Model):

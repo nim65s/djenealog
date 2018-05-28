@@ -1,7 +1,7 @@
 from datetime import date
 
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, UpdateView
 
@@ -10,6 +10,13 @@ from django_tables2.views import SingleTableMixin
 from ndh.mixins import SuperUserRequiredMixin
 
 from . import filters, forms, models, tables
+
+
+def timenets(request):
+    couple = models.Couple.objects.first()
+    return render(request, 'djenealog/timenets.html', {
+        'couple': couple, 'individus': models.Individu.objects.filter(
+            Q(parents=couple)|Q(mari=couple)|Q(femme=couple))})
 
 
 # @login_required

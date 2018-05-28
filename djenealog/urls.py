@@ -5,6 +5,7 @@ from . import models, views
 app_name = 'djenealog'
 urlpatterns = [
     path('', views.gv, name='graph'),
+    path('timenets', views.timenets, name='timenets'),
     path('stats', views.stats, name='stats'),
     path('individus', views.IndividusView.as_view(), name='individus'),
     path('individu/create', views.IndividuCreateView.as_view(), name='add-individu'),

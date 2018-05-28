@@ -1,7 +1,6 @@
 from datetime import date
 from calendar import LocaleHTMLCalendar
 
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.shortcuts import render
@@ -18,7 +17,7 @@ def timenets(request):
     couple = models.Couple.objects.first()
     return render(request, 'djenealog/timenets.html', {
         'couple': couple, 'individus': models.Individu.objects.filter(
-            Q(parents=couple)|Q(mari=couple)|Q(femme=couple))})
+            Q(parents=couple) | Q(mari=couple) | Q(femme=couple))})
 
 
 # @login_required
@@ -28,15 +27,10 @@ def gv(request):
     couples = models.Couple.objects.all()
     if 'famille' in request.GET:
         nom = request.GET['famille'].lower()
-        individus = individus.filter(
-            Q(nom__icontains=nom) |
-            Q(femme__mari__nom__icontains=nom) |
-            Q(mari__femme__nom__icontains=nom) |
-            Q(parents__mari__nom__icontains=nom) |
-            Q(parents__femme__nom__icontains=nom))
-        couples = couples.filter(
-            Q(mari__nom__icontains=nom) |
-            Q(femme__nom__icontains=nom))
+        individus = individus.filter(Q(nom__icontains=nom) |
+                                     Q(femme__mari__nom__icontains=nom) | Q(mari__femme__nom__icontains=nom) |
+                                     Q(parents__mari__nom__icontains=nom) | Q(parents__femme__nom__icontains=nom))
+        couples = couples.filter(Q(mari__nom__icontains=nom) | Q(femme__nom__icontains=nom))
     return render(request, f'djenealog/graph.{fmt}', {
         'years': range(models.Naissance.objects.exclude(y=None).order_by('y').first().y, date.today().year + 1),
         'individus': individus, 'couples': couples

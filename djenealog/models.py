@@ -1,3 +1,4 @@
+import time
 import calendar
 from datetime import date, timedelta
 
@@ -6,6 +7,7 @@ from django.db.models import Q
 from django.urls import reverse
 
 from ndh.models import Links
+
 
 def mean_date(qs):
     return date.fromtimestamp(sum([time.mktime(q.date().timetuple()) for q in qs]) / qs.count())
@@ -72,7 +74,7 @@ class Individu(models.Model, Links):
         siblings = Naissance.objects.filter(y__isnull=False, inst__parents=self.parents)
         if siblings.exists():
             return mean_date(siblings)
-        spouses = Naissance.objects.filter(Q(inst__mari__femme=self)|Q(inst__femme__mari=self), y__isnull=False)
+        spouses = Naissance.objects.filter(Q(inst__mari__femme=self) | Q(inst__femme__mari=self), y__isnull=False)
         if spouses.exists():
             return mean_date(spouses)
         print(f"can't find a proper start date for {self}")
@@ -159,7 +161,7 @@ class Couple(models.Model, Links):
         for divorce in Divorce.objects.filter(y__isnull=False, inst=self):
             return divorce.date()
         ret = [date.today()]
-        for deces in Deces.objects.filter(Q(inst__mari=self)|Q(inst__femme=self), y__isnull=False):
+        for deces in Deces.objects.filter(Q(inst__mari=self) | Q(inst__femme=self), y__isnull=False):
             ret.append(deces.date())
         return min(ret)
 

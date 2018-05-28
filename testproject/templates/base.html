@@ -12,6 +12,8 @@
   <div class="dropdown-menu" aria-labelledby="djenealogDropdown">
       <a class="dropdown-item" href="{% url 'djenealog:graph' %}">Graphe</a>
       <a class="dropdown-item" href="{% url 'djenealog:stats' %}">Stats</a>
+      <a class="dropdown-item" href="{% url 'djenealog:annivs' %}">Anniversaires</a>
+      <a class="dropdown-item" href="{% url 'djenealog:timenets' %}">Timenets (β)</a>
       {% if request.user.is_superuser %}
       <a class="dropdown-item" href="{% url 'djenealog:individus' %}">Individus</a>
       <a class="dropdown-item" href="{% url 'djenealog:couples' %}">Couples</a>

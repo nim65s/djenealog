@@ -1,5 +1,7 @@
 from datetime import date
+from calendar import LocaleHTMLCalendar
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.shortcuts import render
@@ -77,6 +79,32 @@ def stats(request):
         'divorces_sans_mariages': divorces_sans_mariages.count(),
         'assexues': assexues.count(),
     })
+
+
+@login_required
+def annivs(request):
+    class AnnivCalendar(LocaleHTMLCalendar):
+        def __init__(self, annivs, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.annivs = annivs
+
+        def formatday(self, day, weekday):
+            if day == 0:
+                return '<td class="noday"> </td>'  # day outside month
+            annivs = ',<br />'.join(f'{anniv.inst.get_link()} ({anniv.y})'
+                                    for anniv in self.annivs[(self.current_month, day)])
+            return f'<td><span class="font-italic">{day}</span><br />{annivs}</td>'
+
+        def formatmonth(self, theyear, themonth, withyear=True):
+            self.current_month = themonth
+            return super().formatmonth(theyear, themonth, withyear)
+
+    annivs = {(m, d): [] for m in range(13) for d in range(32)}
+    for naissance in models.Naissance.objects.filter(m__isnull=False, d__isnull=False).order_by('y'):
+        annivs[(naissance.m, naissance.d)].append(naissance)
+
+    anniv_cal = AnnivCalendar(annivs).formatyear(date.today().year, 1)
+    return render(request, 'djenealog/annivs.html', {'anniv_cal': anniv_cal})
 
 
 class IndividusView(SuperUserRequiredMixin, SingleTableMixin, FilterView):

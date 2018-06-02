@@ -26,23 +26,23 @@ services:
       - DB=postgres
       - MEMCACHED=True
     networks:
-      - traefik
+      - proxytanet
       - default
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host: djenealog.${DOMAIN_NAME:-local}"
-      - "traefik.docker.network=traefik"
+      - "traefik.docker.network=proxytanet"
   nginx:
     image: nim65s/ndh:nginx
     restart: unless-stopped
     volumes:
       - "srv:/srv"
     networks:
-      - traefik
+      - proxytanet
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host: djenealog.${DOMAIN_NAME:-local}; PathPrefix: /static, /media"
 
 networks:
-  traefik:
+  proxytanet:
     external: true

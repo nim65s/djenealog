@@ -4,6 +4,10 @@
 
 This app gives you a svg of a family, and can import csv files from Gramps
 
+## Reverse Proxy
+
+This app needs a reverse proxy, like [proxyta.net](https://framagit.org/nim65s/proxyta.net)
+
 ## Dev
 
 Make sure `djenealog.local` resolves to `localhost`, and:

@@ -1,9 +1,13 @@
 from datetime import date
 from calendar import LocaleHTMLCalendar
+from subprocess import check_output
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
+from django.http.response import HttpResponse
 from django.shortcuts import render
+from django.template.loader import get_template
+from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DeleteView, UpdateView
 
 from django_filters.views import FilterView
@@ -35,6 +39,19 @@ def gv(request):
         'years': range(models.Naissance.objects.exclude(y=None).order_by('y').first().y, date.today().year + 1),
         'individus': individus, 'couples': couples
     })
+
+
+# @login_required
+@cache_page(60 * 60 * 24)
+def img_svg(request):
+    individus = models.Individu.objects.all()
+    couples = models.Couple.objects.all()
+    gv = get_template('djenealog/graph.gv').render({
+        'years': range(models.Naissance.objects.exclude(y=None).order_by('y').first().y, date.today().year + 1),
+        'individus': individus, 'couples': couples
+    })
+    svg = check_output(['dot', '-Tsvg'], input=gv, text=True)
+    return HttpResponse(svg, content_type='image/svg+xml')
 
 
 def stats(request):

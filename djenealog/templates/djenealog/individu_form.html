@@ -6,9 +6,9 @@
 {% if individu.pk %}
 
 <dl class="row">
-  {% if individu.naissance %}
   <dt class="col-sm-3">Naissance</dt>
   <dd class="col-sm-9">
+  {% if individu.naissance %}
   {{ individu.naissance }}
   <a href="{% url 'djenealog:naissance' pk=individu.naissance.pk %}">edit</a>
   <a href="{% url 'djenealog:del-naissance' pk=individu.naissance.pk %}">delete</a>

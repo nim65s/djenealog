@@ -10,6 +10,8 @@ django-filter = "*"
 "Django-Select2" = "*"
 
 [dev-packages]
+ipython = "*"
+pygments-zenburn = "*"
 
 [requires]
 python_version = "3.7"

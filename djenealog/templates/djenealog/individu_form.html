@@ -25,6 +25,20 @@ Décès: {{ individu.deces }}
 
 <br>
 
+{% if individu.mari.exists or individu.femme.exists %}
+Couples:
+<ul>
+{% for couple in individu.mari.all %}
+<li>{{ couple.get_link }}</li>
+{% endfor %}
+{% for couple in individu.femme.all %}
+<li>{{ couple.get_link }}</li>
+{% endfor %}
+</ul>
+
+<br>
+{% endif %}
+
 <a href="{% url 'djenealog:del-individu' pk=individu.pk %}">delete</a>
 {% endif %}
 

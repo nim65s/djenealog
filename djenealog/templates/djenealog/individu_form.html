@@ -5,41 +5,51 @@
 
 {% if individu.pk %}
 
-{% if individu.naissance %}
-Naissance: {{ individu.naissance }}
-<a href="{% url 'djenealog:naissance' pk=individu.naissance.pk %}">edit</a>
-<a href="{% url 'djenealog:del-naissance' pk=individu.naissance.pk %}">delete</a>
-{% else %}
-<a href="{% url 'djenealog:add-naissance' pk=individu.pk %}">Ajouter une naissance</a>
-{% endif %}
+<dl class="row">
+  {% if individu.naissance %}
+  <dt class="col-sm-3">Naissance</dt>
+  <dd class="col-sm-9">
+  {{ individu.naissance }}
+  <a href="{% url 'djenealog:naissance' pk=individu.naissance.pk %}">edit</a>
+  <a href="{% url 'djenealog:del-naissance' pk=individu.naissance.pk %}">delete</a>
+  {% else %}
+  <a href="{% url 'djenealog:add-naissance' pk=individu.pk %}">Ajouter une naissance</a>
+  {% endif %}
+  </dd>
 
-<br>
+  <dt class="col-sm-3">Décès</dt>
+  <dd class="col-sm-9">
+  {% if individu.deces %}
+  {{ individu.deces }}
+  <a href="{% url 'djenealog:deces' pk=individu.deces.pk %}">edit</a>
+  <a href="{% url 'djenealog:del-deces' pk=individu.deces.pk %}">delete</a>
+  {% else %}
+  <a href="{% url 'djenealog:add-deces' pk=individu.pk %}">Ajouter un décès</a>
+  {% endif %}
+  </dd>
 
-{% if individu.deces %}
-Décès: {{ individu.deces }}
-<a href="{% url 'djenealog:deces' pk=individu.deces.pk %}">edit</a>
-<a href="{% url 'djenealog:del-deces' pk=individu.deces.pk %}">delete</a>
-{% else %}
-<a href="{% url 'djenealog:add-deces' pk=individu.pk %}">Ajouter un décès</a>
-{% endif %}
+  {% if individu.parents %}
+  <dt class="col-sm-3">Parents</dt>
+  <dd class="col-sm-9">
+  {{ individu.parents.get_link }}
+  </dd>
+  {% endif %}
 
-<br>
+  {% if individu.mari.exists or individu.femme.exists %}
+  <dt class="col-sm-3">Couples</dt>
+  <dd class="col-sm-9">
+    {% for couple in individu.mari.all %}
+    {{ couple.get_link }}
+    {% endfor %}
+    {% for couple in individu.femme.all %}
+    {{ couple.get_link }}
+    {% endfor %}
+  </dd>
+  {% endif %}
 
-{% if individu.mari.exists or individu.femme.exists %}
-Couples:
-<ul>
-{% for couple in individu.mari.all %}
-<li>{{ couple.get_link }}</li>
-{% endfor %}
-{% for couple in individu.femme.all %}
-<li>{{ couple.get_link }}</li>
-{% endfor %}
-</ul>
-
-<br>
-{% endif %}
-
-<a href="{% url 'djenealog:del-individu' pk=individu.pk %}">delete</a>
+  <dt class="col-sm-3">Supprimer</dt>
+  <dd class="col-sm-9"><a href="{% url 'djenealog:del-individu' pk=individu.pk %}">delete</a></dd>
+</dl>
 {% endif %}
 
 {% endblock %}

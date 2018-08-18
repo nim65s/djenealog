@@ -5,37 +5,56 @@
 
 {% if couple.pk %}
 
-{% if couple.pacs %}
-PACS: {{ couple.pacs }}
-<a href="{% url 'djenealog:pacs' pk=couple.pacs.pk %}">edit</a>
-<a href="{% url 'djenealog:del-pacs' pk=couple.pacs.pk %}">delete</a>
-{% else %}
-<a href="{% url 'djenealog:add-pacs' pk=couple.pk %}">Ajouter un PACS</a>
-{% endif %}
+<dl class="row">
+  {% if couple.mari %}
+  <dt class="col-sm-3">Mari</dt>
+  <dd class="col-sm-9">{{ couple.mari.get_link }}</dd>
+  {% endif %}
+  {% if couple.femme %}
+  <dt class="col-sm-3">Femme</dt>
+  <dd class="col-sm-9">{{ couple.femme.get_link }}</dd>
+  {% endif %}
+  {% if couple.enfants.exists %}
+  <dt class="col-sm-3">Enfants</dt>
+  <dd class="col-sm-9">{% for enfant in couple.enfants.all %}{{ enfant.get_link }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd>
+  {% endif %}
 
-<br>
+  <dt class="col-sm-3">PACS</dt>
+  <dd class="col-sm-9">
+  {% if couple.pacs %}
+  {{ couple.pacs }}
+  <a href="{% url 'djenealog:pacs' pk=couple.pacs.pk %}">edit</a>
+  <a href="{% url 'djenealog:del-pacs' pk=couple.pacs.pk %}">delete</a>
+  {% else %}
+  <a href="{% url 'djenealog:add-pacs' pk=couple.pk %}">Ajouter un PACS</a>
+  {% endif %}
+  </dd>
 
-{% if couple.mariage %}
-Mariage: {{ couple.mariage }}
-<a href="{% url 'djenealog:mariage' pk=couple.mariage.pk %}">edit</a>
-<a href="{% url 'djenealog:del-mariage' pk=couple.mariage.pk %}">delete</a>
-{% else %}
-<a href="{% url 'djenealog:add-mariage' pk=couple.pk %}">Ajouter un Mariage</a>
-{% endif %}
+  <dt class="col-sm-3">Mariage</dt>
+  <dd class="col-sm-9">
+  {% if couple.mariage %}
+  {{ couple.mariage }}
+  <a href="{% url 'djenealog:mariage' pk=couple.mariage.pk %}">edit</a>
+  <a href="{% url 'djenealog:del-mariage' pk=couple.mariage.pk %}">delete</a>
+  {% else %}
+  <a href="{% url 'djenealog:add-mariage' pk=couple.pk %}">Ajouter un Mariage</a>
+  {% endif %}
+  </dd>
 
-<br>
+  <dt class="col-sm-3">Divorce</dt>
+  <dd class="col-sm-9">
+  {% if couple.divorce %}
+  {{ couple.divorce }}
+  <a href="{% url 'djenealog:divorce' pk=couple.divorce.pk %}">edit</a>
+  <a href="{% url 'djenealog:del-divorce' pk=couple.divorce.pk %}">delete</a>
+  {% else %}
+  <a href="{% url 'djenealog:add-divorce' pk=couple.pk %}">Ajouter un Divorce</a>
+  {% endif %}
+  </dd>
 
-{% if couple.divorce %}
-Divorce: {{ couple.divorce }}
-<a href="{% url 'djenealog:divorce' pk=couple.divorce.pk %}">edit</a>
-<a href="{% url 'djenealog:del-divorce' pk=couple.divorce.pk %}">delete</a>
-{% else %}
-<a href="{% url 'djenealog:add-divorce' pk=couple.pk %}">Ajouter un Divorce</a>
-{% endif %}
-
-<br>
-
-<a href="{% url 'djenealog:del-couple' pk=couple.pk %}">delete</a>
+  <dt class="col-sm-3">Supprimer</dt>
+  <dd class="col-sm-9"><a href="{% url 'djenealog:del-couple' pk=couple.pk %}">delete</a></dd>
+</dl>
 
 {% endif %}
 

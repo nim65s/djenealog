@@ -21,6 +21,7 @@ class Individu(models.Model, Links):
     masculin = models.NullBooleanField()
     parents = models.ForeignKey('Couple', on_delete=models.PROTECT, blank=True, null=True, related_name='enfants')
     wikidata = models.PositiveIntegerField(blank=True, null=True)
+    commentaires = models.TextField(blank=True, null=True)
 
     def __str__(self):
         psep = ' / ' if self.prenom and self.usage else ' '
@@ -91,6 +92,7 @@ class Couple(models.Model, Links):
     femme = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='femme', blank=True, null=True)
     debut = models.DateField(blank=True, null=True)
     fin = models.DateField(blank=True, null=True)
+    commentaires = models.TextField(blank=True, null=True)
 
     def __str__(self):
         mari, femme = self.mari or '', self.femme or ''
@@ -171,6 +173,7 @@ class Evenement(models.Model):
     y = models.PositiveSmallIntegerField('année', blank=True, null=True)
     m = models.PositiveSmallIntegerField('mois', blank=True, null=True)
     d = models.PositiveSmallIntegerField('jour', blank=True, null=True)
+    commentaires = models.TextField(blank=True, null=True)
 
     class Meta:
         abstract = True

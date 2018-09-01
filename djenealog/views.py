@@ -151,7 +151,7 @@ class CoupleCreateView(SuperUserRequiredMixin, CreateView):
 
 
 class EvenementMixin(SuperUserRequiredMixin):
-    fields = ('d', 'm', 'y', 'lieu')
+    fields = ('d', 'm', 'y', 'lieu', 'commentaires')
     template_name = 'djenealog/evenement_form.html'
 
     def get_success_url(self):

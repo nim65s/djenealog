@@ -13,8 +13,8 @@ class IndividuFilter(filters.FilterSet):
 
 
 class CoupleFilter(filters.FilterSet):
-    mari = filters.CharFilter(lookup_expr='mari__nom__icontains')
-    femme = filters.CharFilter(lookup_expr='femme__nom__icontains')
+    mari = filters.CharFilter(lookup_expr='nom__icontains')
+    femme = filters.CharFilter(lookup_expr='nom__icontains')
 
     class Meta:
         model = models.Couple

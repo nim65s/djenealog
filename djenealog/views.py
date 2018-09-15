@@ -17,13 +17,6 @@ from ndh.mixins import SuperUserRequiredMixin
 from . import filters, forms, models, tables
 
 
-def timenets(request):
-    couple = models.Couple.objects.first()
-    return render(request, 'djenealog/timenets.html', {
-        'couple': couple, 'individus': models.Individu.objects.filter(
-            Q(parents=couple) | Q(mari=couple) | Q(femme=couple))})
-
-
 # @login_required
 def gv(request):
     fmt = request.GET.get('fmt', 'html')

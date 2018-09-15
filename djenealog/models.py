@@ -1,12 +1,15 @@
 import time
 import calendar
-from datetime import date
+from datetime import date, datetime, timedelta
 
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 
 from ndh.models import Links
+
+def timestamp(event):
+    return datetime(*event.date().timetuple()[:-2]).timestamp()
 
 
 def mean_date(qs):
@@ -48,22 +51,33 @@ class Individu(models.Model, Links):
     def conjoints(self):
         return Individu.objects.filter((Q(femme__mari=self) | Q(mari__femme=self)))
 
-    def rank(self):
+    def start(self):
         if Naissance.objects.filter(y__isnull=False, inst=self).exists():
-            return self.naissance.y
+            return self.naissance.date()
         conjoints = Naissance.objects.filter(y__isnull=False, inst__in=self.conjoints())
         if conjoints.exists():
-            return conjoints.order_by('y').last().y
+            return conjoints.order_by('y').last().date()
         siblings = Naissance.objects.filter(y__isnull=False, inst__parents=self.parents).order_by('y')
         if self.parents and siblings.exists():
-            return (siblings.first().y + siblings.last().y) // 2
+            return date.fromtimestamp((timestamp(siblings.first()) + timestamp(siblings.last())) / 2)
         enfants = Naissance.objects.filter(Q(inst__parents__femme=self) | Q(inst__parents__mari=self), y__isnull=False)
         if enfants.exists():
-            return enfants.order_by('y').first().y - 20
+            return enfants.order_by('y').first().date() - timedelta(days=20 * 365)
         parents = Naissance.objects.filter(Q(inst__femme__enfants=self) | Q(inst__mari__enfants=self), y__isnull=False)
         if parents.exists():
             parents = parents.order_by('y')
-            return (parents.first().y + parents.last().y) // 2 + 20
+            mid = date.fromtimestamp((timestamp(parents.first()) + timestamp(parents.last())) / 2)
+            return mid + timedelta(days=20 * 365)
+
+    def rank(self):
+        start = self.start()
+        if start:
+            return start.year
+
+    def y(self):
+        start = self.start()
+        if start:
+            return - (start.year + (start.month + start.day / 30) / 12)
 
 
 class Couple(models.Model, Links):
@@ -117,12 +131,22 @@ class Couple(models.Model, Links):
         ret.append('}')
         return '\n'.join(ret)
 
-    def rank(self):
+    def start(self):
         # if Mariage.objects.filter(y__isnull=False, inst=self).exists():
-            # return self.mariage.y
+            # return self.mariage.date()
         naissances = Naissance.objects.filter(y__isnull=False, inst__in=[self.mari, self.femme])
         if naissances.exists():
-            return naissances.order_by('y').last().y + 15
+            return naissances.order_by('y').last().date() + timedelta(days=15 * 365)
+
+    def rank(self):
+        start = self.start()
+        if start:
+            return start.year
+
+    def y(self):
+        start = self.start()
+        if start:
+            return - (start.year + (start.month + start.day / 30) / 12)
 
 
 class Evenement(models.Model):

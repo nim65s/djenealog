@@ -14,7 +14,5 @@ class Migration(migrations.Migration):
             model_name='bapteme',
             name='inst',
         ),
-        migrations.DeleteModel(
-            name='Bapteme',
-        ),
+        migrations.DeleteModel(name='Bapteme', ),
     ]

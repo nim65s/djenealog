@@ -5,19 +5,32 @@ import django.db.models.deletion
 
 
 def migrate_events(apps, schema_editor):
-    Individu, Couple, Naissance, Deces, Mariage = (apps.get_model('djenealog', model) for model in (
-        'Individu', 'Couple', 'Naissance', 'Deces', 'Mariage'))
+    Individu, Couple, Naissance, Deces, Mariage = (apps.get_model('djenealog', model)
+                                                   for model in ('Individu', 'Couple', 'Naissance', 'Deces',
+                                                                 'Mariage'))
     for individu in Individu.objects.all():
         if individu.naissance_y:
-            Naissance.objects.create(individu=individu, lieu=individu.naissance.nom if individu.naissance else None,
-                                     y=individu.naissance_y or None, m=individu.naissance_m or None, d=individu.naissance_d or None)
+            Naissance.objects.create(
+                individu=individu,
+                lieu=individu.naissance.nom if individu.naissance else None,
+                y=individu.naissance_y or None,
+                m=individu.naissance_m or None,
+                d=individu.naissance_d or None)
         if individu.deces_y:
-            Deces.objects.create(individu=individu, lieu=individu.deces.nom if individu.deces else None,
-                                 y=individu.deces_y or None, m=individu.deces_m or None, d=individu.deces_d or None)
+            Deces.objects.create(
+                individu=individu,
+                lieu=individu.deces.nom if individu.deces else None,
+                y=individu.deces_y or None,
+                m=individu.deces_m or None,
+                d=individu.deces_d or None)
     for couple in Couple.objects.all():
         if couple.mariage_y:
-            Mariage.objects.create(couple=couple, lieu=couple.mariage.nom if couple.mariage else None,
-                                   y=couple.mariage_y or None, m=couple.mariage_m or None, d=couple.mariage_d or None)
+            Mariage.objects.create(
+                couple=couple,
+                lieu=couple.mariage.nom if couple.mariage else None,
+                y=couple.mariage_y or None,
+                m=couple.mariage_m or None,
+                d=couple.mariage_d or None)
 
 
 class Migration(migrations.Migration):
@@ -35,7 +48,9 @@ class Migration(migrations.Migration):
                 ('y', models.PositiveSmallIntegerField(blank=True, null=True)),
                 ('m', models.PositiveSmallIntegerField(blank=True, null=True)),
                 ('d', models.PositiveSmallIntegerField(blank=True, null=True)),
-                ('individu', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='b', to='djenealog.Individu')),
+                ('individu',
+                 models.ForeignKey(
+                     on_delete=django.db.models.deletion.PROTECT, related_name='b', to='djenealog.Individu')),
             ],
             options={
                 'abstract': False,
@@ -49,7 +64,9 @@ class Migration(migrations.Migration):
                 ('y', models.PositiveSmallIntegerField(blank=True, null=True)),
                 ('m', models.PositiveSmallIntegerField(blank=True, null=True)),
                 ('d', models.PositiveSmallIntegerField(blank=True, null=True)),
-                ('individu', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='d', to='djenealog.Individu')),
+                ('individu',
+                 models.ForeignKey(
+                     on_delete=django.db.models.deletion.PROTECT, related_name='d', to='djenealog.Individu')),
             ],
             options={
                 'abstract': False,
@@ -76,7 +93,9 @@ class Migration(migrations.Migration):
                 ('y', models.PositiveSmallIntegerField(blank=True, null=True)),
                 ('m', models.PositiveSmallIntegerField(blank=True, null=True)),
                 ('d', models.PositiveSmallIntegerField(blank=True, null=True)),
-                ('individu', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='n', to='djenealog.Individu')),
+                ('individu',
+                 models.ForeignKey(
+                     on_delete=django.db.models.deletion.PROTECT, related_name='n', to='djenealog.Individu')),
             ],
             options={
                 'abstract': False,
@@ -102,12 +121,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='pacs',
             name='couple',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='p', to='djenealog.Couple'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, related_name='p', to='djenealog.Couple'),
         ),
         migrations.AddField(
             model_name='mariage',
             name='couple',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='m', to='djenealog.Couple'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, related_name='m', to='djenealog.Couple'),
         ),
         migrations.RunPython(migrate_events),
     ]

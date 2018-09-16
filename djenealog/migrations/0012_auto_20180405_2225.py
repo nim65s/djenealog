@@ -16,7 +16,10 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name='deces',
-            options={'verbose_name': 'décès', 'verbose_name_plural': 'décès'},
+            options={
+                'verbose_name': 'décès',
+                'verbose_name_plural': 'décès'
+            },
         ),
         migrations.AlterModelOptions(
             name='pacs',

@@ -54,12 +54,22 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='couple',
             name='femme',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='mere', to='djenealog.Individu'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name='mere',
+                to='djenealog.Individu'),
         ),
         migrations.AlterField(
             model_name='couple',
             name='mari',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='pere', to='djenealog.Individu'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name='pere',
+                to='djenealog.Individu'),
         ),
         migrations.AlterField(
             model_name='deces',
@@ -79,7 +89,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='individu',
             name='parents',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='enfants', to='djenealog.Couple'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name='enfants',
+                to='djenealog.Couple'),
         ),
         migrations.AlterField(
             model_name='mariage',

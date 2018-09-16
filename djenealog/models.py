@@ -8,6 +8,7 @@ from django.urls import reverse
 
 from ndh.models import Links
 
+
 def timestamp(event):
     return datetime(*event.date().timetuple()[:-2]).timestamp()
 
@@ -77,7 +78,7 @@ class Individu(models.Model, Links):
     def y(self):
         start = self.start()
         if start:
-            return - (start.year + (start.month + start.day / 30) / 12)
+            return -(start.year + (start.month + start.day / 30) / 12)
 
 
 class Couple(models.Model, Links):
@@ -133,7 +134,7 @@ class Couple(models.Model, Links):
 
     def start(self):
         # if Mariage.objects.filter(y__isnull=False, inst=self).exists():
-            # return self.mariage.date()
+        # return self.mariage.date()
         naissances = Naissance.objects.filter(y__isnull=False, inst__in=[self.mari, self.femme])
         if naissances.exists():
             return naissances.order_by('y').last().date() + timedelta(days=15 * 365)
@@ -146,7 +147,7 @@ class Couple(models.Model, Links):
     def y(self):
         start = self.start()
         if start:
-            return - (start.year + (start.month + start.day / 30) / 12)
+            return -(start.year + (start.month + start.day / 30) / 12)
 
 
 class Evenement(models.Model):

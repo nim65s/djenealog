@@ -8,8 +8,7 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
@@ -50,12 +49,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='individu',
             name='deces',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='+', to='djenealog.Lieu'),
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.PROTECT, related_name='+', to='djenealog.Lieu'),
         ),
         migrations.AddField(
             model_name='individu',
             name='naissance',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='+', to='djenealog.Lieu'),
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.PROTECT, related_name='+', to='djenealog.Lieu'),
         ),
         migrations.AddField(
             model_name='individu',
@@ -65,12 +66,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='couple',
             name='femme',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='mere', to='djenealog.Individu'),
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.PROTECT, related_name='mere', to='djenealog.Individu'),
         ),
         migrations.AddField(
             model_name='couple',
             name='mari',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='pere', to='djenealog.Individu'),
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.PROTECT, related_name='pere', to='djenealog.Individu'),
         ),
         migrations.AddField(
             model_name='couple',

@@ -62,7 +62,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'testproject.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
@@ -96,7 +95,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 LANGUAGE_CODE = 'fr-FR'

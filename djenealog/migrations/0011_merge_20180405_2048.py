@@ -10,5 +10,4 @@ class Migration(migrations.Migration):
         ('djenealog', '0010_divorce'),
     ]
 
-    operations = [
-    ]
+    operations = []

@@ -5,14 +5,21 @@ EXPOSE 8000
 RUN mkdir /app
 WORKDIR /app
 
-
-RUN apk update -q && apk add -q --no-cache \
-    py3-psycopg2 \
+RUN apk update -q \
+ && apk add --no-cache \
+    libpq \
+ && apk add --no-cache --virtual .build-deps \
+    gcc \
+    python3-dev \
+    musl-dev \
+    postgresql-dev \
  && pip3 install --no-cache-dir \
     gunicorn \
     pipenv \
+    psycopg2 \
     python-memcached \
-    raven
+    raven \
+ && apk del --no-cache .build-deps
 
 ENV PYTHONPATH=/usr/lib/python3.7/site-packages
 

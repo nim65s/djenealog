@@ -10,8 +10,6 @@ This app needs a reverse proxy, like [proxyta.net](https://framagit.org/nim65s/p
 
 ## Dev
 
-Make sure `djenealog.local` resolves to `localhost`, and:
-
 ```
 echo POSTGRES_PASSWORD=$(openssl rand -base64 32) >> .env
 echo SECRET_KEY=$(openssl rand -base64 32) >> .env

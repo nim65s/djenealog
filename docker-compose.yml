@@ -30,7 +30,7 @@ services:
       - default
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host: djenealog.${DOMAIN_NAME:-local}"
+      - "traefik.frontend.rule=Host: djenealog.${DOMAIN_NAME:-localhost}"
       - "traefik.docker.network=proxytanet"
   nginx:
     image: nim65s/ndh:nginx
@@ -41,7 +41,7 @@ services:
       - proxytanet
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host: djenealog.${DOMAIN_NAME:-local}; PathPrefix: /static, /media"
+      - "traefik.frontend.rule=Host: djenealog.${DOMAIN_NAME:-localhost}; PathPrefix: /static, /media"
 
 networks:
   proxytanet:

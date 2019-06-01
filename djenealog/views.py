@@ -101,8 +101,8 @@ def annivs(request):
         def formatday(self, day, weekday):
             if day == 0:
                 return '<td class="noday"> </td>'  # day outside month
-            annivs = ',<br />'.join(
-                f'{anniv.inst.get_link()} ({anniv.y})' for anniv in self.annivs[(self.current_month, day)])
+            annivs = ',<br />'.join(f'{anniv.inst.get_link()} ({anniv.y})'
+                                    for anniv in self.annivs[(self.current_month, day)])
             return f'<td><span class="font-italic">{day}</span><br />{annivs}</td>'
 
         def formatmonth(self, theyear, themonth, withyear=True):

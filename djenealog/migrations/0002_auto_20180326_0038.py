@@ -26,7 +26,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='individu',
             name='parents',
-            field=models.ForeignKey(
-                null=True, on_delete=django.db.models.deletion.PROTECT, related_name='enfants', to='djenealog.Couple'),
+            field=models.ForeignKey(null=True,
+                                    on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='enfants',
+                                    to='djenealog.Couple'),
         ),
     ]

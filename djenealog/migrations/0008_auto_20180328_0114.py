@@ -19,22 +19,20 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='couple',
             name='femme',
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.PROTECT,
-                related_name='femme',
-                to='djenealog.Individu'),
+            field=models.ForeignKey(blank=True,
+                                    null=True,
+                                    on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='femme',
+                                    to='djenealog.Individu'),
         ),
         migrations.AlterField(
             model_name='couple',
             name='mari',
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.PROTECT,
-                related_name='mari',
-                to='djenealog.Individu'),
+            field=models.ForeignKey(blank=True,
+                                    null=True,
+                                    on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='mari',
+                                    to='djenealog.Individu'),
         ),
         migrations.AlterField(
             model_name='individu',

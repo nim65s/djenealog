@@ -94,11 +94,11 @@ class Couple(models.Model, Links):
 
     def label(self):
         if Divorce.objects.filter(inst=self).exists():
-            return str(self.divorce)
+            return ('⚮ ' + str(self.divorce)).strip()
         if Mariage.objects.filter(inst=self).exists():
             return ('⚭ ' + str(self.mariage)).strip()
         if Pacs.objects.filter(inst=self).exists():
-            return ('⚮ ' + str(self.pacs)).strip()
+            return str(self.pacs)
         return ''
 
     def color(self):

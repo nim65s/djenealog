@@ -96,9 +96,9 @@ class Couple(models.Model, Links):
         if Divorce.objects.filter(inst=self).exists():
             return str(self.divorce)
         if Mariage.objects.filter(inst=self).exists():
-            return '⚭ ' + str(self.mariage)
+            return ('⚭ ' + str(self.mariage)).strip()
         if Pacs.objects.filter(inst=self).exists():
-            return '⚮ ' + str(self.pacs)
+            return ('⚮ ' + str(self.pacs)).strip()
         return ''
 
     def color(self):

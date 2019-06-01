@@ -1,5 +1,5 @@
-import time
 import calendar
+import time
 from datetime import date, datetime, timedelta
 
 from django.db import models
@@ -96,9 +96,9 @@ class Couple(models.Model, Links):
         if Divorce.objects.filter(inst=self).exists():
             return str(self.divorce)
         if Mariage.objects.filter(inst=self).exists():
-            return str(self.mariage)
+            return '⚭ ' + str(self.mariage)
         if Pacs.objects.filter(inst=self).exists():
-            return str(self.pacs)
+            return '⚮ ' + str(self.pacs)
         return ''
 
     def color(self):
@@ -133,6 +133,7 @@ class Couple(models.Model, Links):
         return '\n'.join(ret)
 
     def start(self):
+        # will result in showing upward arrows, as child can be born before wedding.
         # if Mariage.objects.filter(y__isnull=False, inst=self).exists():
         # return self.mariage.date()
         naissances = Naissance.objects.filter(y__isnull=False, inst__in=[self.mari, self.femme])

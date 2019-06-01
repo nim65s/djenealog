@@ -1,10 +1,12 @@
 from django.urls import path
+from django.views.generic import TemplateView
 
 from . import models, views
 
 app_name = 'djenealog'
 urlpatterns = [
-    path('', views.gv, name='graph'),
+    path('', TemplateView.as_view(template_name='djenealog/home.html'), name='home'),
+    path('graph', views.gv, name='graph'),
     path('img.svg', views.img_svg, name='img-svg'),
     path('annivs', views.annivs, name='annivs'),
     path('stats', views.stats, name='stats'),

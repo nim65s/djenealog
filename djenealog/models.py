@@ -133,9 +133,15 @@ class Couple(models.Model, Links):
         return '\n'.join(ret)
 
     def start(self):
-        # will result in showing upward arrows, as child can be born before wedding.
-        # if Mariage.objects.filter(y__isnull=False, inst=self).exists():
-        # return self.mariage.date()
+        if self.debut:
+            return self.debut
+        if Mariage.objects.filter(y__isnull=False, inst=self).exists():
+            start = self.mariage.date()
+            # avoid upward arrows, as child can be born before wedding.
+            first = self.enfants.filter(naissance__y__lte=start.year).order_by('naissance__y').first()
+            if first:
+                start = first.naissance.date() - timedelta(days=2 * 365)
+            return start
         naissances = Naissance.objects.filter(y__isnull=False, inst__in=[self.mari, self.femme])
         if naissances.exists():
             return naissances.order_by('y').last().date() + timedelta(days=15 * 365)

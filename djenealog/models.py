@@ -90,7 +90,7 @@ class Couple(models.Model, Links):
 
     def __str__(self):
         mari, femme = self.mari or '', self.femme or ''
-        return f'{femme} & {mari}'
+        return f'{femme} & {mari}'.replace('  ', ' ')
 
     def label(self):
         ret = []

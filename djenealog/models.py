@@ -138,7 +138,7 @@ class Couple(models.Model, Links):
         if Mariage.objects.filter(y__isnull=False, inst=self).exists():
             start = self.mariage.date()
             # avoid upward arrows, as child can be born before wedding.
-            first = self.enfants.filter(naissance__y__lte=start.year).order_by('naissance__y').first()
+            first = self.enfants.filter(naissance__y__lt=start.year + 2).order_by('naissance__y').first()
             if first:
                 start = first.naissance.date() - timedelta(days=2 * 365)
             return start

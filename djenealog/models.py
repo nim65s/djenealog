@@ -95,12 +95,12 @@ class Couple(models.Model, Links):
     def label(self):
         ret = []
         if Pacs.objects.filter(inst=self).exists():
-            ret.append('P ' + str(self.pacs))
+            ret.append(self.pacs)
         if Mariage.objects.filter(inst=self).exists():
-            ret.append('⚭ ' + str(self.mariage))
+            ret.append(self.mariage)
         if Divorce.objects.filter(inst=self).exists():
-            ret.append('⚮ ' + str(self.divorce))
-        return '\n'.join(r.strip() for r in ret)
+            ret.append(self.divorce)
+        return '\n'.join(str(r).strip() for r in ret)
 
     def color(self):
         if Divorce.objects.filter(inst=self).exists():
@@ -166,6 +166,7 @@ class Evenement(models.Model):
     m = models.PositiveSmallIntegerField('mois', blank=True, null=True)
     d = models.PositiveSmallIntegerField('jour', blank=True, null=True)
     commentaires = models.TextField(blank=True, null=True)
+    symbol = ''
 
     class Meta:
         abstract = True
@@ -175,7 +176,7 @@ class Evenement(models.Model):
         d, m, y = self.d or '', calendar.month_name[self.m] if self.m else '', self.y or ''
         ret.append(f'{d} {m} {y}'.strip())
         ret.append(self.lieu)
-        return ', '.join(r for r in ret if r)
+        return (self.symbol + ' ' + ', '.join(r for r in ret if r)).strip()
 
     def get_absolute_url(self):
         app, model = self._meta.app_label, self._meta.model_name
@@ -188,22 +189,21 @@ class Evenement(models.Model):
 
 class Naissance(Evenement):
     inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
+    symbol = '*'
 
 
 class Deces(Evenement):
     inst = models.OneToOneField(Individu, on_delete=models.PROTECT)
+    symbol = '✝'
 
     class Meta:
         verbose_name = 'décès'
         verbose_name_plural = 'décès'
 
-    def __str__(self):
-        ret = super().__str__()
-        return f'✝ {ret}'.strip()
-
 
 class Pacs(Evenement):
     inst = models.OneToOneField(Couple, on_delete=models.PROTECT)
+    symbol = 'P'
 
     class Meta:
         verbose_name_plural = 'pacs'
@@ -211,7 +211,9 @@ class Pacs(Evenement):
 
 class Mariage(Evenement):
     inst = models.OneToOneField(Couple, on_delete=models.PROTECT)
+    symbol = '⚭'
 
 
 class Divorce(Evenement):
     inst = models.OneToOneField(Couple, on_delete=models.PROTECT)
+    symbol = '⚮'

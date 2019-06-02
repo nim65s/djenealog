@@ -93,13 +93,14 @@ class Couple(models.Model, Links):
         return f'{femme} & {mari}'
 
     def label(self):
-        if Divorce.objects.filter(inst=self).exists():
-            return ('⚮ ' + str(self.divorce)).strip()
-        if Mariage.objects.filter(inst=self).exists():
-            return ('⚭ ' + str(self.mariage)).strip()
+        ret = []
         if Pacs.objects.filter(inst=self).exists():
-            return str(self.pacs)
-        return ''
+            ret.append('P ' + str(self.pacs))
+        if Mariage.objects.filter(inst=self).exists():
+            ret.append('⚭ ' + str(self.mariage))
+        if Divorce.objects.filter(inst=self).exists():
+            ret.append('⚮ ' + str(self.divorce))
+        return '\n'.join(r.strip() for r in ret)
 
     def color(self):
         if Divorce.objects.filter(inst=self).exists():

@@ -135,8 +135,10 @@ class Couple(models.Model, Links):
     def start(self):
         if self.debut:
             return self.debut
-        if Mariage.objects.filter(y__isnull=False, inst=self).exists():
-            start = self.mariage.date()
+        pacs = Pacs.objects.filter(y__isnull=False, inst=self)
+        mariage = Mariage.objects.filter(y__isnull=False, inst=self)
+        if pacs.exists() or mariage.exists():
+            start = self.pacs.date() if pacs.exists() else self.mariage.date()
             # avoid upward arrows, as child can be born before wedding.
             first = self.enfants.filter(naissance__y__lt=start.year + 2).order_by('naissance__y').first()
             if first:

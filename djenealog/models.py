@@ -171,11 +171,11 @@ class Evenement(models.Model):
         abstract = True
 
     def __str__(self):
+        ret = []
         d, m, y = self.d or '', calendar.month_name[self.m] if self.m else '', self.y or ''
-        ret = f'{d} {m} {y}'
-        if self.lieu:
-            ret += f', {self.lieu}'
-        return ret
+        ret.append(f'{d} {m} {y}'.strip())
+        ret.append(self.lieu)
+        return ', '.join(r for r in ret if r)
 
     def get_absolute_url(self):
         app, model = self._meta.app_label, self._meta.model_name

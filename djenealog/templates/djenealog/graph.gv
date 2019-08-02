@@ -12,6 +12,7 @@ digraph
     {
         node [shape=none, color=white, fillcolor=white, fontsize=20];
         {% for year in years %}
+        "{{ year|add:"1" }}" [shape="diamond" label="{{ year|add:"1" }}"];
         {{ year }} -> {{ year|add:"1" }} [style=invis];
         {% endfor %}
     }

@@ -1,5 +1,5 @@
-from datetime import date
 from calendar import LocaleHTMLCalendar
+from datetime import date
 from subprocess import check_output
 
 from django.contrib.auth.decorators import login_required
@@ -60,6 +60,15 @@ def stats(request):
         row[field]: row['total']
         for row in models.Individu.objects.all().values(field).annotate(total=Count(field)) if row[field] != ''
     } for field in ('prenom', 'usage', 'nom', 'epouse')]
+
+    # merge eg 'Marie-Christine' & 'Marie Christine'
+    drop = set()
+    for p in prenom.keys():
+        if '-' in p and p.replace('-', ' ') in prenom.keys():
+            prenom[p.replace('-', ' ')] += prenom[p]
+            drop.add(p)
+    prenom = {k: v for k, v in prenom.items() if k not in drop}
+
     noms, prenoms = set(list(nom.keys()) + list(epouse.keys())), set(list(prenom.keys()) + list(usage.keys()))
     noms = [(nom.get(n, 0) + epouse.get(n, 0), nom.get(n, 0), epouse.get(n, 0), n) for n in noms if n != '']
     prenoms = [(prenom.get(n, 0) + usage.get(n, 0), prenom.get(n, 0), usage.get(n, 0), n) for n in prenoms if n != '']

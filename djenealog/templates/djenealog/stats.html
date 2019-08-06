@@ -33,11 +33,21 @@
 <table class="table">
   <tr><th>Nom</th><th>Naissance</th><th>Épouse</th><th>Total</th></tr>
   {% for sum, noms, epouses, nom in noms %}
-  <tr><td>{{ nom }}</td><td>{{ noms }}</td><td>{{ epouses }}</td><td>{{ sum }}</td></tr>
+  <tr>
+    <td>{{ nom }}</td>
+    <td><a href="{% url 'djenealog:individus' %}?nom={{ nom }}">{{ noms }}</a></td>
+    <td><a href="{% url 'djenealog:individus' %}?epouse={{ nom }}">{{ epouses }}</a></td>
+    <td>{{ sum }}</td>
+  </tr>
   {% endfor %}
   <tr><th>Prénom</th><th>Naissance</th><th>Usage</th><th>Total</th></tr>
   {% for sum, prenoms, usages, prenom in prenoms %}
-  <tr><td>{{ prenom }}</td><td>{{ prenoms }}</td><td>{{ usages }}</td><td>{{ sum }}</td></tr>
+  <tr>
+    <td>{{ prenom }}</td>
+    <td><a href="{% url 'djenealog:individus' %}?prenom={{ prenom }}">{{ prenoms }}</a></td>
+    <td><a href="{% url 'djenealog:individus' %}?usage={{ prenom }}">{{ usages }}</a></td>
+    <td>{{ sum }}</td>
+  </tr>
   {% endfor %}
 </table>
 {% endif %}

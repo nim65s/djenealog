@@ -5,11 +5,13 @@ from . import models
 
 class IndividuFilter(filters.FilterSet):
     nom = filters.CharFilter(lookup_expr='icontains')
+    epouse = filters.CharFilter(lookup_expr='icontains')
     prenom = filters.CharFilter(lookup_expr='icontains')
+    usage = filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = models.Individu
-        fields = ('nom', 'prenom')
+        fields = ('nom', 'epouse', 'prenom', 'usage')
 
 
 class CoupleFilter(filters.FilterSet):

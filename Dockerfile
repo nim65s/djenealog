@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM alpine:3.10
 
 EXPOSE 8000
 
@@ -7,21 +7,12 @@ WORKDIR /app
 
 RUN apk update -q \
  && apk add --no-cache \
-    libpq \
- && apk add --no-cache --virtual .build-deps \
-    gcc \
-    python3-dev \
-    musl-dev \
-    postgresql-dev \
+    py3-gunicorn \
+    py3-psycopg2 \
+    py3-raven \
  && pip3 install --no-cache-dir \
-    gunicorn \
     pipenv \
-    psycopg2 \
-    python-memcached \
-    raven \
- && apk del --no-cache .build-deps
-
-ENV PYTHONPATH=/usr/lib/python3.7/site-packages
+    python-memcached
 
 ADD Pipfile Pipfile.lock ./
 RUN pipenv install --system --deploy

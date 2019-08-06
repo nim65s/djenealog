@@ -6,7 +6,7 @@ volumes:
 
 services:
   postgres:
-    image: postgres:10-alpine
+    image: postgres:11-alpine
     restart: unless-stopped
     env_file:
       - .env
@@ -26,23 +26,22 @@ services:
       - DB=postgres
       - MEMCACHED=True
     networks:
-      - proxytanet
+      - web
       - default
     labels:
-      - "traefik.enable=true"
-      - "traefik.frontend.rule=Host: djenealog.${DOMAIN_NAME:-localhost}"
-      - "traefik.docker.network=proxytanet"
+      traefik.enable: "true"
+      traefik.frontend.rule: "Host: djenealog.${DOMAIN_NAME:-localhost}"
   nginx:
     image: nim65s/ndh:nginx
     restart: unless-stopped
     volumes:
       - "srv:/srv"
     networks:
-      - proxytanet
+      - web
     labels:
-      - "traefik.enable=true"
-      - "traefik.frontend.rule=Host: djenealog.${DOMAIN_NAME:-localhost}; PathPrefix: /static, /media"
+      traefik.enable: "true"
+      traefik.frontend.rule: "Host: djenealog.${DOMAIN_NAME:-localhost}; PathPrefix: /static, /media"
 
 networks:
-  proxytanet:
+  web:
     external: true

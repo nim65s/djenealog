@@ -19,3 +19,10 @@ docker-compose up -d --build
 ```
 
 You may then want to create an admin: `docker-compose exec app ./manage.py createsuperuser`
+
+## Load json
+
+```
+docker cp djenealog.json djenealog_app_1:/djenealog.json
+docker exec -it djenealog_app_1 ./manage.py loaddata /djenealog.json
+```

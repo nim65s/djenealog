@@ -57,6 +57,6 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/reposit
  && ln -s /usr/lib/libproj.so.15 /usr/lib/libproj.so
 
 ADD Pipfile Pipfile.lock ./
-RUN pipenv install --system --deploy
+RUN pipenv install --system --deploy --dev
 
 ADD . .

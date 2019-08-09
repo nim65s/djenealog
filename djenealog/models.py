@@ -5,8 +5,6 @@ from datetime import date, datetime, timedelta
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
 from django.db.models import Q
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
 from django.urls import reverse
 
 from ndh.models import Links, NamedModel
@@ -164,8 +162,30 @@ class Couple(models.Model, Links):
             return -(start.year + (start.month + start.day / 30) / 12)
 
 
+class Lieu(Links, NamedModel):
+    wikidata = models.PositiveIntegerField(blank=True, null=True)
+
+    point = models.PointField(geography=True, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = 'Lieux'
+
+    @property
+    def wikidata_url(self):
+        return f'https://www.wikidata.org/wiki/Q{self.wikidata}'
+
+    def save(self, *args, **kwargs):
+        if self.wikidata:
+            claims = Client().get(f'Q{self.wikidata}', load=True).data['claims']
+
+            self.name = claims['P373'][0]['mainsnak']['datavalue']['value']
+            coordinate = claims['P625'][0]['mainsnak']['datavalue']['value']
+            self.point = Point(coordinate['longitude'], coordinate['latitude'])
+        return super().save(*args, **kwargs)
+
+
 class Evenement(models.Model):
-    lieu = models.CharField(max_length=50, blank=True, null=True)
+    lieu = models.ForeignKey(Lieu, blank=True, null=True, on_delete=models.PROTECT)
     y = models.PositiveSmallIntegerField('année', blank=True, null=True)
     m = models.PositiveSmallIntegerField('mois', blank=True, null=True)
     d = models.PositiveSmallIntegerField('jour', blank=True, null=True)
@@ -179,7 +199,7 @@ class Evenement(models.Model):
         ret = []
         d, m, y = self.d or '', calendar.month_name[self.m].lower() if self.m else '', self.y or ''
         ret.append(f'{d} {m} {y}'.strip())
-        ret.append(self.lieu)
+        ret.append('' if self.lieu is None else str(self.lieu))
         return (self.symbol + ' ' + ', '.join(r for r in ret if r)).strip()
 
     def get_absolute_url(self):
@@ -221,31 +241,3 @@ class Mariage(Evenement):
 class Divorce(Evenement):
     inst = models.OneToOneField(Couple, on_delete=models.PROTECT)
     symbol = '⚮'
-
-
-class Lieu(Links, NamedModel):
-    wikidata = models.PositiveIntegerField(blank=True, null=True)
-
-    point = models.PointField(geography=True, blank=True, null=True)
-
-    class Meta:
-        verbose_name_plural = 'Lieux'
-
-    @property
-    def wikidata_url(self):
-        return f'https://www.wikidata.org/wiki/Q{self.wikidata}'
-
-    def update_from_wikidata(self):
-        if not self.wikidata:
-            return
-
-        claims = Client().get(f'Q{self.wikidata}', load=True).data['claims']
-
-        self.name = claims['P373'][0]['mainsnak']['datavalue']['value']
-        coordinate = claims['P625'][0]['mainsnak']['datavalue']['value']
-        self.point = Point(coordinate['longitude'], coordinate['latitude'])
-
-
-@receiver(pre_save, sender=Lieu)
-def my_handler(sender, instance, **kwargs):
-    instance.update_from_wikidata()

@@ -6,8 +6,7 @@ install:
   - pip install pipenv
   - pipenv install --deploy --dev
 env:
-  - SECRET_KEY='pipo'
-  - POSTGRES_PASSWORD='popi'
+  - SECRET_KEY='pipo' POSTGRES_PASSWORD='popi'
 script:
   - ./manage.py migrate
   - coverage run manage.py test

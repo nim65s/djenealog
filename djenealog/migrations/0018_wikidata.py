@@ -84,8 +84,6 @@ def populate_lieux(apps, schema_editor):
         Lieu.objects.get_or_create(wikidata=wikidata, defaults={'name': name})
 
 
-
-
 class Migration(migrations.Migration):
 
     dependencies = [

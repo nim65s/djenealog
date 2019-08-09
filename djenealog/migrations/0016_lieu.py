@@ -20,7 +20,8 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200, unique=True)),
                 ('slug', autoslug.fields.AutoSlugField(editable=False, populate_from='name', unique=True)),
                 ('wikidata', models.PositiveIntegerField(blank=True, null=True)),
-                ('point', django.contrib.gis.db.models.fields.PointField(blank=True, geography=True, null=True, srid=4326)),
+                ('point',
+                 django.contrib.gis.db.models.fields.PointField(blank=True, geography=True, null=True, srid=4326)),
             ],
             options={
                 'abstract': False,

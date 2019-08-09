@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib.gis import admin
 
 from . import models
 
@@ -9,3 +9,4 @@ admin.site.register(models.Deces)
 admin.site.register(models.Pacs)
 admin.site.register(models.Mariage)
 admin.site.register(models.Divorce)
+admin.site.register(models.Lieu, admin.OSMGeoAdmin)

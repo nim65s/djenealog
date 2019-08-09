@@ -2,11 +2,15 @@ import calendar
 import time
 from datetime import date, datetime, timedelta
 
-from django.db import models
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 from django.db.models import Q
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.urls import reverse
 
-from ndh.models import Links
+from ndh.models import Links, NamedModel
+from wikidata.client import Client
 
 
 def timestamp(event):
@@ -217,3 +221,31 @@ class Mariage(Evenement):
 class Divorce(Evenement):
     inst = models.OneToOneField(Couple, on_delete=models.PROTECT)
     symbol = '⚮'
+
+
+class Lieu(Links, NamedModel):
+    wikidata = models.PositiveIntegerField(blank=True, null=True)
+
+    point = models.PointField(geography=True, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = 'Lieux'
+
+    @property
+    def wikidata_url(self):
+        return f'https://www.wikidata.org/wiki/Q{self.wikidata}'
+
+    def update_from_wikidata(self):
+        if not self.wikidata:
+            return
+
+        claims = Client().get(f'Q{self.wikidata}', load=True).data['claims']
+
+        self.name = claims['P373'][0]['mainsnak']['datavalue']['value']
+        coordinate = claims['P625'][0]['mainsnak']['datavalue']['value']
+        self.point = Point(coordinate['longitude'], coordinate['latitude'])
+
+
+@receiver(pre_save, sender=Lieu)
+def my_handler(sender, instance, **kwargs):
+    instance.update_from_wikidata()

@@ -1,5 +1,5 @@
 from django.urls import path
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 from . import models, views
 
@@ -33,4 +33,5 @@ urlpatterns = [
     path('deces/<int:pk>', views.EvenementUpdateView.as_view(model=models.Deces), name='deces'),
     path('deces/<int:pk>/create', views.EvenementCreateView.as_view(model=models.Deces), name='add-deces'),
     path('deces/<int:pk>/delete', views.EvenementDeleteView.as_view(model=models.Deces), name='del-deces'),
+    path('lieux', ListView.as_view(model=models.Lieu), name='lieux'),
 ]

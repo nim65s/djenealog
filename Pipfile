@@ -8,6 +8,8 @@ ndh = "*"
 django-filter = "*"
 "django-tables2" = "*"
 "Django-Select2" = "*"
+wikidata = "*"
+django-leaflet = "*"
 
 [dev-packages]
 ipython = "*"

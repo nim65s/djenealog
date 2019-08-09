@@ -8,12 +8,8 @@ DOMAIN_NAME = os.environ.get('DOMAIN_NAME', 'localhost')
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOST', f'{PROJECT}.{DOMAIN_NAME}')]
 ALLOWED_HOSTS += [f'www.{host}' for host in ALLOWED_HOSTS]
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
-
-# Application definition
 
 INSTALLED_APPS = [
     PROJECT,
@@ -23,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'django.contrib.humanize',
     'django.contrib.sites',
     'bootstrap4',
@@ -30,6 +27,7 @@ INSTALLED_APPS = [
     'testproject',
     'django_tables2',
     'django_select2',
+    'leaflet',
 ]
 
 MIDDLEWARE = [
@@ -63,23 +61,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'testproject.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DB = os.environ.get('DB', 'db.sqlite3')
 DATABASES = {
     'default': {
-        'ENGINE': f'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, DB),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.environ.get('POSTGRES_DB', 'postgres'),
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'postgres'),
+        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
     }
 }
-if DB == 'postgres':
-    DATABASES['default'].update(
-        ENGINE='django.db.backends.postgresql',
-        NAME=os.environ.get('POSTGRES_DB', DB),
-        USER=os.environ.get('POSTGRES_USER', DB),
-        HOST=os.environ.get('POSTGRES_HOST', DB),
-        PASSWORD=os.environ['POSTGRES_PASSWORD'],
-    )
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -118,3 +110,9 @@ if os.environ.get('MEMCACHED', 'False').lower() == 'true':
         }
     }
 DJANGO_TABLES2_TEMPLATE = f'{PROJECT}/tables.html'
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (43.5, 1.5),
+    'DEFAULT_ZOOM': 8,
+    'TILES': 'http://a.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
+}

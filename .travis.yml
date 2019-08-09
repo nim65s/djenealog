@@ -13,8 +13,8 @@ env:
   - SECRET_KEY='pipo' POSTGRES_PASSWORD='popi'
 script:
   - docker build -t $TRAVIS_REPO_SLUG .
-  - docker run --rm -it $TRAVIS_REPO_SLUG ./manage.py migrate
-  - docker run --rm -it $TRAVIS_REPO_SLUG coverage run manage.py test
+  - docker run --rm -e SECRET_KEY -e POSTGRES_PASSWORD -it $TRAVIS_REPO_SLUG ./manage.py migrate
+  - docker run --rm -e SECRET_KEY -e POSTGRES_PASSWORD -it $TRAVIS_REPO_SLUG coverage run manage.py test
   - flake8 .
   - yapf -dr .
   - safety check

@@ -1,15 +1,20 @@
 language: python
+sudo: required
 dist: xenial
 python:
   - 3.6
+services:
+  - postgresql
+  - docker
 install:
-  - pip install pipenv
+  - pip install pipenv psycopg2 raven
   - pipenv install --deploy --dev
 env:
   - SECRET_KEY='pipo' POSTGRES_PASSWORD='popi'
 script:
-  - ./manage.py migrate
-  - coverage run manage.py test
+  - docker build -t $TRAVIS_REPO_SLUG .
+  - docker run --rm -it $TRAVIS_REPO_SLUG ./manage.py migrate
+  - docker run --rm -it $TRAVIS_REPO_SLUG coverage run manage.py test
   - flake8 .
   - yapf -dr .
   - safety check

@@ -34,6 +34,13 @@ EXPOSE 8000
 RUN mkdir /app
 WORKDIR /app
 
+CMD while ! nc -z postgres 5432; do sleep 1; done \
+ && ./manage.py migrate \
+ && ./manage.py collectstatic --no-input \
+ && gunicorn \
+    --bind 0.0.0.0 \
+    testproject.wsgi
+
 RUN apk update -q \
  && apk add --no-cache \
     py3-gunicorn \
@@ -47,10 +54,3 @@ ADD Pipfile Pipfile.lock ./
 RUN pipenv install --system --deploy
 
 ADD . .
-
-CMD while ! nc -z postgres 5432; do sleep 1; done \
- && ./manage.py migrate \
- && ./manage.py collectstatic --no-input \
- && gunicorn \
-    --bind 0.0.0.0 \
-    testproject.wsgi

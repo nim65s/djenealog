@@ -173,7 +173,7 @@ class Evenement(models.Model):
 
     def __str__(self):
         ret = []
-        d, m, y = self.d or '', calendar.month_name[self.m] if self.m else '', self.y or ''
+        d, m, y = self.d or '', calendar.month_name[self.m].lower() if self.m else '', self.y or ''
         ret.append(f'{d} {m} {y}'.strip())
         ret.append(self.lieu)
         return (self.symbol + ' ' + ', '.join(r for r in ret if r)).strip()

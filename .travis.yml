@@ -10,11 +10,11 @@ install:
   - pip install pipenv psycopg2 raven
   - pipenv install --deploy --dev
 env:
-  - SECRET_KEY='pipo' POSTGRES_PASSWORD='popi'
+  - SECRET_KEY='pipo' POSTGRES_PASSWORD='popi' POSTGRES_HOST=$(ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+')
 script:
   - docker build -t $TRAVIS_REPO_SLUG .
-  - docker run --rm -e SECRET_KEY -e POSTGRES_PASSWORD -it $TRAVIS_REPO_SLUG ./manage.py migrate
-  - docker run --rm -e SECRET_KEY -e POSTGRES_PASSWORD -it $TRAVIS_REPO_SLUG coverage run manage.py test
+  - docker run --rm -e SECRET_KEY -e POSTGRES_PASSWORD -e POSTGRES_HOST -it $TRAVIS_REPO_SLUG ./manage.py migrate
+  - docker run --rm -e SECRET_KEY -e POSTGRES_PASSWORD -e POSTGRES_HOST -it $TRAVIS_REPO_SLUG coverage run manage.py test
   - flake8 .
   - yapf -dr .
   - safety check

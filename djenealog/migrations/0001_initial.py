@@ -11,8 +11,7 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
@@ -36,7 +35,12 @@ class Migration(migrations.Migration):
                 ('masculin', models.NullBooleanField()),
                 ('wikidata', models.PositiveIntegerField(blank=True, null=True)),
                 ('commentaires', models.TextField(blank=True, null=True)),
-                ('parents', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='enfants', to='djenealog.Couple')),
+                ('parents',
+                 models.ForeignKey(blank=True,
+                                   null=True,
+                                   on_delete=django.db.models.deletion.PROTECT,
+                                   related_name='enfants',
+                                   to='djenealog.Couple')),
             ],
             bases=(models.Model, ndh.models.Links),
         ),
@@ -47,7 +51,8 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200, unique=True)),
                 ('slug', autoslug.fields.AutoSlugField(editable=False, populate_from='name', unique=True)),
                 ('wikidata', models.PositiveIntegerField(blank=True, null=True)),
-                ('point', django.contrib.gis.db.models.fields.PointField(blank=True, geography=True, null=True, srid=4326)),
+                ('point',
+                 django.contrib.gis.db.models.fields.PointField(blank=True, geography=True, null=True, srid=4326)),
             ],
             options={
                 'verbose_name_plural': 'Lieux',
@@ -63,7 +68,11 @@ class Migration(migrations.Migration):
                 ('d', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='jour')),
                 ('commentaires', models.TextField(blank=True, null=True)),
                 ('inst', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='djenealog.Couple')),
-                ('lieu', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='djenealog.Lieu')),
+                ('lieu',
+                 models.ForeignKey(blank=True,
+                                   null=True,
+                                   on_delete=django.db.models.deletion.PROTECT,
+                                   to='djenealog.Lieu')),
             ],
             options={
                 'verbose_name_plural': 'pacs',
@@ -78,7 +87,11 @@ class Migration(migrations.Migration):
                 ('d', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='jour')),
                 ('commentaires', models.TextField(blank=True, null=True)),
                 ('inst', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='djenealog.Individu')),
-                ('lieu', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='djenealog.Lieu')),
+                ('lieu',
+                 models.ForeignKey(blank=True,
+                                   null=True,
+                                   on_delete=django.db.models.deletion.PROTECT,
+                                   to='djenealog.Lieu')),
             ],
             options={
                 'abstract': False,
@@ -93,7 +106,11 @@ class Migration(migrations.Migration):
                 ('d', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='jour')),
                 ('commentaires', models.TextField(blank=True, null=True)),
                 ('inst', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='djenealog.Couple')),
-                ('lieu', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='djenealog.Lieu')),
+                ('lieu',
+                 models.ForeignKey(blank=True,
+                                   null=True,
+                                   on_delete=django.db.models.deletion.PROTECT,
+                                   to='djenealog.Lieu')),
             ],
             options={
                 'abstract': False,
@@ -108,7 +125,11 @@ class Migration(migrations.Migration):
                 ('d', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='jour')),
                 ('commentaires', models.TextField(blank=True, null=True)),
                 ('inst', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='djenealog.Couple')),
-                ('lieu', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='djenealog.Lieu')),
+                ('lieu',
+                 models.ForeignKey(blank=True,
+                                   null=True,
+                                   on_delete=django.db.models.deletion.PROTECT,
+                                   to='djenealog.Lieu')),
             ],
             options={
                 'abstract': False,
@@ -123,7 +144,11 @@ class Migration(migrations.Migration):
                 ('d', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='jour')),
                 ('commentaires', models.TextField(blank=True, null=True)),
                 ('inst', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='djenealog.Individu')),
-                ('lieu', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='djenealog.Lieu')),
+                ('lieu',
+                 models.ForeignKey(blank=True,
+                                   null=True,
+                                   on_delete=django.db.models.deletion.PROTECT,
+                                   to='djenealog.Lieu')),
             ],
             options={
                 'verbose_name': 'décès',
@@ -133,11 +158,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='couple',
             name='femme',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='femme', to='djenealog.Individu'),
+            field=models.ForeignKey(blank=True,
+                                    null=True,
+                                    on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='femme',
+                                    to='djenealog.Individu'),
         ),
         migrations.AddField(
             model_name='couple',
             name='mari',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='mari', to='djenealog.Individu'),
+            field=models.ForeignKey(blank=True,
+                                    null=True,
+                                    on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='mari',
+                                    to='djenealog.Individu'),
         ),
     ]

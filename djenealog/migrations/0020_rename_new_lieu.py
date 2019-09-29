@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('djenealog', '0021_drop_old_lieu'),
+        ('djenealog', '0019_drop_old_lieu'),
     ]
 
     operations = [

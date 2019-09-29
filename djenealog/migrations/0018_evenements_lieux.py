@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('djenealog', '0018_wikidata'),
+        ('djenealog', '0017_lieux'),
     ]
 
     operations = [

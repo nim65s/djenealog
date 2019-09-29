@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('djenealog', '0020_populate_lieux'),
+        ('djenealog', '0018_evenements_lieux'),
     ]
 
     operations = [

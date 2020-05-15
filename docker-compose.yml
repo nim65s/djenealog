@@ -15,7 +15,7 @@ services:
   memcached:
     image: memcached:alpine
     restart: unless-stopped
-  app:
+  djenealog:
     build: .
     restart: unless-stopped
     volumes:

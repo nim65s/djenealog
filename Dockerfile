@@ -12,6 +12,9 @@ CMD while ! nc -z postgres 5432; do sleep 1; done \
     --bind 0.0.0.0 \
     testproject.wsgi
 
+ARG LANG=fr_FR
+ENV LANG=${LANG}.UTF-8 LC_ALL=${LANG}.UTF-8
+
 RUN apt update -qqy \
  && apt install -qqy --no-install-recommends \
     gunicorn3 \
@@ -23,7 +26,7 @@ RUN apt update -qqy \
     python3-psycopg2 \
     python3-setuptools \
  && rm -rf /var/lib/apt/lists/* \
- && echo fr_FR.UTF-8 UTF-8 > /etc/locale.gen \
+ && echo "${LANG} UTF-8" > /etc/locale.gen \
  && /usr/sbin/locale-gen
 
 ADD Pipfile Pipfile.lock ./

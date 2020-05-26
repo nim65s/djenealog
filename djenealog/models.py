@@ -6,7 +6,6 @@ from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
 from django.db.models import Q
 from django.urls import reverse
-
 from ndh.models import Links, NamedModel
 from wikidata.client import Client
 
@@ -169,6 +168,7 @@ class Lieu(Links, NamedModel):
 
     class Meta:
         verbose_name_plural = 'Lieux'
+        ordering = ['name']
 
     @property
     def wikidata_url(self):

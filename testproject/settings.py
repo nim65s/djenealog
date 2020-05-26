@@ -89,7 +89,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.utf8')
-LANGUAGE_CODE = 'fr-FR'
+LANGUAGE_CODE = 'fr'
 TIME_ZONE = 'Europe/Paris'
 USE_I18N = True
 USE_L10N = True

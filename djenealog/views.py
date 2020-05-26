@@ -9,7 +9,6 @@ from django.shortcuts import render
 from django.template.loader import get_template
 from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DeleteView, UpdateView
-
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from ndh.mixins import SuperUserRequiredMixin
@@ -110,7 +109,7 @@ def annivs(request):
         def formatday(self, day, weekday):
             if day == 0:
                 return '<td class="noday"> </td>'  # day outside month
-            annivs = ',<br />'.join(f'{anniv.inst.get_link()} ({anniv.y})'
+            annivs = ',<br />'.join(f'{anniv.symbol} {anniv.inst.get_link()} ({anniv.y})'
                                     for anniv in self.annivs[(self.current_month, day)])
             return f'<td><span class="font-italic">{day}</span><br />{annivs}</td>'
 
@@ -119,8 +118,10 @@ def annivs(request):
             return super().formatmonth(theyear, themonth, withyear)
 
     annivs = {(m, d): [] for m in range(13) for d in range(32)}
-    for naissance in models.Naissance.objects.filter(m__isnull=False, d__isnull=False).order_by('y'):
-        annivs[(naissance.m, naissance.d)].append(naissance)
+
+    for event in [models.Naissance, models.Mariage, models.Pacs]:
+        for anniv in event.objects.filter(m__isnull=False, d__isnull=False).order_by('y'):
+            annivs[(anniv.m, anniv.d)].append(anniv)
 
     anniv_cal = AnnivCalendar(annivs).formatyear(date.today().year, 1)
     return render(request, 'djenealog/annivs.html', {'anniv_cal': anniv_cal})

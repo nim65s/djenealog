@@ -108,7 +108,7 @@ class Individu(models.Model, Links):
 
     def family(self):
         """Return a set of all descendant ancestors and ancestor descendants."""
-        family = set([self])
+        family = set([self]) | set(self.conjoints())
         for ancestor in self.ancestors():
             family.add(ancestor)
             family |= ancestor.descendants()

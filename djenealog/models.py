@@ -81,6 +81,42 @@ class Individu(models.Model, Links):
         if start:
             return -(start.year + (start.month + start.day / 30) / 12)
 
+    def ancestors(self):
+        """Return a set of ancestors."""
+        ancestors = set()
+        if self.parents:
+            if self.parents.mari:
+                ancestors.add(self.parents.mari)
+                ancestors |= self.parents.mari.ancestors()
+            if self.parents.femme:
+                ancestors.add(self.parents.femme)
+                ancestors |= self.parents.femme.ancestors()
+        return ancestors
+
+    def descendants(self):
+        """Return a set of descendants."""
+        descendants = set()
+        for couple in self.femme.all():
+            for enfant in couple.enfants.all():
+                descendants.add(enfant)
+                descendants |= enfant.descendants()
+        for couple in self.mari.all():
+            for enfant in couple.enfants.all():
+                descendants.add(enfant)
+                descendants |= enfant.descendants()
+        return descendants
+
+    def family(self):
+        """Return a set of all descendant ancestors and ancestor descendants."""
+        family = set([self])
+        for ancestor in self.ancestors():
+            family.add(ancestor)
+            family |= ancestor.descendants()
+        for descendant in self.descendants():
+            family.add(descendant)
+            family |= descendant.ancestors()
+        return family
+
 
 class Couple(models.Model, Links):
     mari = models.ForeignKey(Individu, on_delete=models.PROTECT, related_name='mari', blank=True, null=True)

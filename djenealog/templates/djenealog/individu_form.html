@@ -6,6 +6,12 @@
 {% if individu.pk %}
 
 <dl class="row">
+  <dt class="col-sm-3">Graphe</dt>
+  <dd class="col-sm-9">
+    <a href="{% url 'djenealog:graph' %}?individu={{ individu.pk }}">famille</a> -
+    <a href="{% url 'djenealog:graph' %}?individu={{ individu.pk }}&extended=1">famille étendue</a>
+  </dd>
+
   <dt class="col-sm-3">Naissance</dt>
   <dd class="col-sm-9">
   {% if individu.naissance %}

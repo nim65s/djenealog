@@ -7,8 +7,9 @@ services:
   - postgresql
   - docker
 install:
-  - pip install pipenv psycopg2 raven
-  - pipenv install --deploy --dev
+  - pip install poetry psycopg2
+  - poetry config virtualenvs.create false --local
+  - poetry install --no-dev --no-root --no-interaction --no-ansi
 env:
   - SECRET_KEY='pipo' POSTGRES_PASSWORD='popi' POSTGRES_HOST=$(ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+')
 script:

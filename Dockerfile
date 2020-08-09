@@ -19,17 +19,20 @@ RUN apt update -qqy \
  && apt install -qqy --no-install-recommends \
     gunicorn3 \
     netcat-openbsd \
-    pipenv \
     postgresql-11-postgis \
     postgresql-server-dev-11 \
     python3-memcache \
+    python3-pip \
     python3-psycopg2 \
     python3-setuptools \
+    python3-venv \
  && rm -rf /var/lib/apt/lists/* \
+ && pip3 install --no-cache-dir poetry \
  && echo "${LANG} UTF-8" > /etc/locale.gen \
  && /usr/sbin/locale-gen
 
-ADD Pipfile Pipfile.lock ./
-RUN pipenv install --system --deploy --dev
+ADD pyproject.toml poetry.lock ./
+RUN poetry config virtualenvs.create false --local \
+ && poetry install --no-dev --no-root --no-interaction --no-ansi
 
 ADD . .

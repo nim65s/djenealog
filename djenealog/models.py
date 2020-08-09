@@ -23,7 +23,7 @@ class Individu(models.Model, Links):
     prenom = models.CharField('Prénom', max_length=50, blank=True)
     usage = models.CharField('Prénom d’usage', max_length=50, blank=True)
     epouse = models.CharField('Nom d’épouse ou d’usage', max_length=50, blank=True)
-    masculin = models.NullBooleanField()
+    masculin = models.BooleanField(null=True)
     parents = models.ForeignKey('Couple', on_delete=models.PROTECT, blank=True, null=True, related_name='enfants')
     wikidata = models.PositiveIntegerField(blank=True, null=True)
     commentaires = models.TextField(blank=True, null=True)

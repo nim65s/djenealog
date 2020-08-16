@@ -6,6 +6,11 @@ from subprocess import check_output
 
 from setuptools import setup
 
+try:
+    import importlib.metadata as importlib_metadata
+except ModuleNotFoundError:
+    import importlib_metadata
+
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     README = readme.read()
 
@@ -13,14 +18,14 @@ with open(os.path.join(os.path.dirname(__file__), 'Pipfile')) as pipfile:
     content = pipfile.read()
     REQUIREMENTS = re.findall(r'''\\n *['"]?([\w-]*)['"]? *=''', content.split('packages]')[1])
 
-VERSION = [tag for tag in check_output(['git', 'tag', '-l']).decode().split() if tag.startswith('v')][-1][1:]
+__version__ = importlib_metadata.version(__name__)
 
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='djenealog',
-    version=VERSION,
+    version=__version__,
     packages=['djenealog'],
     install_requires=REQUIREMENTS,
     include_package_data=True,

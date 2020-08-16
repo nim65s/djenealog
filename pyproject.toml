@@ -14,6 +14,7 @@ django-select2 = "^7.4.2"
 wikidata = "^0.6.1"
 django-leaflet = "^0.26.0"
 six = "^1.15.0"
+importlib-metadata = {version = "^1.0", python = "<3.8"}
 
 [tool.poetry.dev-dependencies]
 python-coveralls = "^2.9.3"

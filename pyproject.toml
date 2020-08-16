@@ -16,6 +16,7 @@ django-leaflet = "^0.26.0"
 six = "^1.15.0"
 
 [tool.poetry.dev-dependencies]
+python-coveralls = "^2.9.3"
 
 [build-system]
 requires = ["poetry>=0.12"]

@@ -2,7 +2,6 @@ FROM debian:buster-slim
 
 EXPOSE 8000
 
-RUN mkdir /app
 WORKDIR /app
 
 CMD while ! nc -z postgres 5432; do sleep 1; done \

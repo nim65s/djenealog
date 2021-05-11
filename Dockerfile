@@ -25,6 +25,7 @@ RUN apt update -qqy \
     python3-psycopg2 \
     python3-setuptools \
     python3-venv \
+    rustc \
  && rm -rf /var/lib/apt/lists/* \
  && pip3 install --no-cache-dir poetry \
  && echo "${LANG} UTF-8" > /etc/locale.gen \

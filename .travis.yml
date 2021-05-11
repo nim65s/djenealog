@@ -8,6 +8,7 @@ services:
   - docker
 install:
   - pip install poetry psycopg2
+  - pip install --upgrade py
   - poetry config virtualenvs.create false --local
   - poetry install --no-interaction --no-ansi
 env:

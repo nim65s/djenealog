@@ -28,6 +28,7 @@ RUN apt update -qqy \
     python3-venv \
     rustc \
  && rm -rf /var/lib/apt/lists/* \
+ && pip3 install --no-cache-dir --upgrade pip \
  && pip3 install --no-cache-dir poetry \
  && echo "${LANG} UTF-8" > /etc/locale.gen \
  && /usr/sbin/locale-gen

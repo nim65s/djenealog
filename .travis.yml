@@ -7,8 +7,9 @@ services:
   - postgresql
   - docker
 install:
-  - pip install poetry psycopg2
+  - pip install --upgrade pip
   - pip install --upgrade py
+  - pip install poetry psycopg2
   - poetry config virtualenvs.create false --local
   - poetry install --no-interaction --no-ansi
 env:

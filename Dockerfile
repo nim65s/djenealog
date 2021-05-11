@@ -34,7 +34,6 @@ RUN apt update -qqy \
  && /usr/sbin/locale-gen
 
 ADD pyproject.toml poetry.lock ./
-RUN poetry config virtualenvs.create false --local \
- && poetry install --no-dev --no-root --no-interaction --no-ansi
+RUN poetry install --no-dev --no-root --no-interaction --no-ansi
 
 ADD . .

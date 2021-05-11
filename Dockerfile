@@ -16,6 +16,7 @@ ENV LANG=${LANG}.UTF-8 LC_ALL=${LANG}.UTF-8
 
 RUN apt update -qqy \
  && apt install -qqy --no-install-recommends \
+    cargo \
     gunicorn3 \
     netcat-openbsd \
     postgresql-11-postgis \

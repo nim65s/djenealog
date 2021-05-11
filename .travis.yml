@@ -1,8 +1,8 @@
 language: python
 sudo: required
-dist: xenial
+dist: bionic
 python:
-  - 3.8
+  - 3.9
 services:
   - postgresql
   - docker

@@ -5,9 +5,9 @@ EXPOSE 8000
 WORKDIR /app
 
 CMD while ! nc -z postgres 5432; do sleep 1; done \
- && ./manage.py migrate \
- && ./manage.py collectstatic --no-input \
- && gunicorn3 \
+ && poetry run ./manage.py migrate \
+ && poetry run ./manage.py collectstatic --no-input \
+ && poetry run gunicorn3 \
     --bind 0.0.0.0 \
     testproject.wsgi
 
@@ -34,7 +34,7 @@ RUN apt update -qqy \
  && /usr/sbin/locale-gen
 
 ADD pyproject.toml poetry.lock ./
-RUN poetry config virtualenvs.create false --local \
+RUN poetry config virtualenvs.system-site-packages true --local \
  && poetry install --no-dev --no-root --no-interaction --no-ansi
 
 ADD . .

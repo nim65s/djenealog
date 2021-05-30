@@ -13,4 +13,4 @@ jobs:
       - name: Start
         run: docker-compose up -d
       - name: Test
-        run: docker-compose exec app poetry run ./manage.py test
+        run: docker-compose run djenealog poetry run ./manage.py test

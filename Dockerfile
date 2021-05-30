@@ -7,7 +7,7 @@ WORKDIR /app
 CMD while ! nc -z postgres 5432; do sleep 1; done \
  && poetry run ./manage.py migrate \
  && poetry run ./manage.py collectstatic --no-input \
- && poetry run gunicorn3 \
+ && poetry run gunicorn \
     --bind 0.0.0.0 \
     testproject.wsgi
 
@@ -17,7 +17,6 @@ ENV LANG=${LANG}.UTF-8 LC_ALL=${LANG}.UTF-8
 RUN apt update -qqy \
  && apt install -qqy --no-install-recommends \
     cargo \
-    gunicorn3 \
     netcat-openbsd \
     postgresql-11-postgis \
     postgresql-server-dev-11 \
@@ -35,6 +34,7 @@ RUN apt update -qqy \
 
 ADD pyproject.toml poetry.lock ./
 RUN poetry config virtualenvs.options.system-site-packages true --local \
- && poetry install --no-dev --no-root --no-interaction --no-ansi
+ && poetry install --no-dev --no-root --no-interaction --no-ansi \
+ && poetry add gunicorn
 
 ADD . .

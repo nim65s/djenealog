@@ -29,7 +29,7 @@ RUN apt update -qqy \
     rustc \
  && rm -rf /var/lib/apt/lists/* \
  && pip3 install --no-cache-dir --upgrade pip \
- && pip3 install --no-cache-dir poetry \
+ && pip3 install --no-cache-dir --upgrade --pre poetry \
  && echo "${LANG} UTF-8" > /etc/locale.gen \
  && /usr/sbin/locale-gen
 

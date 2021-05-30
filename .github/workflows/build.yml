@@ -1,11 +1,12 @@
 name: build docker image and run tests inside
-on: [push]
+on: push
 jobs:
   docker:
     runs-on: ubuntu-latest
     env:
       SECRET_KEY: "pipo"
       POSTGRES_PASSWORD: "popi"
+      POSTGRES_HOST: "localhost"
     services:
       postgres:
         image: postgres
@@ -16,6 +17,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       -
         name: Set up QEMU
@@ -31,7 +34,11 @@ jobs:
           load: true
       -
         name: Migrate
-        run: docker run --rm -e SECRET_KEY -e POSTGRES_PASSWORD -t ${{ github.repository}} poetry run ./manage.py migrate
+        run: >
+          docker run --rm -e SECRET_KEY -e POSTGRES_PASSWORD -e POSTGRES_HOST -t ${{ github.repository}} poetry run
+          ./manage.py migrate
       -
         name: Test
-        run: docker run --rm -e SECRET_KEY -e POSTGRES_PASSWORD -t ${{ github.repository}} poetry run ./manage.py test
+        run: >
+          docker run --rm -e SECRET_KEY -e POSTGRES_PASSWORD -e POSTGRES_HOST -t ${{ github.repository}} poetry run
+          poetry run ./manage.py test

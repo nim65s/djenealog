@@ -13,9 +13,9 @@ except ModuleNotFoundError:
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     README = readme.read()
 
-with open(os.path.join(os.path.dirname(__file__), 'Pipfile')) as pipfile:
-    content = pipfile.read()
-    REQUIREMENTS = re.findall(r'''\\n *['"]?([\w-]*)['"]? *=''', content.split('packages]')[1])
+with open(os.path.join(os.path.dirname(__file__), 'pyproject.toml')) as pyproject:
+    content = pyproject.read()
+    REQUIREMENTS = re.findall(r'''\\n *['"]?([\w-]*)['"]? *=''', content.split('dependencies]')[1])
 
 __version__ = importlib_metadata.version(__name__)
 

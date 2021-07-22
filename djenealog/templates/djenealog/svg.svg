@@ -1,0 +1,6 @@
+<svg version="1.1" baseProfile="full" width="{{width}}" height="{% widthratio height 1 100 %}" xmlns="http://www.w3.org/2000/svg">
+    {% for individu, start, width in individus %}
+        <rect x="{{start}}" y="{% widthratio forloop.counter0 1 120 as w %}{{w|add:"45" }}" height="100", width="{{width}}" fill="#{{individu.color}}" />
+        <text x="{{start}}" y="{% widthratio forloop.counter 1 120 %}" font-size="80">{{ individu }}</text>
+    {% endfor %}
+</svg>

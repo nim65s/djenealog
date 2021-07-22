@@ -13,7 +13,17 @@ from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from ndh.mixins import SuperUserRequiredMixin
 
-from . import filters, forms, models, tables
+from . import filters, forms, models, tables, svg
+
+
+def svg_view(request):
+    individus, couples, width = svg.svg()
+    return render(request, 'djenealog/svg.svg', {
+        'individus': individus,
+        'couples': couples,
+        'width': width,
+        'height': len(individus) + len(couples)
+    })
 
 
 # @login_required

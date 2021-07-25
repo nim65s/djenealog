@@ -32,7 +32,7 @@ services:
       traefik.enable: "true"
       traefik.http.routers.djenealog-app.rule: "Host(`djenealog.${DOMAIN_NAME:-localhost}`)"
   nginx:
-    image: nim65s/ndh:nginx
+    image: nim65s/ndh
     restart: unless-stopped
     volumes:
       - "srv:/srv"

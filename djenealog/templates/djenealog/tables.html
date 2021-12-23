@@ -1,5 +1,5 @@
 {% extends 'django_tables2/bootstrap.html' %}
-{% load bootstrap4 %}
+{% load django_bootstrap5 %}
 
 {% block pagination %}
 {% bootstrap_pagination table.page extra=request.GET.urlencode %}

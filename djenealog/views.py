@@ -18,17 +18,20 @@ from . import filters, forms, models, tables
 
 # @login_required
 def gv(request):
-    fmt = request.GET.get('fmt', 'html')
+    fmt = request.GET.get("fmt", "html")
     individus = models.Individu.objects.all()
     couples = models.Couple.objects.all()
-    if 'famille' in request.GET:
-        nom = request.GET['famille'].lower()
+    if "famille" in request.GET:
+        nom = request.GET["famille"].lower()
         individus = individus.filter(
-            Q(nom__icontains=nom) | Q(femme__mari__nom__icontains=nom) | Q(mari__femme__nom__icontains=nom)
-            | Q(parents__mari__nom__icontains=nom) | Q(parents__femme__nom__icontains=nom))
+            Q(nom__icontains=nom)
+            | Q(femme__mari__nom__icontains=nom)
+            | Q(mari__femme__nom__icontains=nom)
+            | Q(parents__mari__nom__icontains=nom)
+            | Q(parents__femme__nom__icontains=nom))
         couples = couples.filter(Q(mari__nom__icontains=nom) | Q(femme__nom__icontains=nom))
-    if 'individu' in request.GET:
-        individus = set(individus.get(pk=int(request.GET['individu'])).family(extended='extended' in request.GET))
+    if "individu" in request.GET:
+        individus = set(individus.get(pk=int(request.GET["individu"])).family(extended="extended" in request.GET))
         couples = couples.filter(Q(mari__in=individus) | Q(femme__in=individus))
         for couple in couples:
             if couple.mari:
@@ -37,12 +40,17 @@ def gv(request):
                 individus.add(couple.femme)
             individus |= set(couple.enfants.all())
     return render(
-        request, f'djenealog/graph.{fmt}', {
-            'years': range(models.Naissance.objects.exclude(y=None).order_by('y').first().y,
-                           date.today().year + 1),
-            'individus': individus,
-            'couples': couples
-        })
+        request,
+        f"djenealog/graph.{fmt}",
+        {
+            "years": range(
+                models.Naissance.objects.exclude(y=None).order_by("y").first().y,
+                date.today().year + 1,
+            ),
+            "individus": individus,
+            "couples": couples,
+        },
+    )
 
 
 # @login_required
@@ -50,36 +58,38 @@ def gv(request):
 def img_svg(request):
     individus = models.Individu.objects.all()
     couples = models.Couple.objects.all()
-    gv = get_template('djenealog/graph.gv').render({
-        'years':
-        range(models.Naissance.objects.exclude(y=None).order_by('y').first().y,
-              date.today().year + 1),
-        'individus':
+    gv = get_template("djenealog/graph.gv").render({
+        "years":
+        range(
+            models.Naissance.objects.exclude(y=None).order_by("y").first().y,
+            date.today().year + 1,
+        ),
+        "individus":
         individus,
-        'couples':
-        couples
+        "couples":
+        couples,
     })
-    svg = check_output(['dot', '-Tsvg'], input=gv, text=True)
-    return HttpResponse(svg, content_type='image/svg+xml')
+    svg = check_output(["dot", "-Tsvg"], input=gv, text=True)
+    return HttpResponse(svg, content_type="image/svg+xml")
 
 
 def stats(request):
     prenom, usage, nom, epouse = [{
-        row[field]: row['total']
-        for row in models.Individu.objects.all().values(field).annotate(total=Count(field)) if row[field] != ''
-    } for field in ('prenom', 'usage', 'nom', 'epouse')]
+        row[field]: row["total"]
+        for row in models.Individu.objects.all().values(field).annotate(total=Count(field)) if row[field] != ""
+    } for field in ("prenom", "usage", "nom", "epouse")]
 
     # merge eg 'Marie-Christine' & 'Marie Christine'
     drop = set()
     for p in prenom.keys():
-        if '-' in p and p.replace('-', ' ') in prenom.keys():
-            prenom[p.replace('-', ' ')] += prenom[p]
+        if "-" in p and p.replace("-", " ") in prenom.keys():
+            prenom[p.replace("-", " ")] += prenom[p]
             drop.add(p)
     prenom = {k: v for k, v in prenom.items() if k not in drop}
 
     noms, prenoms = set(list(nom.keys()) + list(epouse.keys())), set(list(prenom.keys()) + list(usage.keys()))
-    noms = [(nom.get(n, 0) + epouse.get(n, 0), nom.get(n, 0), epouse.get(n, 0), n) for n in noms if n != '']
-    prenoms = [(prenom.get(n, 0) + usage.get(n, 0), prenom.get(n, 0), usage.get(n, 0), n) for n in prenoms if n != '']
+    noms = [(nom.get(n, 0) + epouse.get(n, 0), nom.get(n, 0), epouse.get(n, 0), n) for n in noms if n != ""]
+    prenoms = [(prenom.get(n, 0) + usage.get(n, 0), prenom.get(n, 0), usage.get(n, 0), n) for n in prenoms if n != ""]
 
     centenaires = models.Individu.objects.filter(deces__isnull=True, naissance__y__lt=date.today().year - 100)
     maris_pas_masculins = models.Couple.objects.exclude(mari__masculin=True).exclude(mari__isnull=True)
@@ -88,29 +98,35 @@ def stats(request):
     assexues = models.Individu.objects.filter(masculin=None)
 
     return render(
-        request, 'djenealog/stats.html', {
-            'individus': models.Individu.objects.count(),
-            'couples': models.Couple.objects.count(),
-            'naissances': models.Naissance.objects.count(),
-            'deces': models.Deces.objects.count(),
-            'mariages': models.Mariage.objects.count(),
-            'divorces': models.Divorce.objects.count(),
-            'pacs': models.Pacs.objects.count(),
-            'noms': sorted(noms, reverse=True),
-            'prenoms': sorted(prenoms, reverse=True),
-            'hommes': models.Individu.objects.filter(masculin=True).count(),
-            'femmes': models.Individu.objects.filter(masculin=False).count(),
-            'centenaires': centenaires.count(),
-            'maris_pas_masculins': maris_pas_masculins.count(),
-            'femmes_pas_feminines': femmes_pas_feminines.count(),
-            'divorces_sans_mariages': divorces_sans_mariages.count(),
-            'assexues': assexues.count(),
-        })
+        request,
+        "djenealog/stats.html",
+        {
+            "individus": models.Individu.objects.count(),
+            "couples": models.Couple.objects.count(),
+            "naissances": models.Naissance.objects.count(),
+            "deces": models.Deces.objects.count(),
+            "mariages": models.Mariage.objects.count(),
+            "divorces": models.Divorce.objects.count(),
+            "pacs": models.Pacs.objects.count(),
+            "noms": sorted(noms, reverse=True),
+            "prenoms": sorted(prenoms, reverse=True),
+            "hommes": models.Individu.objects.filter(masculin=True).count(),
+            "femmes": models.Individu.objects.filter(masculin=False).count(),
+            "centenaires": centenaires.count(),
+            "maris_pas_masculins": maris_pas_masculins.count(),
+            "femmes_pas_feminines": femmes_pas_feminines.count(),
+            "divorces_sans_mariages": divorces_sans_mariages.count(),
+            "assexues": assexues.count(),
+        },
+    )
 
 
 @login_required
 def annivs(request):
     class AnnivCalendar(LocaleHTMLCalendar):
+        cssclass_year = "year table"
+        cssclass_month = "month table"
+
         def __init__(self, annivs, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.annivs = annivs
@@ -118,7 +134,7 @@ def annivs(request):
         def formatday(self, day, weekday):
             if day == 0:
                 return '<td class="noday"> </td>'  # day outside month
-            annivs = ',<br />'.join(f'{anniv.symbol} {anniv.inst.get_link()} ({anniv.y})'
+            annivs = ",<br />".join(f"{anniv.symbol} {anniv.inst.get_link()} ({anniv.y})"
                                     for anniv in self.annivs[(self.current_month, day)])
             return f'<td><span class="font-italic">{day}</span><br />{annivs}</td>'
 
@@ -129,11 +145,11 @@ def annivs(request):
     annivs = {(m, d): [] for m in range(13) for d in range(32)}
 
     for event in [models.Naissance, models.Mariage, models.Pacs]:
-        for anniv in event.objects.filter(m__isnull=False, d__isnull=False).order_by('y'):
+        for anniv in event.objects.filter(m__isnull=False, d__isnull=False).order_by("y"):
             annivs[(anniv.m, anniv.d)].append(anniv)
 
     anniv_cal = AnnivCalendar(annivs).formatyear(date.today().year, 1)
-    return render(request, 'djenealog/annivs.html', {'anniv_cal': anniv_cal})
+    return render(request, "djenealog/annivs.html", {"anniv_cal": anniv_cal})
 
 
 class IndividusView(SuperUserRequiredMixin, SingleTableMixin, FilterView):
@@ -169,8 +185,8 @@ class CoupleCreateView(SuperUserRequiredMixin, CreateView):
 
 
 class EvenementMixin(SuperUserRequiredMixin):
-    fields = ('d', 'm', 'y', 'lieu', 'commentaires')
-    template_name = 'djenealog/evenement_form.html'
+    fields = ("d", "m", "y", "lieu", "commentaires")
+    template_name = "djenealog/evenement_form.html"
 
     def get_success_url(self):
         return self.object.inst.get_absolute_url()
@@ -187,8 +203,8 @@ class EvenementCreateView(EvenementMixin, CreateView):
 
 
 class ModelDeleteView(SuperUserRequiredMixin, DeleteView):
-    template_name = 'djenealog/confirm_delete.html'
-    success_url = '/'
+    template_name = "djenealog/confirm_delete.html"
+    success_url = "/"
 
 
 class EvenementDeleteView(ModelDeleteView):

@@ -8,17 +8,25 @@ from . import models
 class IndividuForm(ModelForm):
     class Meta:
         model = models.Individu
-        fields = ('prenom', 'usage', 'nom', 'epouse', 'masculin', 'parents', 'commentaires')
+        fields = (
+            "prenom",
+            "usage",
+            "nom",
+            "epouse",
+            "masculin",
+            "parents",
+            "commentaires",
+        )
         widgets = {
-            'parents': Select2Widget,
+            "parents": Select2Widget,
         }
 
 
 class CoupleForm(ModelForm):
     class Meta:
         model = models.Couple
-        fields = ('mari', 'femme', 'debut', 'fin', 'commentaires')
+        fields = ("mari", "femme", "debut", "fin", "commentaires")
         widgets = {
-            'mari': Select2Widget,
-            'femme': Select2Widget,
+            "mari": Select2Widget,
+            "femme": Select2Widget,
         }

@@ -6,20 +6,20 @@
 
 {% block navbarleft %}
 <li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" id="djenealogDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+  <a class="nav-link dropdown-toggle" id="djenealogDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
     Djenealog
   </a>
-  <div class="dropdown-menu" aria-labelledby="djenealogDropdown">
-      <a class="dropdown-item" href="{% url 'djenealog:graph' %}">Graphe</a>
-      <a class="dropdown-item" href="{% url 'djenealog:stats' %}">Stats</a>
-      <a class="dropdown-item" href="{% url 'djenealog:annivs' %}">Anniversaires</a>
+  <ul class="dropdown-menu" aria-labelledby="djenealogDropdown">
+    <li><a class="dropdown-item" href="{% url 'djenealog:graph' %}">Graphe</a></li>
+    <li><a class="dropdown-item" href="{% url 'djenealog:stats' %}">Stats</a></li>
+    <li><a class="dropdown-item" href="{% url 'djenealog:annivs' %}">Anniversaires</a></li>
       {% if request.user.is_superuser %}
-      <a class="dropdown-item" href="{% url 'djenealog:individus' %}">Individus</a>
-      <a class="dropdown-item" href="{% url 'djenealog:couples' %}">Couples</a>
-      <a class="dropdown-item" href="{% url 'djenealog:add-individu' %}">Add Individu</a>
-      <a class="dropdown-item" href="{% url 'djenealog:add-couple' %}">Add Couple</a>
-      <a class="dropdown-item" href="{% url 'djenealog:lieux' %}">Lieux</a>
+      <li><a class="dropdown-item" href="{% url 'djenealog:individus' %}">Individus</a></li>
+      <li><a class="dropdown-item" href="{% url 'djenealog:couples' %}">Couples</a></li>
+      <li><a class="dropdown-item" href="{% url 'djenealog:add-individu' %}">Add Individu</a></li>
+      <li><a class="dropdown-item" href="{% url 'djenealog:add-couple' %}">Add Couple</a></li>
+      <li><a class="dropdown-item" href="{% url 'djenealog:lieux' %}">Lieux</a></li>
       {% endif %}
-  </div>
+  </ul>
 </li>
 {% endblock %}

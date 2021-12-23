@@ -15,162 +15,383 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Couple',
+            name="Couple",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('debut', models.DateField(blank=True, null=True)),
-                ('fin', models.DateField(blank=True, null=True)),
-                ('commentaires', models.TextField(blank=True, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("debut", models.DateField(blank=True, null=True)),
+                ("fin", models.DateField(blank=True, null=True)),
+                ("commentaires", models.TextField(blank=True, null=True)),
             ],
             bases=(models.Model, ndh.models.Links),
         ),
         migrations.CreateModel(
-            name='Individu',
+            name="Individu",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(blank=True, max_length=50)),
-                ('prenom', models.CharField(blank=True, max_length=50, verbose_name='Prénom')),
-                ('usage', models.CharField(blank=True, max_length=50, verbose_name='Prénom d’usage')),
-                ('epouse', models.CharField(blank=True, max_length=50, verbose_name='Nom d’épouse ou d’usage')),
-                ('masculin', models.NullBooleanField()),
-                ('wikidata', models.PositiveIntegerField(blank=True, null=True)),
-                ('commentaires', models.TextField(blank=True, null=True)),
-                ('parents',
-                 models.ForeignKey(blank=True,
-                                   null=True,
-                                   on_delete=django.db.models.deletion.PROTECT,
-                                   related_name='enfants',
-                                   to='djenealog.Couple')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nom", models.CharField(blank=True, max_length=50)),
+                (
+                    "prenom",
+                    models.CharField(blank=True, max_length=50, verbose_name="Prénom"),
+                ),
+                (
+                    "usage",
+                    models.CharField(
+                        blank=True, max_length=50, verbose_name="Prénom d’usage"
+                    ),
+                ),
+                (
+                    "epouse",
+                    models.CharField(
+                        blank=True,
+                        max_length=50,
+                        verbose_name="Nom d’épouse ou d’usage",
+                    ),
+                ),
+                ("masculin", models.NullBooleanField()),
+                ("wikidata", models.PositiveIntegerField(blank=True, null=True)),
+                ("commentaires", models.TextField(blank=True, null=True)),
+                (
+                    "parents",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="enfants",
+                        to="djenealog.Couple",
+                    ),
+                ),
             ],
             bases=(models.Model, ndh.models.Links),
         ),
         migrations.CreateModel(
-            name='Lieu',
+            name="Lieu",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, unique=True)),
-                ('slug', autoslug.fields.AutoSlugField(editable=False, populate_from='name', unique=True)),
-                ('wikidata', models.PositiveIntegerField(blank=True, null=True)),
-                ('point',
-                 django.contrib.gis.db.models.fields.PointField(blank=True, geography=True, null=True, srid=4326)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200, unique=True)),
+                (
+                    "slug",
+                    autoslug.fields.AutoSlugField(
+                        editable=False, populate_from="name", unique=True
+                    ),
+                ),
+                ("wikidata", models.PositiveIntegerField(blank=True, null=True)),
+                (
+                    "point",
+                    django.contrib.gis.db.models.fields.PointField(
+                        blank=True, geography=True, null=True, srid=4326
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Lieux',
+                "verbose_name_plural": "Lieux",
             },
             bases=(ndh.models.Links, models.Model),
         ),
         migrations.CreateModel(
-            name='Pacs',
+            name="Pacs",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('y', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='année')),
-                ('m', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='mois')),
-                ('d', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='jour')),
-                ('commentaires', models.TextField(blank=True, null=True)),
-                ('inst', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='djenealog.Couple')),
-                ('lieu',
-                 models.ForeignKey(blank=True,
-                                   null=True,
-                                   on_delete=django.db.models.deletion.PROTECT,
-                                   to='djenealog.Lieu')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "y",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="année"
+                    ),
+                ),
+                (
+                    "m",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="mois"
+                    ),
+                ),
+                (
+                    "d",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="jour"
+                    ),
+                ),
+                ("commentaires", models.TextField(blank=True, null=True)),
+                (
+                    "inst",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="djenealog.Couple",
+                    ),
+                ),
+                (
+                    "lieu",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="djenealog.Lieu",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'pacs',
+                "verbose_name_plural": "pacs",
             },
         ),
         migrations.CreateModel(
-            name='Naissance',
+            name="Naissance",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('y', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='année')),
-                ('m', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='mois')),
-                ('d', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='jour')),
-                ('commentaires', models.TextField(blank=True, null=True)),
-                ('inst', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='djenealog.Individu')),
-                ('lieu',
-                 models.ForeignKey(blank=True,
-                                   null=True,
-                                   on_delete=django.db.models.deletion.PROTECT,
-                                   to='djenealog.Lieu')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "y",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="année"
+                    ),
+                ),
+                (
+                    "m",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="mois"
+                    ),
+                ),
+                (
+                    "d",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="jour"
+                    ),
+                ),
+                ("commentaires", models.TextField(blank=True, null=True)),
+                (
+                    "inst",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="djenealog.Individu",
+                    ),
+                ),
+                (
+                    "lieu",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="djenealog.Lieu",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Mariage',
+            name="Mariage",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('y', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='année')),
-                ('m', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='mois')),
-                ('d', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='jour')),
-                ('commentaires', models.TextField(blank=True, null=True)),
-                ('inst', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='djenealog.Couple')),
-                ('lieu',
-                 models.ForeignKey(blank=True,
-                                   null=True,
-                                   on_delete=django.db.models.deletion.PROTECT,
-                                   to='djenealog.Lieu')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "y",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="année"
+                    ),
+                ),
+                (
+                    "m",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="mois"
+                    ),
+                ),
+                (
+                    "d",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="jour"
+                    ),
+                ),
+                ("commentaires", models.TextField(blank=True, null=True)),
+                (
+                    "inst",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="djenealog.Couple",
+                    ),
+                ),
+                (
+                    "lieu",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="djenealog.Lieu",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Divorce',
+            name="Divorce",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('y', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='année')),
-                ('m', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='mois')),
-                ('d', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='jour')),
-                ('commentaires', models.TextField(blank=True, null=True)),
-                ('inst', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='djenealog.Couple')),
-                ('lieu',
-                 models.ForeignKey(blank=True,
-                                   null=True,
-                                   on_delete=django.db.models.deletion.PROTECT,
-                                   to='djenealog.Lieu')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "y",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="année"
+                    ),
+                ),
+                (
+                    "m",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="mois"
+                    ),
+                ),
+                (
+                    "d",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="jour"
+                    ),
+                ),
+                ("commentaires", models.TextField(blank=True, null=True)),
+                (
+                    "inst",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="djenealog.Couple",
+                    ),
+                ),
+                (
+                    "lieu",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="djenealog.Lieu",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Deces',
+            name="Deces",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('y', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='année')),
-                ('m', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='mois')),
-                ('d', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='jour')),
-                ('commentaires', models.TextField(blank=True, null=True)),
-                ('inst', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='djenealog.Individu')),
-                ('lieu',
-                 models.ForeignKey(blank=True,
-                                   null=True,
-                                   on_delete=django.db.models.deletion.PROTECT,
-                                   to='djenealog.Lieu')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "y",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="année"
+                    ),
+                ),
+                (
+                    "m",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="mois"
+                    ),
+                ),
+                (
+                    "d",
+                    models.PositiveSmallIntegerField(
+                        blank=True, null=True, verbose_name="jour"
+                    ),
+                ),
+                ("commentaires", models.TextField(blank=True, null=True)),
+                (
+                    "inst",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="djenealog.Individu",
+                    ),
+                ),
+                (
+                    "lieu",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="djenealog.Lieu",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'décès',
-                'verbose_name_plural': 'décès',
+                "verbose_name": "décès",
+                "verbose_name_plural": "décès",
             },
         ),
         migrations.AddField(
-            model_name='couple',
-            name='femme',
-            field=models.ForeignKey(blank=True,
-                                    null=True,
-                                    on_delete=django.db.models.deletion.PROTECT,
-                                    related_name='femme',
-                                    to='djenealog.Individu'),
+            model_name="couple",
+            name="femme",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="femme",
+                to="djenealog.Individu",
+            ),
         ),
         migrations.AddField(
-            model_name='couple',
-            name='mari',
-            field=models.ForeignKey(blank=True,
-                                    null=True,
-                                    on_delete=django.db.models.deletion.PROTECT,
-                                    related_name='mari',
-                                    to='djenealog.Individu'),
+            model_name="couple",
+            name="mari",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="mari",
+                to="djenealog.Individu",
+            ),
         ),
     ]

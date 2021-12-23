@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('djenealog', '0002_order_lieux'),
+        ("djenealog", "0002_order_lieux"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='individu',
-            name='masculin',
+            model_name="individu",
+            name="masculin",
             field=models.BooleanField(null=True),
         ),
     ]

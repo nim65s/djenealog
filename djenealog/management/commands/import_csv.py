@@ -8,16 +8,18 @@ from django.core.management.base import BaseCommand
 
 from djenealog import models
 
-STATES = IntEnum('States', 'lieu individu couple famille')
+STATES = IntEnum("States", "lieu individu couple famille")
 mapping = {state: {} for state in STATES}
-logger = logging.getLogger('djenealog.import_csv')
+logger = logging.getLogger("djenealog.import_csv")
 
 
 def get_or_create_event(cls, inst, ymd, lieu):
     instance, created = cls.objects.get_or_create(inst=inst)
     if lieu and not instance.lieu:
         instance.lieu = mapping[STATES.lieu][lieu]
-    y, m, d = [int(i) for i in re.match(r'(\d+)?-?(\d+)?-?(\d+)?', ymd).groups(default=0)]
+    y, m, d = [
+        int(i) for i in re.match(r"(\d+)?-?(\d+)?-?(\d+)?", ymd).groups(default=0)
+    ]
     if y and not instance.y:
         instance.y = y
     if m and not instance.m:
@@ -28,10 +30,10 @@ def get_or_create_event(cls, inst, ymd, lieu):
 
 
 class Command(BaseCommand):
-    help = 'import a csv file from gramps'
+    help = "import a csv file from gramps"
 
     def add_arguments(self, parser):
-        parser.add_argument('csvfile', type=argparse.FileType('r'))
+        parser.add_argument("csvfile", type=argparse.FileType("r"))
 
     def handle(self, csvfile, *args, **options):
         state = STATES.lieu
@@ -40,12 +42,12 @@ class Command(BaseCommand):
             line = line.strip()
             if jump:
                 jump = 0
-                logger.debug(f'-- {line}')
+                logger.debug(f"-- {line}")
                 continue
-            if line == '':
+            if line == "":
                 jump = 1
                 state += 1
-                logger.debug(f'-- {line}')
+                logger.debug(f"-- {line}")
                 continue
 
             read = next(csv.reader([line]))
@@ -55,9 +57,11 @@ class Command(BaseCommand):
                 mapping[state][gramps] = read[2]
 
             elif state == STATES.individu:
-                nom, prenom, masculin = read[1], read[2], read[7] == 'masculin'
+                nom, prenom, masculin = read[1], read[2], read[7] == "masculin"
 
-                inst, _ = models.Individu.objects.get_or_create(nom=nom, prenom=prenom, masculin=masculin)
+                inst, _ = models.Individu.objects.get_or_create(
+                    nom=nom, prenom=prenom, masculin=masculin
+                )
                 mapping[state][gramps] = inst.pk
 
                 if read[8] or read[9]:
@@ -66,8 +70,16 @@ class Command(BaseCommand):
                     get_or_create_event(models.Deces, inst, read[14], read[15])
 
             elif state == STATES.couple:
-                mari = models.Individu.objects.get(pk=mapping[STATES.individu][read[1]]) if read[1] else None
-                femme = models.Individu.objects.get(pk=mapping[STATES.individu][read[2]]) if read[2] else None
+                mari = (
+                    models.Individu.objects.get(pk=mapping[STATES.individu][read[1]])
+                    if read[1]
+                    else None
+                )
+                femme = (
+                    models.Individu.objects.get(pk=mapping[STATES.individu][read[2]])
+                    if read[2]
+                    else None
+                )
 
                 inst, _ = models.Couple.objects.get_or_create(mari=mari, femme=femme)
                 mapping[state][gramps] = inst.pk
@@ -76,6 +88,10 @@ class Command(BaseCommand):
                     get_or_create_event(models.Mariage, inst, read[3], read[4])
 
             else:
-                enfant = models.Individu.objects.get(pk=mapping[STATES.individu][read[1]])
-                enfant.parents = models.Couple.objects.get(pk=mapping[STATES.couple][gramps])
+                enfant = models.Individu.objects.get(
+                    pk=mapping[STATES.individu][read[1]]
+                )
+                enfant.parents = models.Couple.objects.get(
+                    pk=mapping[STATES.couple][gramps]
+                )
                 enfant.save()

@@ -23,6 +23,6 @@ You may then want to create an admin: `docker-compose exec djenealog poetry run 
 ## Load json
 
 ```
-docker cp djenealog.json djenealog_djenealog_1:/djenealog.json
-docker exec -it djenealog_djenealog_1 poetry run ./manage.py loaddata /djenealog.json
+docker cp djenealog.json djenealog-djenealog-1:/djenealog.json
+docker exec -it djenealog-djenealog-1 poetry run ./manage.py loaddata /djenealog.json
 ```

@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM python:bullseye
 
 EXPOSE 8000
 
@@ -14,27 +14,21 @@ CMD while ! nc -z postgres 5432; do sleep 1; done \
 ARG LANG=fr_FR
 ENV LANG=${LANG}.UTF-8 LC_ALL=${LANG}.UTF-8
 
-RUN apt update -qqy \
- && apt install -qqy --no-install-recommends \
-    cargo \
+RUN --mount=type=cache,sharing=locked,target=/root/.cache \
+    --mount=type=cache,sharing=locked,target=/var/cache/apt \
+    --mount=type=cache,sharing=locked,target=/var/lib/apt \
+    apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -qqy --no-install-recommends \
     netcat-openbsd \
-    postgresql-11-postgis \
-    postgresql-server-dev-11 \
-    python3-memcache \
-    python3-pip \
-    python3-psycopg2 \
-    python3-setuptools \
-    python3-venv \
-    rustc \
- && rm -rf /var/lib/apt/lists/* \
- && python3 -m pip install --no-cache-dir --upgrade pip \
- && python3 -m pip install --no-cache-dir --upgrade --pre poetry \
+    postgresql-13-postgis \
+    postgresql-server-dev-13 \
+ && python -m pip install -U pip \
+ && python -m pip install -U poetry \
  && echo "${LANG} UTF-8" > /etc/locale.gen \
  && /usr/sbin/locale-gen
 
 ADD pyproject.toml poetry.lock ./
-RUN poetry config virtualenvs.options.system-site-packages true --local \
- && poetry install --no-dev --no-root --no-interaction --no-ansi \
- && poetry add gunicorn
+RUN --mount=type=cache,sharing=locked,target=/root/.cache \
+    poetry config virtualenvs.create false \
+ && poetry install --no-dev --no-root --no-interaction --no-ansi
 
 ADD . .

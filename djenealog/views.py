@@ -28,10 +28,17 @@ def gv(request):
             | Q(femme__mari__nom__icontains=nom)
             | Q(mari__femme__nom__icontains=nom)
             | Q(parents__mari__nom__icontains=nom)
-            | Q(parents__femme__nom__icontains=nom))
-        couples = couples.filter(Q(mari__nom__icontains=nom) | Q(femme__nom__icontains=nom))
+            | Q(parents__femme__nom__icontains=nom)
+        )
+        couples = couples.filter(
+            Q(mari__nom__icontains=nom) | Q(femme__nom__icontains=nom)
+        )
     if "individu" in request.GET:
-        individus = set(individus.get(pk=int(request.GET["individu"])).family(extended="extended" in request.GET))
+        individus = set(
+            individus.get(pk=int(request.GET["individu"])).family(
+                extended="extended" in request.GET
+            )
+        )
         couples = couples.filter(Q(mari__in=individus) | Q(femme__in=individus))
         for couple in couples:
             if couple.mari:
@@ -58,26 +65,31 @@ def gv(request):
 def img_svg(request):
     individus = models.Individu.objects.all()
     couples = models.Couple.objects.all()
-    gv = get_template("djenealog/graph.gv").render({
-        "years":
-        range(
-            models.Naissance.objects.exclude(y=None).order_by("y").first().y,
-            date.today().year + 1,
-        ),
-        "individus":
-        individus,
-        "couples":
-        couples,
-    })
+    gv = get_template("djenealog/graph.gv").render(
+        {
+            "years": range(
+                models.Naissance.objects.exclude(y=None).order_by("y").first().y,
+                date.today().year + 1,
+            ),
+            "individus": individus,
+            "couples": couples,
+        }
+    )
     svg = check_output(["dot", "-Tsvg"], input=gv, text=True)
     return HttpResponse(svg, content_type="image/svg+xml")
 
 
 def stats(request):
-    prenom, usage, nom, epouse = [{
-        row[field]: row["total"]
-        for row in models.Individu.objects.all().values(field).annotate(total=Count(field)) if row[field] != ""
-    } for field in ("prenom", "usage", "nom", "epouse")]
+    prenom, usage, nom, epouse = [
+        {
+            row[field]: row["total"]
+            for row in models.Individu.objects.all()
+            .values(field)
+            .annotate(total=Count(field))
+            if row[field] != ""
+        }
+        for field in ("prenom", "usage", "nom", "epouse")
+    ]
 
     # merge eg 'Marie-Christine' & 'Marie Christine'
     drop = set()
@@ -87,14 +99,32 @@ def stats(request):
             drop.add(p)
     prenom = {k: v for k, v in prenom.items() if k not in drop}
 
-    noms, prenoms = set(list(nom.keys()) + list(epouse.keys())), set(list(prenom.keys()) + list(usage.keys()))
-    noms = [(nom.get(n, 0) + epouse.get(n, 0), nom.get(n, 0), epouse.get(n, 0), n) for n in noms if n != ""]
-    prenoms = [(prenom.get(n, 0) + usage.get(n, 0), prenom.get(n, 0), usage.get(n, 0), n) for n in prenoms if n != ""]
+    noms, prenoms = set(list(nom.keys()) + list(epouse.keys())), set(
+        list(prenom.keys()) + list(usage.keys())
+    )
+    noms = [
+        (nom.get(n, 0) + epouse.get(n, 0), nom.get(n, 0), epouse.get(n, 0), n)
+        for n in noms
+        if n != ""
+    ]
+    prenoms = [
+        (prenom.get(n, 0) + usage.get(n, 0), prenom.get(n, 0), usage.get(n, 0), n)
+        for n in prenoms
+        if n != ""
+    ]
 
-    centenaires = models.Individu.objects.filter(deces__isnull=True, naissance__y__lt=date.today().year - 100)
-    maris_pas_masculins = models.Couple.objects.exclude(mari__masculin=True).exclude(mari__isnull=True)
-    femmes_pas_feminines = models.Couple.objects.exclude(femme__masculin=False).exclude(femme__isnull=True)
-    divorces_sans_mariages = models.Couple.objects.filter(divorce__isnull=False, mariage__isnull=True)
+    centenaires = models.Individu.objects.filter(
+        deces__isnull=True, naissance__y__lt=date.today().year - 100
+    )
+    maris_pas_masculins = models.Couple.objects.exclude(mari__masculin=True).exclude(
+        mari__isnull=True
+    )
+    femmes_pas_feminines = models.Couple.objects.exclude(femme__masculin=False).exclude(
+        femme__isnull=True
+    )
+    divorces_sans_mariages = models.Couple.objects.filter(
+        divorce__isnull=False, mariage__isnull=True
+    )
     assexues = models.Individu.objects.filter(masculin=None)
 
     return render(
@@ -134,8 +164,10 @@ def annivs(request):
         def formatday(self, day, weekday):
             if day == 0:
                 return '<td class="noday"> </td>'  # day outside month
-            annivs = ",<br />".join(f"{anniv.symbol} {anniv.inst.get_link()} ({anniv.y})"
-                                    for anniv in self.annivs[(self.current_month, day)])
+            annivs = ",<br />".join(
+                f"{anniv.symbol} {anniv.inst.get_link()} ({anniv.y})"
+                for anniv in self.annivs[(self.current_month, day)]
+            )
             return f'<td><span class="font-italic">{day}</span><br />{annivs}</td>'
 
         def formatmonth(self, theyear, themonth, withyear=True):
@@ -145,7 +177,9 @@ def annivs(request):
     annivs = {(m, d): [] for m in range(13) for d in range(32)}
 
     for event in [models.Naissance, models.Mariage, models.Pacs]:
-        for anniv in event.objects.filter(m__isnull=False, d__isnull=False).order_by("y"):
+        for anniv in event.objects.filter(m__isnull=False, d__isnull=False).order_by(
+            "y"
+        ):
             annivs[(anniv.m, anniv.d)].append(anniv)
 
     anniv_cal = AnnivCalendar(annivs).formatyear(date.today().year, 1)

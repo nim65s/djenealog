@@ -5,9 +5,9 @@ EXPOSE 8000
 WORKDIR /app
 
 CMD while ! nc -z postgres 5432; do sleep 1; done \
- && poetry run ./manage.py migrate \
- && poetry run ./manage.py collectstatic --no-input \
- && poetry run gunicorn \
+ && ./manage.py migrate \
+ && ./manage.py collectstatic --no-input \
+ && gunicorn \
     --bind 0.0.0.0 \
     testproject.wsgi
 

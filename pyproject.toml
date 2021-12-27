@@ -16,8 +16,6 @@ gunicorn = "^20.1.0"
 ndh = "^5.1.2"
 psycopg2 = "^2.9.2"
 redis = "^4.0.2"
-requests = "^2.26.0"
-virtualenv = "^20.10.0"
 wikidata = "^0.6.1"
 
 [tool.poetry.dev-dependencies]

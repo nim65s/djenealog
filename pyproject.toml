@@ -7,7 +7,7 @@ license = "BSD-2-Clause"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-certifi = "^2021.10.8"
+certifi = "^2022.12.7"
 django-filter = "^2.3.0"
 django-leaflet = "^0.28.0"
 django-select2 = "^7.4.2"

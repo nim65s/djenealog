@@ -4,6 +4,8 @@ EXPOSE 8000
 
 WORKDIR /app
 
+ENV PYTHONUNBUFFERED=1
+
 CMD while ! nc -z postgres 5432; do sleep 1; done \
  && poetry run ./manage.py migrate \
  && poetry run ./manage.py collectstatic --no-input \
@@ -14,10 +16,10 @@ CMD while ! nc -z postgres 5432; do sleep 1; done \
 ARG LANG=fr_FR
 ENV LANG=${LANG}.UTF-8 LC_ALL=${LANG}.UTF-8
 
-RUN --mount=type=cache,sharing=locked,target=/root/.cache \
-    --mount=type=cache,sharing=locked,target=/var/cache/apt \
+RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,sharing=locked,target=/var/lib/apt \
-    apt-get update -qqy && DEBIAN_FRONTEND=noninteractive apt-get install -qqy --no-install-recommends \
+    --mount=type=cache,sharing=locked,target=/root/.cache \
+    apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -qqy --no-install-recommends \
     netcat-openbsd \
     postgresql-13-postgis \
     postgresql-server-dev-13 \

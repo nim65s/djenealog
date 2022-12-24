@@ -184,6 +184,16 @@ def annivs(request):
             upper="upper" in request.GET,
             lower="lower" in request.GET,
         )
+        couples = models.Couple.objects.filter(
+            Q(mari__in=individus) | Q(femme__in=individus)
+        )
+        for couple in couples:
+            if couple.mari:
+                individus.add(couple.mari)
+            if couple.femme:
+                individus.add(couple.femme)
+            individus |= set(couple.enfants.all())
+
         for anniv in models.Naissance.objects.filter(
             m__isnull=False, d__isnull=False, inst__in=individus
         ).order_by("y"):

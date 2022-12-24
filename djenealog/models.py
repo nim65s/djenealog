@@ -128,17 +128,19 @@ class Individu(models.Model, Links):
                 descendants |= enfant.descendants()
         return descendants
 
-    def family(self, extended=False):
+    def family(self, extended=False, upper=True, lower=True):
         """Return a set of all descendant ancestors and ancestor descendants."""
         family = set([self]) | set(self.conjoints())
-        for ancestor in self.ancestors():
-            family.add(ancestor)
-            if extended:
-                family |= ancestor.descendants()
-        for descendant in self.descendants():
-            family.add(descendant)
-            if extended:
-                family |= descendant.ancestors()
+        if upper:
+            for ancestor in self.ancestors():
+                family.add(ancestor)
+                if extended:
+                    family |= ancestor.descendants()
+        if lower:
+            for descendant in self.descendants():
+                family.add(descendant)
+                if extended:
+                    family |= descendant.ancestors()
         return family
 
 

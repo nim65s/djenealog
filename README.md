@@ -19,6 +19,7 @@ docker-compose up -d --build
 ```
 
 You may then want to create an admin: `docker-compose exec djenealog poetry run ./manage.py createsuperuser`
+docker-compose exec djenealog ./manage.py createsuperuser
 
 ## Load json
 

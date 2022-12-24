@@ -36,7 +36,9 @@ def gv(request):
     if "individu" in request.GET:
         individus = set(
             individus.get(pk=int(request.GET["individu"])).family(
-                extended="extended" in request.GET
+                extended="extended" in request.GET,
+                upper="upper" in request.GET,
+                lower="lower" in request.GET,
             )
         )
         couples = couples.filter(Q(mari__in=individus) | Q(femme__in=individus))

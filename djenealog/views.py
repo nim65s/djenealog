@@ -178,11 +178,22 @@ def annivs(request):
 
     annivs = {(m, d): [] for m in range(13) for d in range(32)}
 
-    for event in [models.Naissance, models.Mariage, models.Pacs]:
-        for anniv in event.objects.filter(m__isnull=False, d__isnull=False).order_by(
-            "y"
-        ):
+    if "individu" in request.GET:
+        individus = models.Individu.objects.get(pk=int(request.GET["individu"])).family(
+            extended="extended" in request.GET,
+            upper="upper" in request.GET,
+            lower="lower" in request.GET,
+        )
+        for anniv in models.Naissance.objects.filter(
+            m__isnull=False, d__isnull=False, inst__in=individus
+        ).order_by("y"):
             annivs[(anniv.m, anniv.d)].append(anniv)
+    else:
+        for event in [models.Naissance, models.Mariage, models.Pacs]:
+            for anniv in event.objects.filter(
+                m__isnull=False, d__isnull=False
+            ).order_by("y"):
+                annivs[(anniv.m, anniv.d)].append(anniv)
 
     anniv_cal = AnnivCalendar(annivs).formatyear(date.today().year, 1)
     return render(request, "djenealog/annivs.html", {"anniv_cal": anniv_cal})

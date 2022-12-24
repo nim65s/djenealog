@@ -5,9 +5,9 @@ EXPOSE 8000
 WORKDIR /app
 
 CMD while ! nc -z postgres 5432; do sleep 1; done \
- && ./manage.py migrate \
- && ./manage.py collectstatic --no-input \
- && gunicorn \
+ && poetry run ./manage.py migrate \
+ && poetry run ./manage.py collectstatic --no-input \
+ && poetry run gunicorn \
     --bind 0.0.0.0 \
     testproject.wsgi
 
@@ -22,13 +22,15 @@ RUN --mount=type=cache,sharing=locked,target=/root/.cache \
     postgresql-13-postgis \
     postgresql-server-dev-13 \
  && python -m pip install -U pip \
- && python -m pip install -U poetry \
+ && python -m pip install -U pipx \
+ && python -m pipx install poetry \
  && echo "${LANG} UTF-8" > /etc/locale.gen \
  && /usr/sbin/locale-gen
 
+ENV PATH=/root/.local/bin:$PATH
 ADD pyproject.toml poetry.lock ./
 RUN --mount=type=cache,sharing=locked,target=/root/.cache \
-    poetry config virtualenvs.create false \
+    python -m venv .venv \
  && poetry install --no-dev --no-root --no-interaction --no-ansi
 
 ADD . .

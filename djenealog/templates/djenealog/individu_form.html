@@ -12,6 +12,12 @@
     <a href="{% url 'djenealog:graph' %}?individu={{ individu.pk }}&upper=1&lower=1&extended=1">famille étendue</a>
   </dd>
 
+  <dt class="col-sm-3">Annivs</dt>
+  <dd class="col-sm-9">
+    <a href="{% url 'djenealog:annivs' %}?individu={{ individu.pk }}&upper=1&lower=1">famille</a> -
+    <a href="{% url 'djenealog:annivs' %}?individu={{ individu.pk }}&upper=1&lower=1&extended=1">famille étendue</a>
+  </dd>
+
   <dt class="col-sm-3">Naissance</dt>
   <dd class="col-sm-9">
   {% if individu.naissance %}

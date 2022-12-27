@@ -25,5 +25,5 @@ docker-compose exec djenealog ./manage.py createsuperuser
 
 ```
 docker cp djenealog.json djenealog-djenealog-1:/djenealog.json
-docker exec -it djenealog-djenealog-1 ./manage.py loaddata /djenealog.json
+docker exec -it djenealog-djenealog-1 poetry run ./manage.py loaddata /djenealog.json
 ```

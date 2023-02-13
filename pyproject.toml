@@ -17,7 +17,7 @@ ndh = "^5.1.2"
 psycopg2 = "^2.9.2"
 redis = "^4.0.2"
 wikidata = "^0.6.1"
-ipython = "^8.7.0"
+ipython = "^8.10.0"
 
 [tool.poetry.dev-dependencies]
 coverage = "^6.2"

@@ -17,9 +17,9 @@ def get_or_create_event(cls, inst, ymd, lieu):
     instance, created = cls.objects.get_or_create(inst=inst)
     if lieu and not instance.lieu:
         instance.lieu = mapping[STATES.lieu][lieu]
-    y, m, d = [
+    y, m, d = (
         int(i) for i in re.match(r"(\d+)?-?(\d+)?-?(\d+)?", ymd).groups(default=0)
-    ]
+    )
     if y and not instance.y:
         instance.y = y
     if m and not instance.m:
@@ -60,7 +60,9 @@ class Command(BaseCommand):
                 nom, prenom, masculin = read[1], read[2], read[7] == "masculin"
 
                 inst, _ = models.Individu.objects.get_or_create(
-                    nom=nom, prenom=prenom, masculin=masculin
+                    nom=nom,
+                    prenom=prenom,
+                    masculin=masculin,
                 )
                 mapping[state][gramps] = inst.pk
 
@@ -89,9 +91,9 @@ class Command(BaseCommand):
 
             else:
                 enfant = models.Individu.objects.get(
-                    pk=mapping[STATES.individu][read[1]]
+                    pk=mapping[STATES.individu][read[1]],
                 )
                 enfant.parents = models.Couple.objects.get(
-                    pk=mapping[STATES.couple][gramps]
+                    pk=mapping[STATES.couple][gramps],
                 )
                 enfant.save()

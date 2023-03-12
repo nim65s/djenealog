@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.template.loader import get_template
 from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DeleteView, UpdateView
+
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from ndh.mixins import SuperUserRequiredMixin
@@ -28,10 +29,10 @@ def gv(request):
             | Q(femme__mari__nom__icontains=nom)
             | Q(mari__femme__nom__icontains=nom)
             | Q(parents__mari__nom__icontains=nom)
-            | Q(parents__femme__nom__icontains=nom)
+            | Q(parents__femme__nom__icontains=nom),
         )
         couples = couples.filter(
-            Q(mari__nom__icontains=nom) | Q(femme__nom__icontains=nom)
+            Q(mari__nom__icontains=nom) | Q(femme__nom__icontains=nom),
         )
     if "individu" in request.GET:
         individus = set(
@@ -39,7 +40,7 @@ def gv(request):
                 extended="extended" in request.GET,
                 upper="upper" in request.GET,
                 lower="lower" in request.GET,
-            )
+            ),
         )
         couples = couples.filter(Q(mari__in=individus) | Q(femme__in=individus))
         for couple in couples:
@@ -75,14 +76,14 @@ def img_svg(request):
             ),
             "individus": individus,
             "couples": couples,
-        }
+        },
     )
     svg = check_output(["dot", "-Tsvg"], input=gv, text=True)
     return HttpResponse(svg, content_type="image/svg+xml")
 
 
 def stats(request):
-    prenom, usage, nom, epouse = [
+    prenom, usage, nom, epouse = (
         {
             row[field]: row["total"]
             for row in models.Individu.objects.all()
@@ -91,7 +92,7 @@ def stats(request):
             if row[field] != ""
         }
         for field in ("prenom", "usage", "nom", "epouse")
-    ]
+    )
 
     # merge eg 'Marie-Christine' & 'Marie Christine'
     drop = set()
@@ -102,7 +103,7 @@ def stats(request):
     prenom = {k: v for k, v in prenom.items() if k not in drop}
 
     noms, prenoms = set(list(nom.keys()) + list(epouse.keys())), set(
-        list(prenom.keys()) + list(usage.keys())
+        list(prenom.keys()) + list(usage.keys()),
     )
     noms = [
         (nom.get(n, 0) + epouse.get(n, 0), nom.get(n, 0), epouse.get(n, 0), n)
@@ -116,16 +117,18 @@ def stats(request):
     ]
 
     centenaires = models.Individu.objects.filter(
-        deces__isnull=True, naissance__y__lt=date.today().year - 100
+        deces__isnull=True,
+        naissance__y__lt=date.today().year - 100,
     )
     maris_pas_masculins = models.Couple.objects.exclude(mari__masculin=True).exclude(
-        mari__isnull=True
+        mari__isnull=True,
     )
     femmes_pas_feminines = models.Couple.objects.exclude(femme__masculin=False).exclude(
-        femme__isnull=True
+        femme__isnull=True,
     )
     divorces_sans_mariages = models.Couple.objects.filter(
-        divorce__isnull=False, mariage__isnull=True
+        divorce__isnull=False,
+        mariage__isnull=True,
     )
     assexues = models.Individu.objects.filter(masculin=None)
 
@@ -185,7 +188,7 @@ def annivs(request):
             lower="lower" in request.GET,
         )
         couples = models.Couple.objects.filter(
-            Q(mari__in=individus) | Q(femme__in=individus)
+            Q(mari__in=individus) | Q(femme__in=individus),
         )
         for couple in couples:
             if couple.mari:
@@ -195,13 +198,16 @@ def annivs(request):
             individus |= set(couple.enfants.all())
 
         for anniv in models.Naissance.objects.filter(
-            m__isnull=False, d__isnull=False, inst__in=individus
+            m__isnull=False,
+            d__isnull=False,
+            inst__in=individus,
         ).order_by("y"):
             annivs[(anniv.m, anniv.d)].append(anniv)
     else:
         for event in [models.Naissance, models.Mariage, models.Pacs]:
             for anniv in event.objects.filter(
-                m__isnull=False, d__isnull=False
+                m__isnull=False,
+                d__isnull=False,
             ).order_by("y"):
                 annivs[(anniv.m, anniv.d)].append(anniv)
 

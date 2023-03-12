@@ -1,6 +1,7 @@
 import logging
 
 from django.core.management.base import BaseCommand
+
 from wikidata.client import Client
 
 from djenealog.models import Couple, Deces, Individu, Lieu, Naissance
@@ -45,7 +46,7 @@ class WikiData:
         self.done.add(wikidata_id)
         obj = self.client.get(f"Q{wikidata_id}", load=True)
         self.logger.warning(
-            f"{n}\thttps://www.wikidata.org/wiki/Q{wikidata_id}   \t{obj.description}"
+            f"{n}\thttps://www.wikidata.org/wiki/Q{wikidata_id}   \t{obj.description}",
         )
         claims = obj.data["claims"]
         family = []
@@ -81,12 +82,12 @@ class WikiData:
         mari, femme = None, None
         if "P22" in claims and "datavalue" in claims["P22"][0]["mainsnak"]:
             mari, _ = Individu.objects.get_or_create(
-                wikidata=self.get_id(claims["P22"][0])
+                wikidata=self.get_id(claims["P22"][0]),
             )
             family.append(self.get_id(claims["P22"][0]))
         if "P25" in claims and "datavalue" in claims["P25"][0]["mainsnak"]:
             femme, _ = Individu.objects.get_or_create(
-                wikidata=self.get_id(claims["P25"][0])
+                wikidata=self.get_id(claims["P25"][0]),
             )
             family.append(self.get_id(claims["P25"][0]))
         if mari is not None or femme is not None:

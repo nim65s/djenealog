@@ -4,7 +4,7 @@ EXPOSE 8000
 
 WORKDIR /app
 
-ENV PYTHONUNBUFFERED=1
+ENV POETRY_VIRTUALENVS_IN_PROJECT=true PYTHONUNBUFFERED=1 PATH=/root/.local/bin:$PATH
 
 CMD while ! nc -z postgres 5432; do sleep 1; done \
  && poetry run ./manage.py migrate \
@@ -20,7 +20,10 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,sharing=locked,target=/var/lib/apt \
     --mount=type=cache,sharing=locked,target=/root/.cache \
     apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -qqy --no-install-recommends \
-    netcat-openbsd \
+    gcc \
+    libexpat1 \
+    libpq-dev \
+    netcat \
     postgresql-13-postgis \
     postgresql-server-dev-13 \
  && python -m pip install -U pip \
@@ -29,10 +32,8 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
  && echo "${LANG} UTF-8" > /etc/locale.gen \
  && /usr/sbin/locale-gen
 
-ENV PATH=/root/.local/bin:$PATH
 ADD pyproject.toml poetry.lock ./
 RUN --mount=type=cache,sharing=locked,target=/root/.cache \
-    python -m venv .venv \
- && poetry install --no-dev --no-root --no-interaction --no-ansi
+    poetry install --with prod --no-root --no-interaction --no-ansi
 
 ADD . .

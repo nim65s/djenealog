@@ -70,7 +70,7 @@ DATABASES = {
         "USER": os.environ.get("POSTGRES_USER", "postgres"),
         "HOST": os.environ.get("POSTGRES_HOST", "postgres"),
         "PASSWORD": os.environ["POSTGRES_PASSWORD"],
-    }
+    },
 }
 
 _APV = "django.contrib.auth.password_validation"
@@ -107,7 +107,7 @@ if os.environ.get("REDIS", "False").lower() == "true":
         "default": {
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
             "LOCATION": "redis://redis:6379",
-        }
+        },
     }
 DJANGO_TABLES2_TEMPLATE = f"{PROJECT}/tables.html"
 

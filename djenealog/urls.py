@@ -1,5 +1,5 @@
 from django.urls import path
-from django.views.generic import TemplateView, ListView
+from django.views.generic import ListView, TemplateView
 
 from . import models, views
 

@@ -6,6 +6,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
 from django.db.models import Q
 from django.urls import reverse
+
 from ndh.models import Links, NamedModel
 from wikidata.client import Client
 
@@ -16,15 +17,15 @@ def timestamp(event):
 
 def mean_date(qs):
     return date.fromtimestamp(
-        sum([time.mktime(q.date().timetuple()) for q in qs]) / qs.count()
+        sum([time.mktime(q.date().timetuple()) for q in qs]) / qs.count(),
     )
 
 
 class Individu(models.Model, Links):
     nom = models.CharField(max_length=50, blank=True)
     prenom = models.CharField("Prénom", max_length=50, blank=True)
-    usage = models.CharField("Prénom d’usage", max_length=50, blank=True)
-    epouse = models.CharField("Nom d’épouse ou d’usage", max_length=50, blank=True)
+    usage = models.CharField("Prénom d`usage", max_length=50, blank=True)
+    epouse = models.CharField("Nom d`épouse ou d`usage", max_length=50, blank=True)
     masculin = models.BooleanField(null=True)
     parents = models.ForeignKey(
         "Couple",
@@ -57,13 +58,13 @@ class Individu(models.Model, Links):
         if rank:
             ret.append(f"rank=same; {rank};")
         ret.append(
-            f'"I{self.pk}" [fillcolor="#{self.color()}" label="{self.label()}" URL="{self.get_absolute_url()}"'
+            f'"I{self.pk}" [fillcolor="#{self.color()}" label="{self.label()}" URL="{self.get_absolute_url()}"',
         )
         ret.append('shape="box"];')
-        return "\n".join(ret + ["}"])
+        return "\n".join([*ret, "}"])
 
     def conjoints(self):
-        return Individu.objects.filter((Q(femme__mari=self) | Q(mari__femme=self)))
+        return Individu.objects.filter(Q(femme__mari=self) | Q(mari__femme=self))
 
     def start(self):
         if Naissance.objects.filter(y__isnull=False, inst=self).exists():
@@ -72,36 +73,42 @@ class Individu(models.Model, Links):
         if conjoints.exists():
             return conjoints.order_by("y").last().date()
         siblings = Naissance.objects.filter(
-            y__isnull=False, inst__parents=self.parents
+            y__isnull=False,
+            inst__parents=self.parents,
         ).order_by("y")
         if self.parents and siblings.exists():
             return date.fromtimestamp(
-                (timestamp(siblings.first()) + timestamp(siblings.last())) / 2
+                (timestamp(siblings.first()) + timestamp(siblings.last())) / 2,
             )
         enfants = Naissance.objects.filter(
-            Q(inst__parents__femme=self) | Q(inst__parents__mari=self), y__isnull=False
+            Q(inst__parents__femme=self) | Q(inst__parents__mari=self),
+            y__isnull=False,
         )
         if enfants.exists():
             return enfants.order_by("y").first().date() - timedelta(days=20 * 365)
         parents = Naissance.objects.filter(
-            Q(inst__femme__enfants=self) | Q(inst__mari__enfants=self), y__isnull=False
+            Q(inst__femme__enfants=self) | Q(inst__mari__enfants=self),
+            y__isnull=False,
         )
         if parents.exists():
             parents = parents.order_by("y")
             mid = date.fromtimestamp(
-                (timestamp(parents.first()) + timestamp(parents.last())) / 2
+                (timestamp(parents.first()) + timestamp(parents.last())) / 2,
             )
             return mid + timedelta(days=20 * 365)
+        return None
 
     def rank(self):
         start = self.start()
         if start:
             return start.year
+        return None
 
     def y(self):
         start = self.start()
         if start:
             return -(start.year + (start.month + start.day / 30) / 12)
+        return None
 
     def ancestors(self):
         """Return a set of ancestors."""
@@ -130,7 +137,7 @@ class Individu(models.Model, Links):
 
     def family(self, extended=False, upper=True, lower=True):
         """Return a set of all descendant ancestors and ancestor descendants."""
-        family = set([self]) | set(self.conjoints())
+        family = {self} | set(self.conjoints())
         if upper:
             for ancestor in self.ancestors():
                 family.add(ancestor)
@@ -146,10 +153,18 @@ class Individu(models.Model, Links):
 
 class Couple(models.Model, Links):
     mari = models.ForeignKey(
-        Individu, on_delete=models.PROTECT, related_name="mari", blank=True, null=True
+        Individu,
+        on_delete=models.PROTECT,
+        related_name="mari",
+        blank=True,
+        null=True,
     )
     femme = models.ForeignKey(
-        Individu, on_delete=models.PROTECT, related_name="femme", blank=True, null=True
+        Individu,
+        on_delete=models.PROTECT,
+        related_name="femme",
+        blank=True,
+        null=True,
     )
     debut = models.DateField(blank=True, null=True)
     fin = models.DateField(blank=True, null=True)
@@ -184,7 +199,7 @@ class Couple(models.Model, Links):
         if rank:
             ret.append(f"rank=same; {rank};")
         ret.append(
-            f'"F{self.pk}" [label="{self.label()}" URL="{self.get_absolute_url()}" '
+            f'"F{self.pk}" [label="{self.label()}" URL="{self.get_absolute_url()}" ',
         )
         ret.append(f'shape="ellipse" fillcolor="#{self.color()}"];')
         ret.append("}")
@@ -219,20 +234,24 @@ class Couple(models.Model, Links):
                 start = first.naissance.date() - timedelta(days=2 * 365)
             return start
         naissances = Naissance.objects.filter(
-            y__isnull=False, inst__in=[self.mari, self.femme]
+            y__isnull=False,
+            inst__in=[self.mari, self.femme],
         )
         if naissances.exists():
             return naissances.order_by("y").last().date() + timedelta(days=15 * 365)
+        return None
 
     def rank(self):
         start = self.start()
         if start:
             return start.year
+        return None
 
     def y(self):
         start = self.start()
         if start:
             return -(start.year + (start.month + start.day / 30) / 12)
+        return None
 
 
 class Lieu(Links, NamedModel):
@@ -287,6 +306,7 @@ class Evenement(models.Model):
     def date(self):
         if self.y:
             return date(self.y, self.m or 1, self.d or 1)
+        return None
 
 
 class Naissance(Evenement):

@@ -58,18 +58,6 @@ files = [
 ]
 
 [[package]]
-name = "babel"
-version = "2.12.1"
-description = "Internationalization utilities"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "Babel-2.12.1-py3-none-any.whl", hash = "sha256:b4246fb7677d3b98f501a39d43396d3cafdc8eadb045f4a31be01863f655c610"},
-    {file = "Babel-2.12.1.tar.gz", hash = "sha256:cc2d99999cd01d44420ae725a21c9e3711b3aadc7976d6147f622d8581963455"},
-]
-
-[[package]]
 name = "backcall"
 version = "0.2.0"
 description = "Specifications for callback functions passed in to an API"
@@ -1365,20 +1353,21 @@ files = [
 
 [[package]]
 name = "wikidata"
-version = "0.6.1"
+version = "0.7.0"
 description = "Wikidata client library"
 category = "main"
 optional = false
 python-versions = ">=3.4.0"
 files = [
-    {file = "Wikidata-0.6.1-py3-none-any.whl", hash = "sha256:72998341af4fc3484ae46d6f6e140334325508dcebe3ab80fe5dbe84931c9f66"},
-    {file = "Wikidata-0.6.1.tar.gz", hash = "sha256:895753e98c3f3d8d391249c636ee7af6e7181add50d7c68094e1bad69ab7d422"},
+    {file = "Wikidata-0.7.0-py3-none-any.whl", hash = "sha256:601ce7b4133c42ca82e63b4653829c4f825eae63fe537b304a418af060c486ec"},
+    {file = "Wikidata-0.7.0.tar.gz", hash = "sha256:32ad4cc2c695435d411c83417b1eac210baa635abaf3ff38779666012daedd47"},
 ]
 
-[package.dependencies]
-Babel = ">=2.0"
+[package.extras]
+mypy = ["mypy (>=0.782)"]
+tests = ["flake8 (>=3.8.3)", "flake8-import-order-spoqa", "pytest (>=4.6.11,<4.7.0)", "pytest-flake8 (>=1.0.6,<1.1.0)"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "fc02227b7161d34ed3780364c4d99ec432797c28b3bc6f85c268ae01c9881a71"
+content-hash = "6e0acc617421dbd7cf14dcf85289c2d988f53a1d7d77d0a0fa4943f5c3ba6350"

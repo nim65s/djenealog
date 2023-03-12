@@ -25,7 +25,7 @@ ipython = "^8.10.0"
 ndh = "^5.1.2"
 python = "^3.10"
 redis = "^4.0.2"
-wikidata = "^0.6.1"
+wikidata = "^0.7.0"
 
 [tool.poetry.group.dev]
 optional = true

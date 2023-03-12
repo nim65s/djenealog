@@ -46,7 +46,10 @@ class WikiData:
         self.done.add(wikidata_id)
         obj = self.client.get(f"Q{wikidata_id}", load=True)
         self.logger.warning(
-            f"{n}\thttps://www.wikidata.org/wiki/Q{wikidata_id}   \t{obj.description}",
+            "%s\thttps://www.wikidata.org/wiki/Q%s   \t%s",
+            n,
+            wikidata_id,
+            obj.description,
         )
         claims = obj.data["claims"]
         family = []
@@ -105,7 +108,7 @@ class WikiData:
 
 
 class Command(BaseCommand):
-    help = "import a family from wikidata"
+    help = "import a family from wikidata"  # noqa: A003
 
     def add_arguments(self, parser):
         parser.add_argument("wikidata_id", type=int)

@@ -30,7 +30,7 @@ def get_or_create_event(cls, inst, ymd, lieu):
 
 
 class Command(BaseCommand):
-    help = "import a csv file from gramps"
+    help = "import a csv file from gramps"  # noqa: A003
 
     def add_arguments(self, parser):
         parser.add_argument("csvfile", type=argparse.FileType("r"))
@@ -42,12 +42,12 @@ class Command(BaseCommand):
             line = line.strip()
             if jump:
                 jump = 0
-                logger.debug(f"-- {line}")
+                logger.debug("-- %s", line)
                 continue
             if line == "":
                 jump = 1
                 state += 1
-                logger.debug(f"-- {line}")
+                logger.debug("-- %s", line)
                 continue
 
             read = next(csv.reader([line]))

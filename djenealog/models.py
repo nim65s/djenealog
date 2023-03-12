@@ -58,7 +58,8 @@ class Individu(models.Model, Links):
         if rank:
             ret.append(f"rank=same; {rank};")
         ret.append(
-            f'"I{self.pk}" [fillcolor="#{self.color()}" label="{self.label()}" URL="{self.get_absolute_url()}"',
+            f'"I{self.pk}" [fillcolor="#{self.color()}" label="{self.label()}" '
+            f'URL="{self.get_absolute_url()}"',
         )
         ret.append('shape="box"];')
         return "\n".join([*ret, "}"])

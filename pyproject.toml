@@ -48,7 +48,7 @@ psycopg2 = "^2.9.2"
 allowed-confusables = [" "]
 extend-exclude = ["migrations"]
 extend-ignore = ["D203", "D213"]
-extend-select = ["A", "B", "C", "COM", "DJ", "EM", "EXE", "G", "N", "PTH", "RET", "RUF", "UP", "W", "YTT"]
+extend-select = ["A", "B", "COM", "DJ", "EM", "EXE", "G", "N", "PTH", "RET", "RUF", "UP", "W", "YTT"]
 target-version = "py310"
 
 [tool.tomlsort]

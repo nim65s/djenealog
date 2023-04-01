@@ -34,7 +34,7 @@ optional = true
 black = "^23.1.0"
 coverage = "^7.2"
 pre-commit = "^3.1.1"
-ruff = "^0.0.254"
+ruff = "^0.0.260"
 safety = {allow-prereleases = true, version = "^2.4.0b1"}
 
 [tool.poetry.group.prod]

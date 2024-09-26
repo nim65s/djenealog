@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from django.forms import ModelForm
 
 from django_select2.forms import Select2Widget
@@ -17,7 +19,7 @@ class IndividuForm(ModelForm):
             "parents",
             "commentaires",
         )
-        widgets = {
+        widgets: ClassVar = {
             "parents": Select2Widget,
         }
 
@@ -26,7 +28,7 @@ class CoupleForm(ModelForm):
     class Meta:
         model = models.Couple
         fields = ("mari", "femme", "debut", "fin", "commentaires")
-        widgets = {
+        widgets: ClassVar = {
             "mari": Select2Widget,
             "femme": Select2Widget,
         }

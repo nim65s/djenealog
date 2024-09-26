@@ -30,7 +30,7 @@ def get_or_create_event(cls, inst, ymd, lieu):
 
 
 class Command(BaseCommand):
-    help = "import a csv file from gramps"  # noqa: A003
+    help = "import a csv file from gramps"
 
     def add_arguments(self, parser):
         parser.add_argument("csvfile", type=argparse.FileType("r"))

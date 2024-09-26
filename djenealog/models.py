@@ -1,6 +1,7 @@
 import calendar
 import time
 from datetime import date, datetime, timedelta
+from typing import ClassVar
 
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
@@ -262,7 +263,7 @@ class Lieu(Links, NamedModel):
 
     class Meta:
         verbose_name_plural = "Lieux"
-        ordering = ["name"]
+        ordering: ClassVar = ["name"]
 
     @property
     def wikidata_url(self):

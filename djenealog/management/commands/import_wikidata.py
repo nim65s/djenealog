@@ -108,7 +108,7 @@ class WikiData:
 
 
 class Command(BaseCommand):
-    help = "import a family from wikidata"  # noqa: A003
+    help = "import a family from wikidata"
 
     def add_arguments(self, parser):
         parser.add_argument("wikidata_id", type=int)

@@ -1,24 +1,24 @@
 repos:
 - repo: https://github.com/PyCQA/isort
-  rev: 5.12.0
+  rev: 5.13.2
   hooks:
   - id: isort
 - repo: https://github.com/adamchainz/django-upgrade
-  rev: 1.14.0
+  rev: 1.21.0
   hooks:
   - id: django-upgrade
     args:
     - --target-version
     - '4.1'
-- repo: https://github.com/charliermarsh/ruff-pre-commit
-  rev: v0.0.272
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.6.7
   hooks:
   - id: ruff
     args:
     - --fix
     - --exit-non-zero-on-fix
 - repo: https://github.com/nim65s/pre-commit-sort
-  rev: v0.1.0
+  rev: v0.4.0
   hooks:
   - id: pre-commit-sort
 - repo: https://github.com/pappasam/toml-sort
@@ -27,7 +27,7 @@ repos:
   - id: toml-sort-fix
     exclude: poetry.lock
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.4.0
+  rev: v4.6.0
   hooks:
   - id: check-added-large-files
   - id: check-ast
@@ -45,7 +45,7 @@ repos:
   - id: mixed-line-ending
   - id: trailing-whitespace
 - repo: https://github.com/psf/black
-  rev: 23.3.0
+  rev: 24.8.0
   hooks:
   - id: black
 - repo: https://gitlab.com/smop/pre-commit-hooks

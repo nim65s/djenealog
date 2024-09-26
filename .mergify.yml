@@ -1,7 +1,7 @@
 pull_request_rules:
   - name: merge automatically when CI passes and PR is approved
     conditions:
-      - check-success = build docker image and run tests inside
+      - check-success = docker
       - check-success = pre-commit.ci - pr
       - or:
         - approved-reviews-by = nim65s

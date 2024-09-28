@@ -152,6 +152,19 @@ class Individu(models.Model, Links):
                     family |= descendant.ancestors()
         return family
 
+    def close_ones(self):
+        for couple in self.mari.all():
+            yield couple.femme
+            yield from couple.enfants.all()
+        for couple in self.femme.all():
+            yield couple.mari
+            yield from couple.enfants.all()
+        if self.parents:
+            if pere := self.parents.mari:
+                yield pere
+            if mere := self.parents.femme:
+                yield mere
+
 
 class Couple(models.Model, Links):
     mari = models.ForeignKey(

@@ -27,3 +27,34 @@ docker-compose exec djenealog ./manage.py createsuperuser
 docker cp djenealog.json djenealog-djenealog-1:/djenealog.json
 docker exec -it djenealog-djenealog-1 poetry run ./manage.py loaddata /djenealog.json
 ```
+
+## Next
+
+x=0
+y=0
+On prend la personne la plus vieille.
+```python
+$ docker compose exec djenealog poetry run ./manage.py shell
+>>> from djenealog.models import *
+>>> sorted(Naissance.objects.exclude(y=None), key=lambda n: n.date())[0].inst
+<Individu: Pierre / Baptiste Lafitte>
+```
+On la place en [(x, y, naissance) -- (x, y, deces|today)].
+Pour ses N relations directes (conjoints / parents / frêres / sœurs / enfants), qui sont pas déjà dans le graphe,
+on les place en (si pas de collision):
+- x+1, y
+- x, y+1
+- x-1, y
+- x, y-1
+- x+1, y-1
+- x-1, y-1
+- x-1, y+1
+- x+1, y+1
+- x+2, y
+- x, y-2
+- x-2, y
+- x, y+2
+- x+2, y-2
+- x-2, y-2
+- x-2, y+2
+- x+2, y+2

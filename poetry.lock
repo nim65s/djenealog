@@ -352,13 +352,13 @@ django = "*"
 
 [[package]]
 name = "django-autoslug"
-version = "1.9.8"
+version = "1.9.9"
 description = "An automated slug field for Django."
 optional = false
 python-versions = "*"
 files = [
-    {file = "django-autoslug-1.9.8.tar.gz", hash = "sha256:bae66c27d35615f472865b99c4d107f3b3add3d22ee337e84960fc07694abd45"},
-    {file = "django_autoslug-1.9.8-py2.py3-none-any.whl", hash = "sha256:26459eeddec207e307c55777a10fc25d17f4978753695340b16a17ed248a6f70"},
+    {file = "django-autoslug-1.9.9.tar.gz", hash = "sha256:79f88e9433c1c88d8d3f2bec60d65ca98bffaff6c072b78aa5fd99d0e84a13dd"},
+    {file = "django_autoslug-1.9.9-py2.py3-none-any.whl", hash = "sha256:81cb018944498f27f439d439687cf902212cafbdb8c74c8ca0307543a3d82907"},
 ]
 
 [package.extras]
@@ -367,13 +367,13 @@ translitcodec = ["translitcodec (>=0.3)"]
 
 [[package]]
 name = "django-bootstrap5"
-version = "22.2"
+version = "23.4"
 description = "Bootstrap 5 for Django"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "django-bootstrap5-22.2.tar.gz", hash = "sha256:e944f5ced342e0e16cde77e1ddacb4b9fd5bce4cc190df2f7da0b8e18a24c9cb"},
-    {file = "django_bootstrap5-22.2-py3-none-any.whl", hash = "sha256:5d677bbfb94207c1a034d63a5f39d95ce287ef509e0b31dfb4d233cc81f93bcc"},
+    {file = "django-bootstrap5-23.4.tar.gz", hash = "sha256:fbf9942a17e1f48b4142e78df9e85afb65e4066a20e38ec7c497d36ae5ef7256"},
+    {file = "django_bootstrap5-23.4-py3-none-any.whl", hash = "sha256:5181bf1e97afae6211e963f28f48d4a90c937a3b036b3f752f52260f0029f3bc"},
 ]
 
 [package.dependencies]
@@ -734,18 +734,18 @@ files = [
 
 [[package]]
 name = "ndh"
-version = "6.2.0"
+version = "6.9.1"
 description = "Nim's Django Helpers"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "ndh-6.2.0-py3-none-any.whl", hash = "sha256:1a53dd3f2175cec02dcee07545b94398be24443f53b6a0ccea0d9b8716c4691a"},
-    {file = "ndh-6.2.0.tar.gz", hash = "sha256:e1ca449c189cbdba5e2dd0e9af421ed980827279c8444fdc3a8f6b27ed65d3fa"},
+    {file = "ndh-6.9.1-py3-none-any.whl", hash = "sha256:804dbaae4a0f991930adaeaa29e7e787032bdd6d9f85182ee73059d111defa78"},
+    {file = "ndh-6.9.1.tar.gz", hash = "sha256:9da7530b56bc0ebbeaa7363435dcedaa6fb77dd512fcd9487e1bb5689b659c40"},
 ]
 
 [package.dependencies]
-django-autoslug = ">=1.9.8,<2.0.0"
-django-bootstrap5 = ">=22.1,<23.0"
+django-autoslug = ">=1.9.9,<2.0.0"
+django-bootstrap5 = ">=23.4,<24.0"
 
 [[package]]
 name = "nodeenv"
@@ -1308,4 +1308,4 @@ tests = ["flake8 (>=3.8.3)", "flake8-import-order-spoqa", "pytest (>=4.6.11,<4.7
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "78f50215b5905ac07f43e6eb41b673b8eb9082e9b2855418545f7d1e96b09de0"
+content-hash = "075926fb07b401540ab3b43017e88b3e18b325142abc8f2ea5231fd5523dde65"

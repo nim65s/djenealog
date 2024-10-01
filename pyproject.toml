@@ -24,7 +24,7 @@ django-tables2 = "^2.3.1"
 ipython = "^8.17.2"
 ndh = "^6.9.1"
 python = "^3.10"
-redis = "^5.0.7"
+redis = "^5.1.0"
 wikidata = "^0.7.0"
 
 [tool.poetry.group.dev]

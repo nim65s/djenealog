@@ -412,13 +412,13 @@ docs = ["sphinx", "sphinx-autobuild"]
 
 [[package]]
 name = "django-select2"
-version = "8.2.0"
+version = "8.2.1"
 description = "This is a Django_ integration of Select2_."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "django_select2-8.2.0-py3-none-any.whl", hash = "sha256:0e173ce49c6ea91efa9fc24c5ca8d1f8a3c545e60db779cf2c623d4e07405360"},
-    {file = "django_select2-8.2.0.tar.gz", hash = "sha256:43ca01fecff1bd9ffaf87de90a4beca86fe801edd0c0102c3230c34f81490b9a"},
+    {file = "django_select2-8.2.1-py3-none-any.whl", hash = "sha256:2d7f52b5cd362c4d0b1bf4caca8ad8463ae269b252eebbab4afabd762d08baf5"},
+    {file = "django_select2-8.2.1.tar.gz", hash = "sha256:dc03524c1cf7ef970e8b3ab2de76ce3179e414254fa812d8e2d2f0ba6fa487ba"},
 ]
 
 [package.dependencies]
@@ -1309,4 +1309,4 @@ tests = ["flake8 (>=3.8.3)", "flake8-import-order-spoqa", "pytest (>=4.6.11,<4.7
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "008d0b35a8b72d20cae5b0ce30f553bb9630cbb8a326ea7767e2cb25e64389df"
+content-hash = "f3d00955ddea419a01e52831d12bb3b8992935a2a8739b51c1fa3555aa805c9c"

@@ -1283,20 +1283,20 @@ files = [
 
 [[package]]
 name = "wikidata"
-version = "0.7.0"
+version = "0.8.1"
 description = "Wikidata client library"
 optional = false
-python-versions = ">=3.4.0"
+python-versions = ">=3.8.0"
 files = [
-    {file = "Wikidata-0.7.0-py3-none-any.whl", hash = "sha256:601ce7b4133c42ca82e63b4653829c4f825eae63fe537b304a418af060c486ec"},
-    {file = "Wikidata-0.7.0.tar.gz", hash = "sha256:32ad4cc2c695435d411c83417b1eac210baa635abaf3ff38779666012daedd47"},
+    {file = "Wikidata-0.8.1-py3-none-any.whl", hash = "sha256:2f0e2b8b77150cb374a729f3b4fbadbfedfbd091e1f25d08f5403cb0d8306cda"},
+    {file = "Wikidata-0.8.1.tar.gz", hash = "sha256:2d44aa538ca3bcbc36ddf9f88957f6e487407d96e7a8a7bcee39da472b90f28b"},
 ]
 
 [package.extras]
-mypy = ["mypy (>=0.782)"]
-tests = ["flake8 (>=3.8.3)", "flake8-import-order-spoqa", "pytest (>=4.6.11,<4.7.0)", "pytest-flake8 (>=1.0.6,<1.1.0)"]
+docs = ["Sphinx (>=6.1.3,<6.2.0)", "furo", "rstcheck"]
+tests = ["flake8 (>=6.0.0)", "flake8-import-order-spoqa", "mypy (>=0.991)", "pytest (>=7.2.1,<7.3.0)"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "08c8a834b6e8b508c11259235e2852d385dcbe2f5a0aa76c9ea3563e6f488375"
+content-hash = "8fa4800f71ab005b9ce82c86f5d90b6a7062fd6de54f9845e21623db0c5d8de3"

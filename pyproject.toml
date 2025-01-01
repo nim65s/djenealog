@@ -16,7 +16,7 @@ readme = "README.md"
 version = "1.0.0"
 
 [tool.poetry.dependencies]
-certifi = "^2024.8.30"
+certifi = "^2024.12.14"
 django-filter = "^23.2"
 django-leaflet = "^0.31.0"
 django-select2 = "^8.2.1"

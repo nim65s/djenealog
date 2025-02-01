@@ -587,17 +587,17 @@ test = ["pytest", "pytest-cov", "pytest-django", "selenium"]
 
 [[package]]
 name = "django-tables2"
-version = "2.5.3"
+version = "2.7.5"
 description = "Table/data-grid framework for Django"
 optional = false
-python-versions = "*"
+python-versions = ">=3.9"
 files = [
-    {file = "django-tables2-2.5.3.tar.gz", hash = "sha256:f6c1623aac188d29aae9cf6b4de3211c96c525e49890654bec3359c181600eb9"},
-    {file = "django_tables2-2.5.3-py2.py3-none-any.whl", hash = "sha256:e336fdf8899a8fab110550a40cad956064bd4054818e0b972c1893b3e2542168"},
+    {file = "django_tables2-2.7.5-py3-none-any.whl", hash = "sha256:d9338937797207ffb6f481be2125c5ec3a0bb1858d409c672cc25fc5d654cb22"},
+    {file = "django_tables2-2.7.5.tar.gz", hash = "sha256:fb5dcaa09379cf3947598ec7e1bd5f26ed63aafdee3b23963446763bbeac37bf"},
 ]
 
 [package.dependencies]
-Django = ">=3.2"
+django = ">=4.2"
 
 [package.extras]
 tablib = ["tablib"]
@@ -1729,4 +1729,4 @@ tests = ["flake8 (>=6.0.0)", "flake8-import-order-spoqa", "mypy (>=0.991)", "pyt
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a16f72d27bff074f5a4749043daa9457dcb02cdfc4043cd74d0ea1b0b1d2a990"
+content-hash = "b3b49ca282644b9db2f55a3d7626124d7e84ee5c7f9e04be6484706e9a3bd0f5"

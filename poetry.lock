@@ -1332,13 +1332,13 @@ files = [
 
 [[package]]
 name = "redis"
-version = "5.2.0"
+version = "5.2.1"
 description = "Python client for Redis database and key-value store"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "redis-5.2.0-py3-none-any.whl", hash = "sha256:ae174f2bb3b1bf2b09d54bf3e51fbc1469cf6c10aa03e21141f51969801a7897"},
-    {file = "redis-5.2.0.tar.gz", hash = "sha256:0b1087665a771b1ff2e003aa5bdd354f15a70c9e25d5a7dbf9c722c16528a7b0"},
+    {file = "redis-5.2.1-py3-none-any.whl", hash = "sha256:ee7e1056b9aea0f04c6c2ed59452947f34c4940ee025f5dd83e6a6418b6989e4"},
+    {file = "redis-5.2.1.tar.gz", hash = "sha256:16f2e22dff21d5125e8481515e386711a34cbec50f0e44413dd7d9c060a54e0f"},
 ]
 
 [package.dependencies]
@@ -1733,4 +1733,4 @@ tests = ["flake8 (>=6.0.0)", "flake8-import-order-spoqa", "mypy (>=0.991)", "pyt
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a4e2b5768c73333f438f0df05009e3cd564fc60a055ba80cd204983f336f218b"
+content-hash = "d5fb4ff95967b38866268d77d00343cac7e0cc1326865d4def1b63fb897c57f7"

@@ -20,6 +20,7 @@ from . import filters, forms, models, tables
 # @login_required
 def gv(request):
     fmt = request.GET.get("fmt", "html")
+    condensed = "condensed" in request.GET
     individus = models.Individu.objects.all()
     couples = models.Couple.objects.all()
     if "famille" in request.GET:
@@ -59,6 +60,7 @@ def gv(request):
             ),
             "individus": individus,
             "couples": couples,
+            "condensed": condensed,
         },
     )
 

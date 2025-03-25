@@ -9,6 +9,7 @@ digraph
     searchsize="1000";
     splines="true";
 
+    {% if not condensed %}
     {
         node [shape=none, color=white, fillcolor=white, fontsize=20];
         {% for year in years %}
@@ -16,6 +17,7 @@ digraph
         {{ year }} -> {{ year|add:"1" }} [style=invis];
         {% endfor %}
     }
+    {% endif %}
 
     {
         edge [fontsize=30 style="solid" arrowhead=normal arrowtail=none dir=both];

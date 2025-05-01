@@ -755,14 +755,14 @@ files = [
 
 [[package]]
 name = "ipython"
-version = "8.34.0"
+version = "8.36.0"
 description = "IPython: Productive Interactive Computing"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "ipython-8.34.0-py3-none-any.whl", hash = "sha256:0419883fa46e0baa182c5d50ebb8d6b49df1889fdb70750ad6d8cfe678eda6e3"},
-    {file = "ipython-8.34.0.tar.gz", hash = "sha256:c31d658e754673ecc6514583e7dda8069e47136eb62458816b7d1e6625948b5a"},
+    {file = "ipython-8.36.0-py3-none-any.whl", hash = "sha256:12b913914d010dcffa2711505ec8be4bf0180742d97f1e5175e51f22086428c1"},
+    {file = "ipython-8.36.0.tar.gz", hash = "sha256:24658e9fe5c5c819455043235ba59cfffded4a35936eefceceab6b192f7092ff"},
 ]
 
 [package.dependencies]
@@ -790,7 +790,7 @@ notebook = ["ipywidgets", "notebook"]
 parallel = ["ipyparallel"]
 qtconsole = ["qtconsole"]
 test = ["packaging", "pickleshare", "pytest", "pytest-asyncio (<0.22)", "testpath"]
-test-extra = ["curio", "ipython[test]", "matplotlib (!=3.2.0)", "nbformat", "numpy (>=1.23)", "pandas", "trio"]
+test-extra = ["curio", "ipython[test]", "jupyter_ai", "matplotlib (!=3.2.0)", "nbformat", "numpy (>=1.23)", "pandas", "trio"]
 
 [[package]]
 name = "jedi"
@@ -1825,4 +1825,4 @@ tests = ["flake8 (>=6.0.0)", "flake8-import-order-spoqa", "mypy (>=0.991)", "pyt
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "321fb7f8f2cf1868994e732edc02202bfab0fe52344ae8d06e1819ab8a58a11d"
+content-hash = "c8f2a22f5c417692aa7c0438b7a8180ca05d6d9773cfd381036fca9842334dc7"

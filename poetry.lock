@@ -583,14 +583,14 @@ Django = ">=4.2"
 
 [[package]]
 name = "django-leaflet"
-version = "0.31.0"
+version = "0.32.0"
 description = "Use Leaflet in your django projects"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "django_leaflet-0.31.0-py3-none-any.whl", hash = "sha256:914d973a30730eafec4cd822e7107bbd71a6d2e0106b6e919fd9eea67bbcbc5c"},
-    {file = "django_leaflet-0.31.0.tar.gz", hash = "sha256:fb2b75f84aff60d4058659300f31a711554c65d128bade5fa8088637fb0751f7"},
+    {file = "django_leaflet-0.32.0-py3-none-any.whl", hash = "sha256:a17d8e6cc05dd98e8e543fbf198b81dabbf9f195c222e786d1686aeda91c1aa8"},
+    {file = "django_leaflet-0.32.0.tar.gz", hash = "sha256:013ccb06ee08071caec98a65dffd68ab3694dafce72caff34f3d78f35568ae25"},
 ]
 
 [package.dependencies]
@@ -1834,4 +1834,4 @@ tests = ["flake8 (>=6.0.0)", "flake8-import-order-spoqa", "mypy (>=0.991)", "pyt
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "c3c6c30a4d0fbf3cc5533e291999a9dcdc2e4a32289f0d1a41999bd44dee1a35"
+content-hash = "25e6afff645602e40ae0d237736c97c6603e1a5ebf064afe283bf392a4ee92e9"

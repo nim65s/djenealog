@@ -31,7 +31,7 @@ wikidata = "^0.8.1"
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-black = "^25.1.0"
+black = "^25.9.0"
 coverage = "^7.10"
 pre-commit = "^4.3.0"
 ruff = "^0.12.12"

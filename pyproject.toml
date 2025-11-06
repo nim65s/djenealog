@@ -17,7 +17,7 @@ version = "1.0.0"
 
 [tool.poetry.dependencies]
 certifi = "^2025.10.5"
-django-filter = "^25.1"
+django-filter = "^25.2"
 django-leaflet = "^0.32.0"
 django-select2 = "^8.4.1"
 django-tables2 = "^2.7.5"

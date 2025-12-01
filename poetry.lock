@@ -1105,14 +1105,14 @@ files = [
 
 [[package]]
 name = "ndh"
-version = "6.10.1"
+version = "6.11.0"
 description = "Nim's Django Helpers"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "ndh-6.10.1-py3-none-any.whl", hash = "sha256:4bf682192fc778a98123a7e7371b9c909f49505d8a8d0b63ba26cffa5307cd54"},
-    {file = "ndh-6.10.1.tar.gz", hash = "sha256:a8490562644671ed99e96e8617a33b5f6b71f5630089bb34eef3ba72cc254da2"},
+    {file = "ndh-6.11.0-py3-none-any.whl", hash = "sha256:9035408b760ce8a44f794df09f004a13c64439a155e02c0de3739645a24828c0"},
+    {file = "ndh-6.11.0.tar.gz", hash = "sha256:9595f81fa4e6b06f05e0d356a03751210d0a7d4ae08aeac67054f4c3a34bc8be"},
 ]
 
 [package.dependencies]
@@ -2165,4 +2165,4 @@ tests = ["flake8 (>=6.0.0) ; python_version >= \"3.9.1\"", "flake8-import-order-
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "18b0e4cd36ceef7f478c5cbc9eeb0c9dec80b9a8236083c25b89054782401c10"
+content-hash = "201278eb500ecb11dd319273466c681f70e28932542a8d7d8039b288d7f7d841"

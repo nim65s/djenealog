@@ -32,7 +32,7 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.11.0"
-coverage = "^7.11"
+coverage = "^7.13"
 pre-commit = "^4.3.0"
 ruff = "^0.14.7"
 safety = {allow-prereleases = true, version = "^3.7.0"}

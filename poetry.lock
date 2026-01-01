@@ -551,21 +551,18 @@ Django = ">=4.2"
 
 [[package]]
 name = "django-leaflet"
-version = "0.32.0"
-description = "Use Leaflet in your django projects"
+version = "0.33.0"
+description = "A Django map widget using Leaflet"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "django_leaflet-0.32.0-py3-none-any.whl", hash = "sha256:a17d8e6cc05dd98e8e543fbf198b81dabbf9f195c222e786d1686aeda91c1aa8"},
-    {file = "django_leaflet-0.32.0.tar.gz", hash = "sha256:013ccb06ee08071caec98a65dffd68ab3694dafce72caff34f3d78f35568ae25"},
+    {file = "django_leaflet-0.33.0-py3-none-any.whl", hash = "sha256:bf30526daf7710f9afc35f0221284fe3b0558f3d9f259344ac3b82e23d28ec98"},
+    {file = "django_leaflet-0.33.0.tar.gz", hash = "sha256:b51c71e7179eed9961484dfd57b87bd1ece3b1ff7bee4dfb7f4d5702206b2eca"},
 ]
 
 [package.dependencies]
-Django = "*"
-
-[package.extras]
-docs = ["sphinx", "sphinx-autobuild"]
+django = "*"
 
 [[package]]
 name = "django-select2"
@@ -2006,4 +2003,4 @@ tests = ["flake8 (>=6.0.0) ; python_version >= \"3.9.1\"", "flake8-import-order-
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "8c5cf278b670e157093a489616f4bae502dd3ed7e098910841474d3b98dc9d01"
+content-hash = "f62133ba5da4e1f4c167e9a9b282cd46f5c58d6e7b73d4664abac97eb0b91d74"

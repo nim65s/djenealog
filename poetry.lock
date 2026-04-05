@@ -37,18 +37,21 @@ trio = ["trio (>=0.26.1)"]
 
 [[package]]
 name = "asgiref"
-version = "3.6.0"
+version = "3.11.1"
 description = "ASGI specs, helper code, and adapters"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "asgiref-3.6.0-py3-none-any.whl", hash = "sha256:71e68008da809b957b7ee4b43dbccff33d1b23519fb8344e33f049897077afac"},
-    {file = "asgiref-3.6.0.tar.gz", hash = "sha256:9567dfe7bd8d3c8c892227827c41cce860b368104c3431da67a0c5a65a949506"},
+    {file = "asgiref-3.11.1-py3-none-any.whl", hash = "sha256:e8667a091e69529631969fd45dc268fa79b99c92c5fcdda727757e52146ec133"},
+    {file = "asgiref-3.11.1.tar.gz", hash = "sha256:5f184dc43b7e763efe848065441eac62229c9f7b0475f41f80e207a114eda4ce"},
 ]
 
+[package.dependencies]
+typing_extensions = {version = ">=4", markers = "python_version < \"3.11\""}
+
 [package.extras]
-tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
+tests = ["mypy (>=1.14.0)", "pytest", "pytest-asyncio"]
 
 [[package]]
 name = "asttokens"
@@ -517,24 +520,47 @@ files = [
 
 [[package]]
 name = "django"
-version = "4.2.29"
+version = "5.2.12"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 groups = ["main"]
+markers = "python_version < \"3.13\""
 files = [
-    {file = "django-4.2.29-py3-none-any.whl", hash = "sha256:074d7c4d2808050e528388bda442bd491f06def4df4fe863f27066851bba010c"},
-    {file = "django-4.2.29.tar.gz", hash = "sha256:86d91bc8086569c8d08f9c55888b583a921ac1f95ed3bdc7d5659d4709542014"},
+    {file = "django-5.2.12-py3-none-any.whl", hash = "sha256:4853482f395c3a151937f6991272540fcbf531464f254a347bf7c89f53c8cff7"},
+    {file = "django-5.2.12.tar.gz", hash = "sha256:6b809af7165c73eff5ce1c87fdae75d4da6520d6667f86401ecf55b681eb1eeb"},
 ]
 
 [package.dependencies]
-asgiref = ">=3.6.0,<4"
+asgiref = ">=3.8.1"
 sqlparse = ">=0.3.1"
 tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 
 [package.extras]
 argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
+
+[[package]]
+name = "django"
+version = "6.0.3"
+description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
+optional = false
+python-versions = ">=3.12"
+groups = ["main"]
+markers = "python_version >= \"3.13\""
+files = [
+    {file = "django-6.0.3-py3-none-any.whl", hash = "sha256:2e5974441491ddb34c3f13d5e7a9f97b07ba03bf70234c0a9c68b79bbb235bc3"},
+    {file = "django-6.0.3.tar.gz", hash = "sha256:90be765ee756af8a6cbd6693e56452404b5ad15294f4d5e40c0a55a0f4870fe1"},
+]
+
+[package.dependencies]
+asgiref = ">=3.9.1"
+sqlparse = ">=0.5.0"
+tzdata = {version = "*", markers = "sys_platform == \"win32\""}
+
+[package.extras]
+argon2 = ["argon2-cffi (>=23.1.0)"]
+bcrypt = ["bcrypt (>=4.1.1)"]
 
 [[package]]
 name = "django-appconf"
@@ -587,18 +613,21 @@ jinja = ["Jinja2 (>=3.0,<4)"]
 
 [[package]]
 name = "django-filter"
-version = "25.1"
+version = "25.2"
 description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "django_filter-25.1-py3-none-any.whl", hash = "sha256:4fa48677cf5857b9b1347fed23e355ea792464e0fe07244d1fdfb8a806215b80"},
-    {file = "django_filter-25.1.tar.gz", hash = "sha256:1ec9eef48fa8da1c0ac9b411744b16c3f4c31176c867886e4c48da369c407153"},
+    {file = "django_filter-25.2-py3-none-any.whl", hash = "sha256:9c0f8609057309bba611062fe1b720b4a873652541192d232dd28970383633e3"},
+    {file = "django_filter-25.2.tar.gz", hash = "sha256:760e984a931f4468d096f5541787efb8998c61217b73006163bf2f9523fe8f23"},
 ]
 
 [package.dependencies]
-Django = ">=4.2"
+Django = ">=5.2"
+
+[package.extras]
+drf = ["djangorestframework"]
 
 [[package]]
 name = "django-leaflet"
@@ -2104,4 +2133,4 @@ tests = ["flake8 (>=6.0.0) ; python_version >= \"3.9.1\"", "flake8-import-order-
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "5da9e040bccec84c840baafd76f7bbaf6ced364a1018a64e01121b9ffabfeee3"
+content-hash = "f14e5fc3a3b09d3cbb72d5d6c846a37899e32e41e91c63794e83e95903f04a51"

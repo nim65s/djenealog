@@ -14,7 +14,7 @@ logger = logging.getLogger("djenealog.import_csv")
 
 
 def get_or_create_event(cls, inst, ymd, lieu):
-    instance, created = cls.objects.get_or_create(inst=inst)
+    instance, _created = cls.objects.get_or_create(inst=inst)
     if lieu and not instance.lieu:
         instance.lieu = mapping[STATES.lieu][lieu]
     y, m, d = (

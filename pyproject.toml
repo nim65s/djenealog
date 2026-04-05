@@ -45,11 +45,12 @@ gunicorn = "^25.3.0"
 psycopg2 = "^2.9.11"
 
 [tool.ruff]
-allowed-confusables = [" "]
 extend-exclude = ["migrations"]
+
+[tool.ruff.lint]
+allowed-confusables = [" "]
 extend-ignore = ["D203", "D213"]
 extend-select = ["A", "B", "COM", "DJ", "EM", "EXE", "G", "N", "PTH", "RET", "RUF", "UP", "W", "YTT"]
-target-version = "py310"
 
 [tool.tomlsort]
 all = true

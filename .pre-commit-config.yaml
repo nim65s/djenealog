@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/PyCQA/isort
-  rev: 8.0.1
+  rev: 9.0.0a3
   hooks:
   - id: isort
 - repo: https://github.com/adamchainz/django-upgrade
@@ -11,7 +11,7 @@ repos:
     - --target-version
     - '4.1'
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.15.11
+  rev: v0.15.12
   hooks:
   - id: ruff
     args:

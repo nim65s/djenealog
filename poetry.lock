@@ -639,14 +639,14 @@ django-appconf = ">=0.6.0"
 
 [[package]]
 name = "django-tables2"
-version = "2.8.0"
+version = "3.0.0"
 description = "Table/data-grid framework for Django"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "django_tables2-2.8.0-py3-none-any.whl", hash = "sha256:860633b0f448216af73fca6005c7e38dc9b46931dc36c08a9281a71ee250b1ee"},
-    {file = "django_tables2-2.8.0.tar.gz", hash = "sha256:0dea3401bb99a0164ba09e20d59a7d90856fdc05e5ae2da9a14d0fa14d99257c"},
+    {file = "django_tables2-3.0.0-py3-none-any.whl", hash = "sha256:2a5b5447f10d7a8cfb7a2e8f0b139d969c7eb2e675079a4b8ba0107956345bfa"},
+    {file = "django_tables2-3.0.0.tar.gz", hash = "sha256:3c5343f72663b0d6684e8e6cbcb16caae10d7621a51c1cf3c581f57ce605f8ee"},
 ]
 
 [package.dependencies]
@@ -2110,4 +2110,4 @@ tests = ["flake8 (>=6.0.0) ; python_version >= \"3.9.1\"", "flake8-import-order-
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "f14e5fc3a3b09d3cbb72d5d6c846a37899e32e41e91c63794e83e95903f04a51"
+content-hash = "b6624d65c3435c3e8f6c09c863490cf4b66c76858e0865f192760392729061be"

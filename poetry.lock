@@ -1774,14 +1774,14 @@ files = [
 
 [[package]]
 name = "safety"
-version = "3.8.0b0"
+version = "3.8.0b3"
 description = "Scan dependencies for known vulnerabilities and licenses."
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "safety-3.8.0b0-py3-none-any.whl", hash = "sha256:082574aa9ed77b9f1d6ec7803c32e6c76c8bccfc708a20b4a37f8ad36e578fd9"},
-    {file = "safety-3.8.0b0.tar.gz", hash = "sha256:30f4d87d5249fe9076ee82634fb7d4303669c0857ee41ee247dab08f7fc38186"},
+    {file = "safety-3.8.0b3-py3-none-any.whl", hash = "sha256:b2cc1725ee34b98645524f958aef2c06e3c0c40fec21ee35a18e87882c282ddb"},
+    {file = "safety-3.8.0b3.tar.gz", hash = "sha256:a138e9d7078b3bfcb1bb25548f11d46a20379ccbbf53adfef0558bfec168c755"},
 ]
 
 [package.dependencies]

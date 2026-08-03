@@ -9,7 +9,6 @@ from django.shortcuts import render
 from django.template.loader import get_template
 from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DeleteView, UpdateView
-
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from ndh.mixins import SuperUserRequiredMixin

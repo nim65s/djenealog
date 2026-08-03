@@ -1,7 +1,6 @@
 import logging
 
 from django.core.management.base import BaseCommand
-
 from wikidata.client import Client
 
 from djenealog.models import Couple, Deces, Individu, Lieu, Naissance

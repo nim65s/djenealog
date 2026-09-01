@@ -595,14 +595,14 @@ drf = ["djangorestframework"]
 
 [[package]]
 name = "django-leaflet"
-version = "0.33.0"
+version = "0.34.0"
 description = "A Django map widget using Leaflet"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "django_leaflet-0.33.0-py3-none-any.whl", hash = "sha256:bf30526daf7710f9afc35f0221284fe3b0558f3d9f259344ac3b82e23d28ec98"},
-    {file = "django_leaflet-0.33.0.tar.gz", hash = "sha256:b51c71e7179eed9961484dfd57b87bd1ece3b1ff7bee4dfb7f4d5702206b2eca"},
+    {file = "django_leaflet-0.34.0-py3-none-any.whl", hash = "sha256:367f74c63709c1b466b740e0e7bd50cdc0d76f08cab2d6566af1559818d79cc2"},
+    {file = "django_leaflet-0.34.0.tar.gz", hash = "sha256:8336e72a7bbff0b363054982f02ac1d7a3bcb2b2fa4bca326014dddeaeb7c515"},
 ]
 
 [package.dependencies]
@@ -2100,4 +2100,4 @@ tests = ["flake8 (>=6.0.0) ; python_version >= \"3.9.1\"", "flake8-import-order-
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "db497a3e730da6e6afa53227b9c0dc2891b75a08987e6f9bcd2443b9814cdf04"
+content-hash = "556c8f550d0fcc4685de6e063eced8e103f6db638e1f2c5d70294b4f57c33626"
